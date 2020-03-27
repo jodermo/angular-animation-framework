@@ -2,7 +2,7 @@
 Demo:
 <a rel="demo" href="http://3d.mucke.online" target="_blank">
   3d.mucke.online
-</a>.
+</a>
 
 | Frameworks |  | Links |
 |    ---:| :---          | :---         |
