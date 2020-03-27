@@ -18,16 +18,17 @@ Demo (Retro Audio Visualisation):
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/WebGL_Logo.svg/1199px-WebGL_Logo.svg.png" height="64"  alt="WebGL Logo" /><br>Three-js | 3D Graphic API | [WEBSITE](https://threejs.org/)<br> [README](https://github.com/mrdoob/three.js/blob/dev/README.md)|
 | <img src="https://www.createjs.com/assets/images/svg/tweenjs-logo-horizontal-gray-darker.svg" height="64"  alt="TWEEN.js Logo" /><br>TWEEN.js | Tweening library | [WEBSITE](https://www.createjs.com/tweenjs)<br> [README](https://github.com/tweenjs/tween.js/blob/master/README.md)|
 
- * [/src/](./src)
-    * [/app/..](./src/app) 
-        * [/three-animation/](./src/app/three-animation) <sub><sup>THREE.js animation framework component</sup></sub>
-            * [three-animation.component.ts](./src/app/three-animation/three-animation.component.ts) <sub><sup>main component</sup></sub>       
 
- - - -
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
 ###### *© 2020 - Moritz Petzka - [petzka.com](https://petzka.com/)*
 
+## Main Component:
+ * [/src/](./src)
+    * [/app/..](./src/app) 
+        * [/three-animation/](./src/app/three-animation) <sub><sup>THREE.js animation framework component</sup></sub>
+ - - -
+ 
 For implementation in existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
 
 # Example 
