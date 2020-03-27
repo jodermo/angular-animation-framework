@@ -16,6 +16,8 @@ Demo:
 ###### *© 2020 - Moritz Petzka - [petzka.com](https://petzka.com/)*
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 
+For existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
+
 ## Installation
 
 Run `npm install -g @angular/cli` to install Angular CLI.
