@@ -18,7 +18,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Installation <sub><sup>(to existing Angular project)</sup></sub>
 
-Run `git clone https://github.com/jodermo/angular-animation-framework/tree/master/src/app/three-animation`
+
+clone project to any temporary folder <br>
+`git clone https://github.com/jodermo/angular-animation-framework`
+
+move or copy the whole component folder `src/app/three-animation` to your project<br>
+
 
 Install dependencies:
  
