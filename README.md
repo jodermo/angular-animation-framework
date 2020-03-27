@@ -21,9 +21,8 @@ Demo (Retro Audio Visualisation):
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
 ###### *© 2020 - Moritz Petzka - [petzka.com](https://petzka.com/)*
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 
-For existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
+For implementation in existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
 
 # Example 
 
@@ -78,6 +77,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 }
 ```
 
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 
 
 ## Installation
