@@ -81,7 +81,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
     
     start(){
 
-        const box = this.createObject('mesh', {
+        const box: AnimationObject = this.createObject('mesh', {
             material: {
                 type: 'MeshBasicMaterial',
                 color: '#ff00ec',
@@ -103,7 +103,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
                 y: 0,
                 z: 0
             }
-        }, ()=>{
+        } as AnimationObjectOptions, ()=>{
             // stuff after object is successful created
         });
         

@@ -144,7 +144,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 create mesh object (THREE.js <a hraf="https://threejs.org/docs/index.html#api/en/geometries/BoxGeometry">BoxGeometry</a> &
 <a hraf="https://threejs.org/docs/index.html#api/en/materials/MeshBasicMaterial">MeshBasicMaterial</a>):
 ```javascript
-        const box = this.createObject('mesh', {
+        const box: AnimationObject = this.createObject('mesh', {
             material: {
                 type: 'MeshBasicMaterial',
                 color: '#ff00ec',
@@ -156,7 +156,6 @@ create mesh object (THREE.js <a hraf="https://threejs.org/docs/index.html#api/en
                 width: 5,
                 height: 5,
                 depth: 5,
-               // attributes: [5, 5, 5] // is the same as above
             },
             mesh: {
                 receiveShadow: true,
@@ -167,7 +166,7 @@ create mesh object (THREE.js <a hraf="https://threejs.org/docs/index.html#api/en
                 y: 0,
                 z: 0
             }
-        }, ()=>{
+        } as AnimationObjectOptions, ()=>{
             // stuff after object is successful created
         });
 ```
@@ -200,7 +199,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
     
     start(){
 
-        const box = this.createObject('mesh', {
+        const box: AnimationObject = this.createObject('mesh', {
             material: {
                 type: 'MeshBasicMaterial',
                 color: '#ff00ec',
@@ -222,11 +221,11 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
                 y: 0,
                 z: 0
             }
-        }, ()=>{
+        } as AnimationObjectOptions, ()=>{
             // stuff after object is successful created
         });
         
-       box.moveTo({x:0, y:0, z:50}, 5000);
+        box.moveTo({x:0, y:0, z:50}, 5000);
     }
 }
 ```
