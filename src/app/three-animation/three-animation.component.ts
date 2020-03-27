@@ -1,19 +1,15 @@
 import { Component, Input, Output, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, Renderer2, EventEmitter } from '@angular/core';
-import {
-  MarchingCubes,
-  LuminosityShader,
-  SobelOperatorShader,
-  CopyShader,
-  DotScreenPass,
-  ColorifyShader,
-  BleachBypassShader,
-  FilmShader,
-  VignetteShader,
-  HorizontalBlurShader,
-  VerticalBlurShader,
-  SepiaShader,
-  SVGLoader,
-} from 'three-addons';
+import { AnimationObjectOptions, AnimationObject, AnimationPreset } from './classes/animation-object';
+import { ThreeVrService } from './services/three-vr.service';
+import { AudioService } from './services/audio.service';
+
+import * as THREE from 'three';
+import * as Physijs from 'physijs-webpack';
+import * as Stats from 'stats-js';
+import TWEEN from '@tweenjs/tween.js';
+import CameraControls from 'camera-controls';
+import { OrbitControls } from 'three-orbitcontrols-ts';
+
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
@@ -22,21 +18,12 @@ import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass';
 import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
-
-import * as THREE from 'three';
 import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 
-import * as Physijs from 'physijs-webpack';
-import * as Stats from 'stats-js';
-import TWEEN from '@tweenjs/tween.js';
-import CameraControls from 'camera-controls';
-import { OrbitControls } from 'three-orbitcontrols-ts';
-import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { ThreeVrService } from './services/three-vr.service';
-import { AnimationObjectOptions, AnimationObject, AnimationPreset } from './classes/animation-object';
-import { AudioService } from './services/audio.service';
+
+
+
 
 (window as any).THREE = THREE;
 CameraControls.install({THREE});

@@ -20,6 +20,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `git clone https://github.com/jodermo/angular-animation-framework/tree/master/src/app/three-animation`
 
+Install dependencies:
+ 
+ `npm install three --save`<br>
+ `npm install stats-js --save`<br>
+ `npm install @tweenjs/tween.js --save`<br>
+ `npm install physijs-webpack --save`<br>
+ `npm install camera-controls --save`<br>
+ `npm install three-orbitcontrols-ts --save`<br>
 
 ### add to app.module.ts 
 ```javascript
