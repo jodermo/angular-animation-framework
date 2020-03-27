@@ -47,93 +47,15 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
  * [/src/](./src)
     * [/app/..](./src/app)
+       * [/audio-animation-demo/](./src/app/start-animation) <sub><sup>demo component - how to</sup></sub>
+             * [audio-animation-demo.component.ts](./src/app/start-animation/start-animation.component.ts) 
        * [/three-animation/](./src/app/three-animation) <sub><sup>THREE.js animation framework component</sup></sub>
-            * [three-animation.component.ts](./src/app/three-animation/three-animation.component.ts) <sub><sup>main component</sup></sub>
-        * [/start-animation/](./src/app/start-animation) <sub><sup>demo component - how to</sup></sub>
-             * [start-animation.component.ts](./src/app/start-animation/start-animation.component.ts)        
+            * [three-animation.component.ts](./src/app/three-animation/three-animation.component.ts) <sub><sup>main component</sup></sub>       
 
  - - -
-# Other Helpful Deployment Stuff  
-```bash
-# pull with docker
-$ docker pull mopet/tator:latest
-
-# pull with npm:
-$ npm run docker:pull
-
-
-
-# build with docker
-$ docker build -t mopet/tator:latest .
-
-# build with npm:
-$ npm run docker:build
-
-
-
-# run image with docker
-$ docker run -p 3000:3000 mopet/tator:latest
-
-# run image w with npm:
-$ npm run docker:build
+# Example 
+```javascript
+    // coming soon..
 ```
 
-#### for killing all current running docker container / images:
 
-```bash
-# List Images
-$ docker ps -a
-
-# Stop All Container
-$ docker stop $(docker ps -a -q)
-
-# Remove All Container
-$ docker rm $(docker ps -a -q)
-
-# Remove All Images
-$ docker rmi $(docker images -q)
-
-# All In One
-$ docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q)
-```
-
-#### Installation - npm only (without docker)
-
-```bash
-# NestJS Server
-$ npm install
-
-# Angular App
-$ cd tator-app/
-$ npm install
-```
-
-#### Build App - npm only (without docker)
-
-```bash
-# NestJS Server
-$ npm run build
-
-# Angular App
-$ npm run ng:build
-```
-
-#### Serve Dev Mode (Angular)
-
-```bash
-# ng serve (with proxies)
-$ npm run ng:serve
-```
-  
-#### Running The Server (NestJS)
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
