@@ -1,12 +1,12 @@
 # Angular Animation Framework 
-Demo:
+Demo (Retro Audio Visualisation):
 <a rel="demo" href="http://3d.mucke.online" target="_blank">
   3d.mucke.online
 </a>
 
 • implementation as Angular component<br>
 • easy create, animate and do interactions on 3D objects with TypeScript<br>
-• set attributes based on THREE.js library (<a href="https://threejs.org/docs/" target="_blank">docs</a>)<br>
+• attributes based on THREE.js library (<a href="https://threejs.org/docs/" target="_blank">docs</a>)<br>
 • tweening methods based on TWEEN.js library (<a href="https://www.createjs.com/tweenjs" target="_blank">website</a>)<br>
 • audio analyzer with dynamic frequency data<br>
 • 360 Videos<br>
@@ -19,56 +19,12 @@ Demo:
 | <img src="https://www.createjs.com/assets/images/svg/tweenjs-logo-horizontal-gray-darker.svg" height="64"  alt="TWEEN.js Logo" /><br>TWEEN.js | Tweening library | [WEBSITE](https://www.createjs.com/tweenjs)<br> [README](https://github.com/tweenjs/tween.js/blob/master/README.md)|
 
 
-
-
-
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
 ###### *© 2020 - Moritz Petzka - [petzka.com](https://petzka.com/)*
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 
 For existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
 
-## Installation
-
-Run `npm install -g @angular/cli` to install Angular CLI.
-Run `npm install` to install dependencies.
-
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-
-# Important Files
-
- * [/src/](./src)
-    * [/app/..](./src/app)
-        * [/audio-animation-demo/](./src/app/audio-animation-demo) <sub><sup>demo component - how to</sup></sub>
-            * [audio-animation-demo.component.ts](./src/app/audio-animation-demo/audio-animation-demo.component.ts) 
-        * [/three-animation/](./src/app/three-animation) <sub><sup>THREE.js animation framework component</sup></sub>
-            * [three-animation.component.ts](./src/app/three-animation/three-animation.component.ts) <sub><sup>main component</sup></sub>       
-
- - - -
 # Example 
 
 ```javascript
@@ -123,3 +79,45 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 ```
 
 
+
+## Installation
+
+Run `npm install -g @angular/cli` to install Angular CLI.
+Run `npm install` to install dependencies.
+
+
+## Development server
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Code scaffolding
+
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+# Important Files
+
+ * [/src/](./src)
+    * [/app/..](./src/app)
+        * [/audio-animation-demo/](./src/app/audio-animation-demo) <sub><sup>demo component - how to</sup></sub>
+            * [audio-animation-demo.component.ts](./src/app/audio-animation-demo/audio-animation-demo.component.ts) 
+        * [/three-animation/](./src/app/three-animation) <sub><sup>THREE.js animation framework component</sup></sub>
+            * [three-animation.component.ts](./src/app/three-animation/three-animation.component.ts) <sub><sup>main component</sup></sub>       
+
+ - - -
