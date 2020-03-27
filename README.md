@@ -26,7 +26,7 @@ Demo (Retro Audio Visualisation):
 ## Main Component:
  * [/src/](./src)
     * [/app/..](./src/app) 
-        * [/three-animation/](./src/app/three-animation) <sub><sup>THREE.js animation framework component</sup></sub>
+        * [/three-animation/](./src/app/three-animation)
  - - -
  
 For implementation in existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
