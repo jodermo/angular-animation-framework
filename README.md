@@ -60,8 +60,56 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
  - - -
 # Example 
+
 ```javascript
-    // coming soon..
+
+import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { ThreeAnimationComponent } from '../three-animation/three-animation.component';
+import { AnimationObject, AnimationObjectOptions } from '../three-animation/classes/animation-object';
+
+
+@Component({
+    selector: 'my-animation',
+    templateUrl: '../three-animation/three-animation.component.html',
+    styleUrls: ['../three-animation/three-animation.component.css']
+})
+export class MyAnimationComponent extends ThreeAnimationComponent {
+
+    constructor(public elementRef: ElementRef, public _renderer: Renderer2) {
+      super(elementRef, _renderer);
+    }
+    
+    start(){
+
+        const box = this.createObject('mesh', {
+            material: {
+                type: 'MeshBasicMaterial',
+                color: '#ff00ec',
+                transparent: true,
+                opacity: .25
+            },
+            geometry: {
+                type: 'BoxGeometry',
+                width: 5,
+                height: 5,
+                depth: 5,
+            },
+            mesh: {
+                receiveShadow: true,
+                castShadow: true
+            },
+            position: {
+                x: 10,
+                y: 0,
+                z: 0
+            }
+        }, ()=>{
+            // stuff after object is successful created
+        });
+        
+       box.moveTo({x:0, y:0, z:50}, 5000);
+    }
+}
 ```
 
 
