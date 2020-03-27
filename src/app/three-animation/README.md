@@ -95,6 +95,35 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 }
 ```
 
+the whole file:
+```javascript
+
+import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { ThreeAnimationComponent } from '../three-animation/three-animation.component';
+import { AnimationObject, AnimationObjectOptions } from '../three-animation/classes/animation-object';
+
+
+@Component({
+    selector: 'my-animation',
+    templateUrl: '../three-animation/three-animation.component.html',
+    styleUrls: ['../three-animation/three-animation.component.css']
+})
+export class MyAnimationComponent extends ThreeAnimationComponent {
+
+    constructor(public elementRef: ElementRef, public _renderer: Renderer2) {
+      super(elementRef, _renderer);
+    }
+    
+    start(){
+            // stuff after three scene is created
+    }
+        
+    animateFrame(){
+            // stuff when frame updates...
+    }   
+}
+```
+
 # Example
 
 ### create object and let it move on start:
@@ -128,15 +157,12 @@ create mesh object (THREE.js <a hraf="https://threejs.org/docs/index.html#api/en
         }, ()=>{
             // stuff after object is successful created
         });
-    
-}
 ```
 
 
 let the box move to position X:0, y:0, z:50 in 5 seconds:
 ```javascript
         box.moveTo({x:0, y:0, z:50}, 5000);
-}
 ```
 
 
