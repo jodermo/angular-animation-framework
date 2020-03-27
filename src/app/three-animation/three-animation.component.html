@@ -1,0 +1,21 @@
+<div class="animation-display"
+     (mousedown)="containerMouseEvent($event, 'mousedown');"
+     (mouseup)="containerMouseEvent($event, 'mouseup');"
+     (mousemove)="containerMouseEvent($event, 'mousemove');"
+     #animationContainer></div>
+<button class="show-animation-controls" *ngIf="!controlPanel" (click)="controlPanel = true;">Show controls</button>
+<div class="animation-controls" *ngIf="controlPanel">
+  <button class="close-animation-controls" (click)="controlPanel = false;">X</button>
+  <button (click)="vrMode()">VR Mode</button>
+  <div class="animation-audio-controls" *ngIf="audio('demo')">
+    <h3>Track</h3>
+    <p>source: {{audio('demo').src}}</p>
+    <button (click)="audio('demo').play()" *ngIf="audio('demo').paused">Play</button>
+    <button (click)="audio('demo').pause()" *ngIf="!audio('demo').paused">Pause</button>
+    <button (click)="audio('demo').muted = !audio('demo').muted">
+      <span *ngIf="audio('demo').muted">Unmute</span>
+      <span *ngIf="!audio('demo').muted">Mute</span>
+    </button>
+  </div>
+</div>
+<app-three-animation-preloader class="animation-preloader" *ngIf="loading"></app-three-animation-preloader>
