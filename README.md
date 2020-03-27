@@ -47,8 +47,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
  * [/src/](./src)
     * [/app/..](./src/app)
-        * [/audio-animation-demo/](./src/app/start-animation) <sub><sup>demo component - how to</sup></sub>
-            * [audio-animation-demo.component.ts](./src/app/start-animation/start-animation.component.ts) 
+        * [/audio-animation-demo/](./src/app/audio-animation-demo) <sub><sup>demo component - how to</sup></sub>
+            * [audio-animation-demo.component.ts](./src/app/audio-animation-demo/audio-animation-demo.component.ts) 
         * [/three-animation/](./src/app/three-animation) <sub><sup>THREE.js animation framework component</sup></sub>
             * [three-animation.component.ts](./src/app/three-animation/three-animation.component.ts) <sub><sup>main component</sup></sub>       
 
