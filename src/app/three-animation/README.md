@@ -1,4 +1,8 @@
-# Angular Animation Framework 
+# Three Animation Component 
+Demo:
+<a rel="demo" href="http://3d.mucke.online" target="_blank">
+  3d.mucke.online
+</a>
 
 | Frameworks |  | Links |
 |    ---:| :---          | :---         |
@@ -12,128 +16,178 @@
 ###### *© 2020 - Moritz Petzka - [petzka.com](https://petzka.com/)*
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 
-## Installation
+## Installation <sub><sup>(to existing Angular project)</sup></sub>
 
-Run `npm install -g @angular/cli` to install Angular CLI.
-Run `npm install` to install dependencies.
-
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Run `git clone https://github.com/jodermo/angular-animation-framework/tree/master/src/app/three-animation`
 
 
-# Important Files
-
- * [/src/](./src)
-    * [/app/..](./src/app)
-       * [/three-animation/](./src/app/three-animation) <sub><sup>THREE.js animation framework component</sup></sub>
-            * [three-animation.component.ts](./src/app/three-animation/three-animation.component.ts) <sub><sup>main component</sup></sub>
-        * [/start-animation/](./src/app/start-animation) <sub><sup>demo component - how to</sup></sub>
-             * [start-animation.component.ts](./src/app/start-animation/start-animation.component.ts)        
-
- - - -
-# Other Helpful Deployment Stuff  
-```bash
-# pull with docker
-$ docker pull mopet/tator:latest
-
-# pull with npm:
-$ npm run docker:pull
-
-
-
-# build with docker
-$ docker build -t mopet/tator:latest .
-
-# build with npm:
-$ npm run docker:build
-
-
-
-# run image with docker
-$ docker run -p 3000:3000 mopet/tator:latest
-
-# run image w with npm:
-$ npm run docker:build
+### add to app.module.ts 
+```javascript
+    import { ThreeAnimationComponent } from './three-animation/three-animation.component';
 ```
 
-#### for killing all current running docker container / images:
+```javascript
+   @NgModule({
+     declarations: [
+       ThreeAnimationComponent,
+     ],
+    ...
+```
+## Create animations <sub><sup>(with <a href="https://cli.angular.io/" target="_blank">Angular CLI</a>)</sup></sub>:
 
-```bash
-# List Images
-$ docker ps -a
+To create a new animation, you have to generate a new component:
 
-# Stop All Container
-$ docker stop $(docker ps -a -q)
+Run `ng generate component my-animation`
 
-# Remove All Container
-$ docker rm $(docker ps -a -q)
 
-# Remove All Images
-$ docker rmi $(docker images -q)
 
-# All In One
-$ docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q)
+### edit the component.ts file:
+
+imports:
+```javascript
+import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { ThreeAnimationComponent } from '../three-animation/three-animation.component';
+import { AnimationObject, AnimationObjectOptions } from '../three-animation/classes/animation-object';
 ```
 
-#### Installation - npm only (without docker)
-
-```bash
-# NestJS Server
-$ npm install
-
-# Angular App
-$ cd tator-app/
-$ npm install
+change tamplateUrl and styleUrls :
+```javascript
+@Component({
+    selector: 'my-animation',
+    templateUrl: '../three-animation/three-animation.component.html',
+    styleUrls: ['../three-animation/three-animation.component.css']
+})
 ```
-
-#### Build App - npm only (without docker)
-
-```bash
-# NestJS Server
-$ npm run build
-
-# Angular App
-$ npm run ng:build
-```
-
-#### Serve Dev Mode (Angular)
-
-```bash
-# ng serve (with proxies)
-$ npm run ng:serve
-```
+set component as ThreeAnimationComponent :
+```javascript
+export class MyAnimationComponent extends ThreeAnimationComponent {
   
-#### Running The Server (NestJS)
+}
+```
 
-```bash
-# development
-$ npm run start
+add constructor :
+```javascript
+export class MyAnimationComponent extends ThreeAnimationComponent {
 
-# watch mode
-$ npm run start:dev
+    constructor(public elementRef: ElementRef, public _renderer: Renderer2) {
+      super(elementRef, _renderer);
+    }
 
-# production mode
-$ npm run start:prod
+}
+```
+
+add main functions :
+```javascript
+export class MyAnimationComponent extends ThreeAnimationComponent {
+
+    constructor(public elementRef: ElementRef, public _renderer: Renderer2) {
+      super(elementRef, _renderer);
+    }
+    
+    start(){
+        // stuff after three scene is created
+    }
+    
+    animateFrame(){
+        // stuff when frame updates...
+    }   
+
+}
+```
+
+# Example
+
+### create object and let it move on start:
+
+create mesh object (THREE.js <a hraf="https://threejs.org/docs/index.html#api/en/geometries/BoxGeometry">BoxGeometry</a> &
+<a hraf="https://threejs.org/docs/index.html#api/en/materials/MeshBasicMaterial">MeshBasicMaterial</a>):
+```javascript
+        const box = this.createObject('mesh', {
+            material: {
+                type: 'MeshBasicMaterial',
+                color: '#ff00ec',
+                transparent: true,
+                opacity: .25
+            },
+            geometry: {
+                type: 'BoxGeometry',
+                width: 5,
+                height: 5,
+                depth: 5,
+               // attributes: [5, 5, 5] // is the same as above
+            },
+            mesh: {
+                receiveShadow: true,
+                castShadow: true
+            },
+            position: {
+                x: 10,
+                y: 0,
+                z: 0
+            }
+        }, ()=>{
+            // stuff after object is successful created
+        });
+    
+}
+```
+
+
+let the box move to position X:0, y:0, z:50 in 5 seconds:
+```javascript
+        box.moveTo({x:0, y:0, z:50}, 5000);
+}
+```
+
+
+the whole file:
+```javascript
+
+import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { ThreeAnimationComponent } from '../three-animation/three-animation.component';
+import { AnimationObject, AnimationObjectOptions } from '../three-animation/classes/animation-object';
+
+
+@Component({
+    selector: 'my-animation',
+    templateUrl: '../three-animation/three-animation.component.html',
+    styleUrls: ['../three-animation/three-animation.component.css']
+})
+export class MyAnimationComponent extends ThreeAnimationComponent {
+
+    constructor(public elementRef: ElementRef, public _renderer: Renderer2) {
+      super(elementRef, _renderer);
+    }
+    
+    start(){
+
+        const box = this.createObject('mesh', {
+            material: {
+                type: 'MeshBasicMaterial',
+                color: '#ff00ec',
+                transparent: true,
+                opacity: .25
+            },
+            geometry: {
+                type: 'BoxGeometry',
+                width: 5,
+                height: 5,
+                depth: 5,
+            },
+            mesh: {
+                receiveShadow: true,
+                castShadow: true
+            },
+            position: {
+                x: 10,
+                y: 0,
+                z: 0
+            }
+        }, ()=>{
+            // stuff after object is successful created
+        });
+        
+       box.moveTo({x:0, y:0, z:50}, 5000);
+    }
+}
 ```
