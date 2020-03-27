@@ -4,10 +4,19 @@ Demo:
   3d.mucke.online
 </a>
 
+• implementation as Angular component<br>
+• easy create, animate and do interactions on 3D objects with TypeScript<br>
+• set attributes based on THREE.js library (<a href="https://threejs.org/docs/" target="_blank">docs</a>)<br>
+• tweening methods based on TWEEN.js library (<a href="https://www.createjs.com/tweenjs" target="_blank">website</a>)<br>
+• audio analyzer with dynamic frequency data<br>
+• 360 Videos<br>
+• VR/AR support (still in development)<br>
+
 | Frameworks |  | Links |
 |    ---:| :---          | :---         |
 | <img src="https://angular.io/assets/images/logos/angular/angular.svg" height="64"  alt="Angular Logo" /><br>Angular CLI | Client Side TypeScript App | [WEBSITE](https://angular.io)<br> [README](https://github.com/angular/angular-cli/blob/master/README.md)|
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/WebGL_Logo.svg/1199px-WebGL_Logo.svg.png" height="64"  alt="WebGL Logo" /><br>Three-js | 3D Graphic API | [WEBSITE](https://threejs.org/)<br> [README](https://github.com/mrdoob/three.js/blob/dev/README.md)|
+| <img src="https://www.createjs.com/assets/images/svg/tweenjs-logo-horizontal-gray-darker.svg" height="64"  alt="TWEEN.js Logo" /><br>TWEEN.js | Tweening library | [WEBSITE](https://www.createjs.com/tweenjs)<br> [README](https://github.com/tweenjs/tween.js/blob/master/README.md)|
 
 
 
