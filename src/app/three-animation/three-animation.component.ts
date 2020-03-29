@@ -1,4 +1,15 @@
-import { Component, Input, Output, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, Renderer2, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  EventEmitter
+} from '@angular/core';
 import { AnimationObjectOptions, AnimationObject, AnimationPreset } from './classes/animation-object';
 import { ThreeVrService } from './services/three-vr.service';
 import { AudioService } from './services/audio.service';
@@ -21,10 +32,6 @@ import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass
 import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 
-
-
-
-
 (window as any).THREE = THREE;
 CameraControls.install({THREE});
 
@@ -45,7 +52,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() speed = 1;
   @Input() duration = 0;
   @Input() controls = 'default';
-  @Input() statsVisible = true;
+  @Input() statsVisible = false;
   @Input() showHelper = false;
   // tslint:disable-next-line:no-output-on-prefix
   @Output() onUpdate = new EventEmitter<number>();
@@ -56,6 +63,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   container: HTMLElement;
   mouse: any = new THREE.Vector2();
   controlPanel = true;
+  infoPanel = false;
 
   scene;
   sceneCSS;
@@ -75,6 +83,10 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   paused = false;
   inactive = false;
 
+  settings: {
+    stats: false
+  };
+
   composer;
   renderPass;
   renderPasses = {};
@@ -90,6 +102,13 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   grid;
   raycaster;
   loadingManager: THREE.LoadingManager = new THREE.LoadingManager();
+  loader = {
+    sources: {},
+    total: 0,
+    loaded: 0,
+    loadedPercent: 0,
+    info: null
+  };
 
 
   time: any = TWEEN.now();
@@ -189,6 +208,32 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
+  updateLoading(source = null, total = 0, loaded = 0) {
+    if (total && source) {
+      this.loader.sources[source] = {total, loaded};
+      this.loader.info = source;
+    } else if (source) {
+      this.removeFromLoader(source);
+    }
+    const result = {
+      total: 0,
+      loaded: 0
+    };
+    for (const key in this.loader.sources) {
+      if (this.loader.sources[key]) {
+        result.total += this.loader.sources[key].total;
+        result.loaded += this.loader.sources[key].loaded;
+      }
+    }
+    this.loader.total = result.total;
+    this.loader.loaded = result.loaded;
+    this.loader.loadedPercent = Math.floor(result.loaded / result.total * 100);
+  }
+
+  removeFromLoader(source) {
+    this.loader.sources[source] = null;
+  }
+
   initVr() {
     this.vrService = new ThreeVrService();
     this.vrService.init((this.scene as any), this.renderer, this.raycaster, this.camera);
@@ -270,11 +315,8 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
         setTimeout(() => {
           this.started = true;
           this.initVr();
-          setTimeout(() => {
-            this.inactive = true;
-            this.start();
-            this.checkLoading();
-          }, 0);
+          this.start();
+          this.checkLoading();
         }, 0);
         if (success) {
           success();
@@ -324,7 +366,10 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   createScene() {
     this.renderer.setClearColor(0x000000, 0);
     this.startRendering();
-    this.addStats();
+    if (this.statsVisible) {
+      this.addStats();
+    }
+
   }
 
   selectCamera(cameraObject: AnimationObject) {
@@ -345,20 +390,24 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   addStats() {
-    this.stats = new Stats();
-    this.stats.showPanel(0);
-    this.stats.dom.style.position = 'absolute';
-    this.stats.dom.style.left = 'auto';
-    this.stats.dom.style.top = 'auto';
-    this.stats.dom.style.right = 0;
-    this.stats.dom.style.bottom = 0;
-    this.container.appendChild(this.stats.dom);
+    if (!this.stats) {
+      this.stats = new Stats();
+      this.stats.showPanel(0);
+      this.stats.dom.style.position = 'absolute';
+      this.stats.dom.style.left = 'auto';
+      this.stats.dom.style.top = 'auto';
+      this.stats.dom.style.right = 0;
+      this.stats.dom.style.bottom = 0;
+      this.container.appendChild(this.stats.dom);
+    }
   }
 
   toggleStats() {
     this.statsVisible = !this.statsVisible;
     if (this.stats && this.statsVisible) {
       this.stats.dom.style.display = 'block';
+    } else if (!this.stats && this.statsVisible) {
+      this.addStats();
     } else if (this.stats) {
       this.stats.dom.style.display = 'none';
     }
@@ -446,6 +495,9 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
       if (onSuccess) {
         onSuccess(e);
       }
+    }, (source, total, loaded) => {
+      console.log(source, total, loaded);
+      this.updateLoading(source, total, loaded)
     });
     if (newObject.mesh) {
       let exist = false;

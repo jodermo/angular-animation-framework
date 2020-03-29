@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 // @ts-ignore
 window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
 
+var audioTimeUpdate: any = null;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -102,6 +104,7 @@ export class AudioAnalyzer {
       this.audioSrc.connect(this.audioCtx.destination);
       this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
     }
+    this.loop();
 
   }
 
@@ -141,10 +144,8 @@ export class AudioAnalyzer {
 
   setCanvas(canvas: HTMLCanvasElement) {
     this.canvasCtx = canvas.getContext('2d');
-
     this.canvasSettings.width = canvas.width;
     this.canvasSettings.height = canvas.height;
-
     this.canvasSettings.gradient = this.canvasCtx.createLinearGradient(0, 0, 0, 300);
     this.canvasSettings.gradient.addColorStop(1, '#25ffb5');
     this.canvasSettings.gradient.addColorStop(0.25, '#72e9ff');
@@ -184,5 +185,15 @@ export class AudioAnalyzer {
           this.canvasSettings.height);
       }
     }
+  }
+
+  loop(fps = 30) {
+    if (audioTimeUpdate) {
+      clearTimeout(audioTimeUpdate)
+    }
+    this.update();
+    audioTimeUpdate = setTimeout(() => {
+      this.loop(fps);
+    }, 1000 / fps);
   }
 }

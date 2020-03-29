@@ -1,3 +1,7 @@
 <div class="preloader-container">
   <h3>loading...</h3>
+  <div *ngIf="loader">
+    <span>{{loader.loadedPercent}}%</span><br>
+    <span *ngIf="loader.info"><small>[ {{loader.info}} ]</small></span>
+  </div>
 </div>

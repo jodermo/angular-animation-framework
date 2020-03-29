@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-three-animation-preloader',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./three-animation-preloader.component.css']
 })
 export class ThreeAnimationPreloaderComponent implements OnInit {
+  @Input() loader: any = null;
 
   constructor() { }
 

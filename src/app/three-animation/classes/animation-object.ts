@@ -73,7 +73,7 @@ export class AnimationObject {
   private loadingManager = new THREE.LoadingManager();
   private objLoader = new OBJLoader();
 
-  constructor(public type, public options: AnimationObjectOptions, parentObject = null, private objects, private onCreated = null) {
+  constructor(public type, public options: AnimationObjectOptions, parentObject = null, private objects, private onCreated = null, private onLoad = null) {
     if (parentObject) {
       if (!options) {
         options = {} as AnimationObjectOptions;
@@ -229,7 +229,7 @@ export class AnimationObject {
     if (this.mesh) {
       if (options.material && options.material.type) {
 
-          this.material = this.createMaterial(options.material.type, options.material || null);
+        this.material = this.createMaterial(options.material.type, options.material || null);
 
       } else {
         this.material = new THREE.MeshLambertMaterial({color: 0xCCCCCC});
@@ -422,13 +422,17 @@ export class AnimationObject {
 
   loadObj(options, success: any = false) {
     if (options.obj && options.obj.source) {
+      const loadStart = false;
       this.objLoader.load(options.obj.source, (object) => {
         if (success) {
           success(object);
         }
       }, (xhr) => {
-        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        if (this.onLoad) {
+          this.onLoad(options.obj.source, xhr.total, xhr.loaded);
+        }
       }, (error) => {
+        this.onLoad(options.obj.source, 0);
         console.log('objLoader error', error);
       });
     }

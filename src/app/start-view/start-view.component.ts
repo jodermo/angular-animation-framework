@@ -8,6 +8,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class StartViewComponent implements OnInit {
   @Output() onStart = new EventEmitter<boolean>();
 
+
   constructor() {
   }
 

@@ -6,18 +6,48 @@
   left: 0;
   background: #333333;
   color: #fff;
+  text-align: center;
+  display: flex;
 }
 
 .start-view-content {
   position: relative;
+  width: 100%;
+  max-width: 600px;
+  padding: 1.25rem;
   margin: 0 auto;
   top: 50%;
   transform: translateY(-50%);
-  max-width: 600px;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 3rem;
 }
 
 button {
   display: inline-block;
   font-size: 3rem;
   margin: 0 auto;
+}
+
+.description {
+  display: inline-block;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+ul {
+  display: inline-block;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  list-style: disc;
+}
+
+p {
+  margin: 0;
+  padding: 0;
 }

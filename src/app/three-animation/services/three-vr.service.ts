@@ -539,6 +539,7 @@ export class ThreeVrService {
 
   stopVrMode() {
     this.unsetVrCamera();
+    this.vrMode = false;
     if (this.vrDevice) {
       this.vrDevice.exitPresent();
       this.vrDevice = null;
@@ -549,9 +550,6 @@ export class ThreeVrService {
     }
     this.currentSession.end();
     this.currentSession = null;
-    if (this.vrMode) {
-      this.vrMode = false;
-    }
     for (const display of this.vrDisplays) {
       display.exitPresent();
     }
@@ -564,6 +562,9 @@ export class ThreeVrService {
 
   vrNotFound() {
     this.vrMode = 'unavailable';
+    setTimeout(() => {
+      this.stopVrMode();
+    }, 500);
   }
 
   enterVRDevice(display = null) {

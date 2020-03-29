@@ -47,6 +47,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   sunCanvasAlpha = document.createElement('canvas');
   cameras = [];
   animationSettings = {
+    particles: false,
     gain: 1.5,
     speedReaction: 1,
     speed: {
@@ -55,7 +56,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       objects: 1.5,
       total: 1
     },
-    autoCameraSwitch: {min: 1000, max: 16000},
+    autoCameraSwitch: {min: 1000, max: 8000},
     timeBetweenCameraSwitch: 1000
   };
   defaultSpeed = this.animationSettings.speed.total;
@@ -101,9 +102,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       {type: 'AfterimagePass', attributes: [.75]},
       {type: 'FilmPass', attributes: [0.35, 0.025, 648, false], options: {renderToScreen: true}},
       {type: 'UnrealBloomPass', attributes: [10, .5, 1.5, 0.4, 0.85]},
-      {
-        type: 'GlitchPass', attributes: [], options: {goWild: true},
-      },
+      {type: 'GlitchPass', attributes: [], options: {goWild: true},},
       {type: 'ShaderPass', attributes: [RGBShiftShader], uniforms: [['amount', 'value', 0.00015]]},
     ];
   }
@@ -115,7 +114,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.setupCameras();
     this.setupCar();
     this.setupRandomObjects();
-    // this.setupPolyPlane();
   }
 
   setupAudio() {
@@ -123,7 +121,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     const audioCanvas: HTMLElement = document.getElementById('audioCanvas');
     this.audioAnalyzer = this.audioService.analyzer(this.audio('demo'));
     const audioAni = this.audioAnimation(this.audioAnalyzer);
-   // this.audioAnalyzer.setCanvas(audioCanvas as HTMLCanvasElement);
+    // this.audioAnalyzer.setCanvas(audioCanvas as HTMLCanvasElement);
 
     this.playAudio('demo');
 
@@ -264,61 +262,65 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       // const frontLightLeft = this.createPresetObject('cars', 'front-light-left', obj.object);
       // frontLightLeft.lookAt({x: 0, y: 1000, z: 0});
       // const frontLightRight = this.createPresetObject('cars', 'front-light-right', obj.object);
+      if (this.animationSettings.particles) {
+        this.createObject('particles', {
+          particles: {
+            count: 300,
+            startRange: 1,
+            endRange: 500,
+            emitDelay: 200,
+            size: 10,
+            sprite: 'assets/images/sprites/cloud_1.png',
+            gravity: {
+              x: 2,
+              y: 0,
+              z: 0
+            },
+            velocity: {
+              x: 0,
+              y: .25,
+              z: .25
+            }
+          },
+          position: {
+            x: 84,
+            y: 11,
+            z: 10
+          }
+        }, obj.object, (pObj) => {
+          extParticlesLeft = pObj;
+        });
 
-      this.createObject('particles', {
-        particles: {
-          count: 300,
-          startRange: 1,
-          endRange: 500,
-          emitDelay: 200,
-          size: 10,
-          sprite: 'assets/images/sprites/cloud_1.png',
-          gravity: {
-            x: 2,
-            y: 0,
-            z: 0
+
+        this.createObject('particles', {
+          particles: {
+            count: 300,
+            startRange: 1,
+            endRange: 500,
+            emitDelay: 200,
+            size: 10,
+            sprite: 'assets/images/sprites/cloud_1.png',
+            gravity: {
+              x: 2,
+              y: 0,
+              z: 0
+            },
+            velocity: {
+              x: 0,
+              y: .25,
+              z: .25
+            }
           },
-          velocity: {
-            x: 0,
-            y: .25,
-            z: .25
+          position: {
+            x: 84,
+            y: 11,
+            z: -10
           }
-        },
-        position: {
-          x: 84,
-          y: 11,
-          z: 10
-        }
-      }, obj.object, (pObj) => {
-        extParticlesLeft = pObj;
-      });
-      this.createObject('particles', {
-        particles: {
-          count: 300,
-          startRange: 1,
-          endRange: 500,
-          emitDelay: 200,
-          size: 10,
-          sprite: 'assets/images/sprites/cloud_1.png',
-          gravity: {
-            x: 2,
-            y: 0,
-            z: 0
-          },
-          velocity: {
-            x: 0,
-            y: .25,
-            z: .25
-          }
-        },
-        position: {
-          x: 84,
-          y: 11,
-          z: -10
-        }
-      }, obj.object, (pObj) => {
-        extParticlesRight = pObj;
-      });
+        }, obj.object, (pObj) => {
+          extParticlesRight = pObj;
+        });
+      }
+      ;
       this.generateChildObjectGroup(obj, ['Z3_tyre1', 'Z3_wheel1(1)', 'Z3_wheel1(2)', 'Z3_wheel1(3)'], (childObj) => {
         tire1 = childObj;
       });
@@ -342,36 +344,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         this.car = {body: obj, tire1, tire2, tire3, tire4, extParticlesLeft};
       }, 500);
 
-    });
-  }
-
-  setupPolyPlane() {
-    const obj = this.createObject('mesh', {
-      material: {
-        type: 'MeshBasicMaterial',
-        color: '#ff0000'
-      },
-      geometry: {
-        type: 'PolyhedronGeometry',
-        vertices: [
-          -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
-          -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1,
-        ],
-        indices: [
-          2, 1, 0, 0, 3, 2,
-          0, 4, 7, 7, 3, 0,
-          0, 1, 5, 5, 4, 0,
-          1, 2, 6, 6, 5, 1,
-          2, 3, 7, 7, 6, 2,
-          4, 5, 6, 6, 7, 4
-        ],
-        radius: 10,
-        detail: 1
-      },
-      mesh: {
-        receiveShadow: true,
-        castShadow: true
-      }
     });
   }
 
@@ -413,22 +385,19 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
 
   }
 
-
   cameraSwitch() {
+    const minTime = this.animationSettings.autoCameraSwitch.min;
+    const maxTime = this.animationSettings.autoCameraSwitch.max;
+    const nextSwitchIn = minTime + Math.trunc((Math.random() * (maxTime - minTime)));
     if (this.animationSettings.autoCameraSwitch && this.cameraCanSwitch) {
-      const minTime = this.animationSettings.autoCameraSwitch.min;
-      const maxTime = this.animationSettings.autoCameraSwitch.max;
-      const nextSwitchIn = minTime + Math.trunc((Math.random() * (maxTime - minTime)));
       this.randomCamera();
       if (this.cameraSwitchTimeout) {
         clearTimeout(this.cameraSwitchTimeout);
       }
-      this.cameraSwitchTimeout = setTimeout(() => {
-        this.cameraSwitch();
-      }, nextSwitchIn);
     }
-
-
+    this.cameraSwitchTimeout = setTimeout(() => {
+      this.cameraSwitch();
+    }, nextSwitchIn);
   }
 
   randomCamera() {
@@ -542,8 +511,16 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
           }
           if (value < animation.capYPositionArray[i]) {
             if (leftItems.capsTop[i]) {
-              leftItems.capsTop[i].setPosition({x: posX, y: (boxSize / 2) + (--animation.capYPositionArray[i] * multiply), z: -offsetZ});
-              rightItems.capsTop[i].setPosition({x: posX, y: (boxSize / 2) + (--animation.capYPositionArray[i] * multiply), z: offsetZ});
+              leftItems.capsTop[i].setPosition({
+                x: posX,
+                y: (boxSize / 2) + (--animation.capYPositionArray[i] * multiply),
+                z: -offsetZ
+              });
+              rightItems.capsTop[i].setPosition({
+                x: posX,
+                y: (boxSize / 2) + (--animation.capYPositionArray[i] * multiply),
+                z: offsetZ
+              });
             }
             if (leftItems.capsBottom[i]) {
               leftItems.capsBottom[i].setPosition({
@@ -777,7 +754,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
 
   animateFrame() {
     this.frame += this.animationSettings.speed.total - 1;
-    this.audioAnalyzer.update();
     this.updateAnimationSpeed();
     this.animateGround();
     this.animateCar();
