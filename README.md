@@ -32,7 +32,7 @@ For commercial use, contact: <a href="mailto:info@petzka.com" />info@petzka.com<
  
 For implementation in existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
 
-# AnimationObject 
+# Example 
 
 ```javascript
 
@@ -137,9 +137,9 @@ box.on('leave', (collisionObject)=>{});
 
 ```
 
-<details><summary>Available easing types for tween functions</summary>
+<details><summary>Easing Types ('Linear.None' is default)</summary>
 <ul>
-  <li>Linear.None (default)</li>
+  <li>Linear.None</li>
   <li>Quadratic.In</li>
   <li>Quadratic.Out</li>
   <li>Quadratic.InOut</li>
@@ -168,8 +168,9 @@ box.on('leave', (collisionObject)=>{});
 more infos: <a href="https://sole.github.io/tween.js/examples/03_graphs.html" target="_blank">https://sole.github.io/tween.js/examples/03_graphs.html</a>
 </details>
 
-<details><summary>THREE.js mesh object</summary>
-More infos: <a href="https://threejs.org/docs/#api/en/objects/Mesh" target="_blank">https://threejs.org/docs/#api/en/objects/Mesh</a>
+<details><summary>Create THREE.js mesh object</summary>
+
+Example:
 ```javascript
 this.createObject('mesh', {
             material: {
@@ -193,11 +194,13 @@ this.createObject('mesh', {
             }
         } 
  ``` 
+More infos about THREE.js mesh: <a href="https://threejs.org/docs/#api/en/objects/Mesh" target="_blank">https://threejs.org/docs/#api/en/objects/Mesh</a>
+
 </details>
 
 <details><summary>Mesh material</summary>
 
-example:
+Example:
 ```javascript
 this.createObject('mesh', {
     ...
@@ -228,11 +231,11 @@ For more information about material properties, visit:
 
 </details>
 
-<details><summary>Available geometries</summary>
+<details><summary>Mesh geometry</summary>
 
 More infos: <a href="https://threejs.org/docs/#api/en/core/Geometry" target="_blank">https://threejs.org/docs/#api/en/core/Geometry</a>
 
-example:
+Example:
 ```javascript
 this.createObject('mesh', { 
     ...,
