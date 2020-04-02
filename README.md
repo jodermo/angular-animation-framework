@@ -32,7 +32,10 @@ For commercial use, contact: <a href="mailto:info@petzka.com" />info@petzka.com<
  
 For implementation in existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
 
-# AnimationObject Example 
+# AnimationObject 
+
+
+<details><summary>Example</summary>
 
 ```javascript
 
@@ -84,6 +87,9 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
     }
 }
 ```
+</details>
+
+
 
 #### more available functions for AnimationObjects
 
@@ -169,8 +175,300 @@ box.on('leave', (collisionObject)=>{});
 more infos: <a href="https://sole.github.io/tween.js/examples/03_graphs.html" target="_blank">https://sole.github.io/tween.js/examples/03_graphs.html</a>
   <br><br>
 
+### THREE.js mesh object example:
+More infos: <a href="https://threejs.org/docs/#api/en/objects/Mesh" target="_blank">https://threejs.org/docs/#api/en/objects/Mesh</a>
+
+```javascript
+this.createObject('mesh', {
+            material: {
+                // properties for THREE.js material (more infos below)
+                type: 'MeshBasicMaterial',
+                color: '#ff00ec',
+                transparent: true,
+                opacity: .25
+            },
+            geometry: {
+                // properties for THREE.js geometry (examples below)
+                type: 'BoxGeometry',
+                width: 5,
+                height: 5,
+                depth: 5,
+            },
+            mesh: {
+                // properties for THREE.js mesh object
+                receiveShadow: true,
+                castShadow: true,
+            }
+        } 
+ ``` 
+
+# Mesh material
+For more information about material properties, visit:
+<a href="https://threejs.org/docs/#api/en/materials/Material" target="_blank">https://threejs.org/docs/#api/en/materials/Material</a>
+<ul>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshBasicMaterial" target="_blank">MeshBasicMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshStandardMaterial" target="_blank">MeshStandardMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshLambertMaterial" target="_blank">MeshLambertMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshPhongMaterial" target="_blank">MeshPhongMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshToonMaterial" target="_blank">MeshToonMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshNormalMaterial" target="_blank">MeshNormalMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshDepthMaterial" target="_blank">MeshDepthMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshDistanceMaterial" target="_blank">MeshDistanceMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshMatcapMaterial" target="_blank">MeshMatcapMaterial</a></li>
+<li><a href="https://threejs.org/docs/#api/en/materials/MeshPhysicalMaterial" target="_blank">MeshPhysicalMaterial</a></li>
+</ul>
+
+
+# Available geometries:
+More infos: <a href="https://threejs.org/docs/#api/en/core/Geometry" target="_blank">https://threejs.org/docs/#api/en/core/Geometry</a>
+### BoxGeometry
+```javascript
+geometry: {
+    type: 'BoxGeometry',
+    width: 1,
+    height: 1,
+    depth: 1,
+    widthSegments: 1,
+    heightSegments: 1,
+    depthSegments: 1
+}
+ ```  
+
+### CircleGeometry
+```javascript
+geometry: {
+    type: 'CircleGeometry',
+    radius: 1,
+    segments: 8,
+    thetaStart: 0,
+    thetaLength: (Math.PI * 2)
+}
+ ```  
+
+### ConeGeometry
+```javascript
+geometry: {
+    type: 'ConeGeometry',
+    radius: 1,
+    height: 1,
+    radialSegments: 8,
+    heightSegments: 1,
+    openEnded: false,
+    thetaStart: 0,
+    thetaLength: (Math.PI * 2)
+}
+ ```  
+
+### CylinderGeometry
+```javascript
+geometry: {
+    type: 'CylinderGeometry',
+    radiusTop: 1,
+    radiusBottom: 1,
+    height: 1,
+    radialSegments: 8,
+    heightSegments: 1,
+    openEnded: false,
+    thetaStart: 0,
+    thetaLength: (Math.PI * 2)
+}
+ ```  
+
+### DodecahedronGeometry
+```javascript
+geometry: {
+    type: 'DodecahedronGeometry',
+    radius: 1,
+    detail: 0
+}
+ ```  
+
+### IcosahedronGeometry
+```javascript
+geometry: {
+    type: 'IcosahedronGeometry',
+    radius: 1,
+    detail: 0
+}
+ ```  
+
+### LatheGeometry
+```javascript
+geometry: {
+    type: 'LatheGeometry',
+    points: [],
+    segments: 12,
+    phiStart: 0,
+    phiLength: (Math.PI * 2)
+}
+ ```  
+
+### OctahedronGeometry
+```javascript
+geometry: {
+    type: 'OctahedronGeometry',
+    radius: 1,
+    detail: 0
+}
+ ``` 
+
+### ParametricGeometry
+```javascript
+geometry: {
+    type: 'ParametricGeometry',
+    func: () => {
+    },
+    slices: 25,
+    stacks: 25,
+}
+ ``` 
+
+
+### PlaneGeometry
+```javascript
+geometry: {
+    type: 'PlaneGeometry',
+    width: 1,
+    height: 1,
+    widthSegments: 1,
+    heightSegments: 1
+}
+ ``` 
+
+
+### PolyhedronGeometry
+```javascript
+geometry: {
+    type: 'PolyhedronGeometry',
+    vertices: [
+      -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
+      -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1,
+    ],
+    indices: [
+      2, 1, 0, 0, 3, 2,
+      0, 4, 7, 7, 3, 0,
+      0, 1, 5, 5, 4, 0,
+      1, 2, 6, 6, 5, 1,
+      2, 3, 7, 7, 6, 2,
+      4, 5, 6, 6, 7, 4
+    ],
+    radius: 1,
+    detail: 1
+}
+ ``` 
+
+
+### RingGeometry
+```javascript
+geometry: {
+    type: 'RingGeometry',
+    innerRadius: 0.5,
+    outerRadius: 1,
+    thetaSegments: 8,
+    phiSegments: 8,
+    thetaStart: 0,
+    thetaLength: (Math.PI * 2)
+}
+ ``` 
+
+### ShapeGeometry
+```javascript
+geometry: {
+    type: 'RingGeometry',
+    shapes: [],
+    curveSegments: 12
+}
+ ``` 
+
+
+
+### SphereGeometry
+```javascript
+geometry: {
+    type: 'SphereGeometry',
+    radius: 1,
+    widthSegments: 8,
+    heightSegments: 6,
+    phiStart: 0,
+    phiLength: (Math.PI * 2),
+    thetaStart: 0,
+    thetaLength: (Math.PI)
+}
+ ``` 
+
+### TetrahedronGeometry
+```javascript
+geometry: {
+    type: 'TetrahedronGeometry',
+    radius: 1,
+    detail: 1
+}
+ ``` 
+
+### TextGeometry
+```javascript
+geometry: {
+    type: 'TextGeometry',
+    text: 'Text',
+    parameters: {
+      font: null,
+      size: 80,
+      height: 5,
+      curveSegments: 12,
+      bevelEnabled: true,
+      bevelThickness: 10,
+      bevelSize: 8,
+      bevelOffset: 0,
+      bevelSegments: 5
+    }
+}
+ ``` 
+
+### TorusGeometry
+```javascript
+geometry: {
+    type: 'TorusGeometry',
+    radius: 1,
+    tube: .4,
+    radialSegments: 8,
+    tubularSegments: 6,
+    arc: (Math.PI * 2)
+}
+ ``` 
+
+
+### TorusKnotGeometry
+```javascript
+geometry: {
+    type: 'TorusKnotGeometry',
+    radius: 1,
+    tube: .4,
+    tubularSegments: 64,
+    radialSegments: 8,
+    p: 2,
+    q: 3
+}
+ ``` 
+
+### TubeGeometry
+```javascript
+geometry: {
+    path: null,
+    tubularSegments: 64,
+    radius: 1,
+    radialSegments: 8,
+    closed: false
+}
+ ``` 
+
+
+
+
+#Angular
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
+
 
 
 ## Installation
