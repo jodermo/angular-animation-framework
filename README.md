@@ -86,7 +86,9 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 }
 ```
 
-<details><summary>AnimationObject (functions)</summary>
+## Documentation
+
+<details><summary>AnimationObject (main functions)</summary>
 
 ```javascript
 
@@ -592,9 +594,9 @@ More infos: <a href="https://threejs.org/docs/#api/en/geometries/TubeGeometry" t
 </details>
 
 
+#
 
-
-#Angular
+# Angular Project
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
