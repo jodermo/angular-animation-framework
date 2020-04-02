@@ -85,7 +85,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 }
 ```
 
-<details><summary><h3>more available functions</h3></summary>
+<details><summary>more available functions</summary>
 
 ```javascript
 
@@ -138,7 +138,7 @@ box.on('leave', (collisionObject)=>{});
 ```
 </details>
 
-<details><summary><h3>Available easing types for tween functions</h3></summary>
+<details><summary>Available easing types for tween functions</summary>
 <ul>
   <li>Linear.None (default)</li>
   <li>Quadratic.In</li>
@@ -169,7 +169,7 @@ box.on('leave', (collisionObject)=>{});
 more infos: <a href="https://sole.github.io/tween.js/examples/03_graphs.html" target="_blank">https://sole.github.io/tween.js/examples/03_graphs.html</a>
 </details>
 
-<details><summary><h3>THREE.js mesh object example</h3></summary>
+<details><summary>THREE.js mesh object example</summary>
 More infos: <a href="https://threejs.org/docs/#api/en/objects/Mesh" target="_blank">https://threejs.org/docs/#api/en/objects/Mesh</a>
 
 ```javascript
@@ -197,7 +197,7 @@ this.createObject('mesh', {
  ``` 
 </details>
 
-<details><summary><h3>Mesh material</h3></summary>
+<details><summary>Mesh material</summary>
 
 For more information about material properties, visit:
 <a href="https://threejs.org/docs/#api/en/materials/Material" target="_blank">https://threejs.org/docs/#api/en/materials/Material</a>
@@ -216,12 +216,12 @@ For more information about material properties, visit:
 
 </details>
 
-<details><summary><h3>Available geometries</h3></summary>
+<details><summary>Available geometries</summary>
 
 
 
 More infos: <a href="https://threejs.org/docs/#api/en/core/Geometry" target="_blank">https://threejs.org/docs/#api/en/core/Geometry</a>
-<a href="https://threejs.org/docs/#api/en/geometries/BoxGeometry" target="_blank">BoxGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/BoxGeometry" target="_blank">BoxGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -235,7 +235,7 @@ geometry: {
 }
  ```  
 
-<a href="https://threejs.org/docs/#api/en/geometries/CircleGeometry" target="_blank">CircleGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/CircleGeometry" target="_blank">CircleGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -247,7 +247,7 @@ geometry: {
 }
  ```  
 
-<a href="https://threejs.org/docs/#api/en/geometries/ConeGeometry" target="_blank">ConeGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/ConeGeometry" target="_blank">ConeGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -262,7 +262,7 @@ geometry: {
 }
  ```  
 
-<a href="https://threejs.org/docs/#api/en/geometries/CylinderGeometry" target="_blank">CylinderGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/CylinderGeometry" target="_blank">CylinderGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -278,7 +278,7 @@ geometry: {
 }
  ```  
 
-<a href="https://threejs.org/docs/#api/en/geometries/DodecahedronGeometry" target="_blank">DodecahedronGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/DodecahedronGeometry" target="_blank">DodecahedronGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -288,7 +288,7 @@ geometry: {
 }
  ```  
 
-<a href="https://threejs.org/docs/#api/en/geometries/IcosahedronGeometry" target="_blank">IcosahedronGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/IcosahedronGeometry" target="_blank">IcosahedronGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -298,7 +298,7 @@ geometry: {
 }
  ```  
 
-<a href="https://threejs.org/docs/#api/en/geometries/LatheGeometry" target="_blank">LatheGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/LatheGeometry" target="_blank">LatheGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -310,7 +310,7 @@ geometry: {
 }
  ```  
 
-<a href="https://threejs.org/docs/#api/en/geometries/OctahedronGeometry" target="_blank">OctahedronGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/OctahedronGeometry" target="_blank">OctahedronGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -320,7 +320,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/ParametricGeometry" target="_blank">ParametricGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/ParametricGeometry" target="_blank">ParametricGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -332,7 +332,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/PlaneGeometry" target="_blank">PlaneGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/PlaneGeometry" target="_blank">PlaneGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -344,7 +344,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/PolyhedronGeometry" target="_blank">PolyhedronGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/PolyhedronGeometry" target="_blank">PolyhedronGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -366,7 +366,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/RingGeometry" target="_blank">RingGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/RingGeometry" target="_blank">RingGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -380,7 +380,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/ShapeGeometry" target="_blank">ShapeGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/ShapeGeometry" target="_blank">ShapeGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -390,7 +390,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/SphereGeometry" target="_blank">SphereGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/SphereGeometry" target="_blank">SphereGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -405,7 +405,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/TetrahedronGeometry" target="_blank">TetrahedronGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/TetrahedronGeometry" target="_blank">TetrahedronGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -415,7 +415,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/TextGeometry" target="_blank">TextGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/TextGeometry" target="_blank">TextGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -435,7 +435,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/TorusGeometry" target="_blank">TorusGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/TorusGeometry" target="_blank">TorusGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -449,7 +449,7 @@ geometry: {
  ``` 
 
 
-<a href="https://threejs.org/docs/#api/en/geometries/TorusKnotGeometry" target="_blank">TorusKnotGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/TorusKnotGeometry" target="_blank">TorusKnotGeometry</a></h4>
 
 ```javascript
 geometry: {
@@ -463,7 +463,7 @@ geometry: {
 }
  ``` 
 
-<a href="https://threejs.org/docs/#api/en/geometries/TubeGeometry" target="_blank">TubeGeometry</a>
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/TubeGeometry" target="_blank">TubeGeometry</a></h4>
 
 ```javascript
 geometry: {
