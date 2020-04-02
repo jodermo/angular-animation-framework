@@ -221,7 +221,9 @@ For more information about material properties, visit:
 
 
 More infos: <a href="https://threejs.org/docs/#api/en/core/Geometry" target="_blank">https://threejs.org/docs/#api/en/core/Geometry</a>
-<h4> <a href="https://threejs.org/docs/#api/en/geometries/BoxGeometry" target="_blank">BoxGeometry</a></h4>
+
+
+<details><summary>BoxGeometry</summary>
 
 ```javascript
 geometry: {
@@ -234,6 +236,8 @@ geometry: {
     depthSegments: 1
 }
  ```  
+<h4> <a href="https://threejs.org/docs/#api/en/geometries/BoxGeometry" target="_blank">BoxGeometry</a></h4>
+</details>
 
 <h4> <a href="https://threejs.org/docs/#api/en/geometries/CircleGeometry" target="_blank">CircleGeometry</a></h4>
 
