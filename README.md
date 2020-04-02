@@ -32,7 +32,8 @@ For commercial use, contact: <a href="mailto:info@petzka.com" />info@petzka.com<
  
 For implementation in existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
 
-# Example 
+# Example
+create THREE.js mesh with MeshBasicMaterial and BoxGeometry and let it move:
 
 ```javascript
 
@@ -85,7 +86,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 }
 ```
 
-### more functions
+<details><summary>AnimationObject (functions)</summary>
 
 ```javascript
 
@@ -136,6 +137,7 @@ box.on('collide', (collisionObject)=>{});
 box.on('leave', (collisionObject)=>{});
 
 ```
+</details>
 
 <details><summary>Easing Types ('Linear.None' is default)</summary>
 <ul>
