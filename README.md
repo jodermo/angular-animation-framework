@@ -88,6 +88,38 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 
 ## Documentation
 
+
+<details><summary>Create THREE.js mesh object</summary>
+
+Example:
+```javascript
+const box = this.createObject('mesh', {
+    material: {
+       // properties for THREE.js material (more infos below)
+       type: 'MeshBasicMaterial',
+       color: '#ff00ec',
+       transparent: true,
+       opacity: .25
+    },
+    geometry: {
+       // properties for THREE.js geometry (examples below)
+       type: 'BoxGeometry',
+       width: 5,
+       height: 5,
+       depth: 5,
+    },
+    mesh: {
+       // properties for THREE.js mesh object
+       receiveShadow: true,
+       castShadow: true,
+    }
+});
+ ``` 
+More infos about THREE.js mesh: <a href="https://threejs.org/docs/#api/en/objects/Mesh" target="_blank">https://threejs.org/docs/#api/en/objects/Mesh</a>
+
+</details>
+
+
 <details><summary>AnimationObject (main functions)</summary>
 
 ```javascript
@@ -139,37 +171,10 @@ box.on('collide', (collisionObject)=>{});
 box.on('leave', (collisionObject)=>{});
 
 ```
-<details><summary>Create THREE.js mesh object</summary>
-
-Example:
-```javascript
-const box = this.createObject('mesh', {
-    material: {
-       // properties for THREE.js material (more infos below)
-       type: 'MeshBasicMaterial',
-       color: '#ff00ec',
-       transparent: true,
-       opacity: .25
-    },
-    geometry: {
-       // properties for THREE.js geometry (examples below)
-       type: 'BoxGeometry',
-       width: 5,
-       height: 5,
-       depth: 5,
-    },
-    mesh: {
-       // properties for THREE.js mesh object
-       receiveShadow: true,
-       castShadow: true,
-    }
-});
- ``` 
-More infos about THREE.js mesh: <a href="https://threejs.org/docs/#api/en/objects/Mesh" target="_blank">https://threejs.org/docs/#api/en/objects/Mesh</a>
-
 </details>
 
-</details>
+
+
 
 <details><summary>Easing Types ('Linear.None' is default)</summary>
 <ul>
