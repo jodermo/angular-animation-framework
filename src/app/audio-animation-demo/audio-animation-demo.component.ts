@@ -13,22 +13,27 @@ import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader';
 import { DotScreenShader } from 'three/examples/jsm/shaders/DotScreenShader';
 
 import { DemoPresets } from '../three-animation/presets/demo-presets';
-import { AudioAnimationPresets } from '../three-animation/presets/audio-animation-presets';
-import { CarsPresets } from '../three-animation/presets/cars-presets';
-import { RandomObjectsPreset } from '../three-animation/presets/random-objects-presets';
+import { AudioAnimationPresets } from './presets/audio-animation-presets';
+import { CarsPresets } from './presets/cars-presets';
+import { RandomObjectsPreset } from './presets/random-objects-presets';
 import { AudioAnalyzer } from '../three-animation/services/audio.service';
 import * as THREE from 'three';
+import { TreesPresets } from './presets/trees-presets';
+import { SourceInfos } from './presets/source-infos';
 
 // @ts-ignore
 @Component({
-  selector: 'app-start-animation',
-  templateUrl: '../three-animation/three-animation.component.html',
+  selector: 'app-audio-animation-demo',
+  templateUrl: './audio-animation-demo.component.html',
   styleUrls: ['../three-animation/three-animation.component.css']
 })
 export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
-
+  controlPanel = false;
+  infoPanel = false;
+  sourceInfos = SourceInfos;
   demoVideo: AnimationObject;
   car: any;
+  delorean: any;
   street: AnimationObject;
   ground: AnimationObject;
   sky: AnimationObject;
@@ -42,22 +47,23 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   sideCameraLeft: AnimationObject;
   driverCamera: AnimationObject;
   roofCamera: AnimationObject;
-  topCamera: AnimationObject;
+  topCamera1: AnimationObject;
+  topCamera2: AnimationObject;
   sunCanvas = document.createElement('canvas');
   sunCanvasAlpha = document.createElement('canvas');
   cameras = [];
   animationSettings = {
-    particles: false,
-    gain: 1.5,
+    particles: true,
+    gain: 1.25,
     speedReaction: 1,
     speed: {
-      ground: .05,
+      ground: .075,
       tireRotation: 1.5,
-      objects: 1.5,
+      objects: 3,
       total: 1
     },
-    autoCameraSwitch: {min: 1000, max: 8000},
-    timeBetweenCameraSwitch: 1000
+    autoCameraSwitch: {min: 1000, max: 16000},
+    timeBetweenCameraSwitch: 1250
   };
   defaultSpeed = this.animationSettings.speed.total;
   cameraSettings = {
@@ -95,15 +101,15 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     super(elementRef, _renderer);
     this.bindPresets('demo', DemoPresets);
     this.bindPresets('audio-animation', AudioAnimationPresets);
+    this.bindPresets('trees', TreesPresets);
     this.bindPresets('cars', CarsPresets);
     this.bindPresets('random-objects', RandomObjectsPreset);
-    this.controls = 'none';
     this.postProcessing.renderPasses = [
-      {type: 'AfterimagePass', attributes: [.75]},
-      {type: 'FilmPass', attributes: [0.35, 0.025, 648, false], options: {renderToScreen: true}},
-      {type: 'UnrealBloomPass', attributes: [10, .5, 1.5, 0.4, 0.85]},
-      {type: 'GlitchPass', attributes: [], options: {goWild: true},},
-      {type: 'ShaderPass', attributes: [RGBShiftShader], uniforms: [['amount', 'value', 0.00015]]},
+      {name: 'AfterimagePass', type: 'AfterimagePass', attributes: [.75]},
+      {name: 'RGBShiftShader',type: 'ShaderPass', attributes: [RGBShiftShader], uniforms: [['amount', 'value', 0.1]]},
+      {name: 'UnrealBloomPass',type: 'UnrealBloomPass', attributes: [10, .5, .025, 0.5, 0.2]},
+      {name: 'FilmPass',type: 'FilmPass', attributes: [10, .5, 1200, false], options: {renderToScreen: true}},
+      {name: 'GlitchPass',type: 'GlitchPass', attributes: [], options: {goWild: true},},
     ];
   }
 
@@ -112,12 +118,13 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.setupWorld();
     this.setupLights();
     this.setupCameras();
+    this.setupTrees();
     this.setupCar();
     this.setupRandomObjects();
   }
 
   setupAudio() {
-    this.loadAudio('demo', 'assets/audios/DREAMoFafLY.mp3', {loop: true});
+    this.loadAudio('demo', 'assets/audios/No Generation - Give Me Your Soul.mp3', {loop: true});
     const audioCanvas: HTMLElement = document.getElementById('audioCanvas');
     this.audioAnalyzer = this.audioService.analyzer(this.audio('demo'));
     const audioAni = this.audioAnimation(this.audioAnalyzer);
@@ -154,9 +161,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         z: 0
       }
     });
-    this.sun.on('mouseup', () => {
-      this.cameraSwitch();
-    });
     this.drawSunCanvas();
     if (this.audioAnalyzer) {
       this.audioAnalyzer.on('update', (data) => {
@@ -189,7 +193,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       position: {
         x: 10,
         y: 15,
-        z: -50
+        z: -100
       }
     } as AnimationObjectOptions);
     this.sideCameraRight.lookAt({x: 0, y: 0, z: 0});
@@ -200,7 +204,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       position: {
         x: 10,
         y: 15,
-        z: 50
+        z: 100
       }
     } as AnimationObjectOptions);
     this.sideCameraLeft.lookAt({x: 0, y: 0, z: 0});
@@ -229,30 +233,203 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.cameras.push(this.roofCamera);
     this.roofCamera.object.lookAt(1000, 0, 0);
 
-    this.topCamera = this.createObject('camera', {
+    this.topCamera1 = this.createObject('camera', {
       camera: this.cameraSettings,
       position: {
-        x: 0,
+        x: 50,
         y: 130,
         z: 0
       }
     } as AnimationObjectOptions);
-    this.cameras.push(this.topCamera);
-    this.topCamera.lookAt(new THREE.Vector3(0, 0, 0));
+    this.cameras.push(this.topCamera1);
+    this.topCamera1.lookAt(new THREE.Vector3(0, 0, 0));
 
-    this.selectCamera(this.topCamera);
+    this.selectCamera(this.topCamera1);
+
+    this.topCamera2 = this.createObject('camera', {
+      camera: this.cameraSettings,
+      position: {
+        x: 0,
+        y: 90,
+        z: 0
+      }
+    } as AnimationObjectOptions);
+    this.cameras.push(this.topCamera2);
+    this.topCamera2.lookAt(new THREE.Vector3(0, 0, 0));
 
     this.cameraSwitch();
   }
 
+  setupTrees() {
+    this.createPresetObject('trees', 'palms', null, (obj) => {
+
+
+      const palms = [];
+
+      this.generateChildObjectGroup(obj, ['polySurface262 polySurface141', 'polySurface336'], (childObj) => {
+        childObj.setPosition({x: -150, y: 0, z: 200});
+        childObj.setScale({x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        this.makeRandomObjectsFrom(childObj, 10);
+      }, this.scene, false);
+      this.generateChildObjectGroup(obj, ['polySurface229 polySurface36', 'polySurface335'], (childObj) => {
+        this.scene.add(childObj.object);
+        childObj.setPosition({x: -1000, y: 0, z: -300});
+        childObj.setScale({x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        this.makeRandomObjectsFrom(childObj, 10);
+      }, this.scene, false);
+      this.generateChildObjectGroup(obj, ['polySurface290 polySurface62', 'polySurface342'], (childObj) => {
+        childObj.setPosition({x: -2000, y: 0, z: 250});
+        childObj.setScale({x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        this.makeRandomObjectsFrom(childObj, 10);
+      }, this.scene, false);
+      this.generateChildObjectGroup(obj, ['polySurface234 polySurface63', 'polySurface343'], (childObj) => {
+        childObj.setPosition({x: -800, y: 0, z: 600});
+        childObj.setScale({x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        this.makeRandomObjectsFrom(childObj, 10);
+      }, this.scene, false);
+      this.generateChildObjectGroup(obj, ['polySurface333 polySurface173', 'polySurface339'], (childObj) => {
+        childObj.setPosition({x: -1500, y: 0, z: 500});
+        this.randomObjects.push(childObj);
+        this.makeRandomObjectsFrom(childObj, 10);
+      }, this.scene, false);
+      this.generateChildObjectGroup(obj, ['polySurface328 polySurface200', 'polySurface338'], (childObj) => {
+        childObj.setPosition({x: -5000, y: 0, z: -500});
+        this.randomObjects.push(childObj);
+        this.makeRandomObjectsFrom(childObj, 10);
+      }, this.scene, false);
+    })
+  }
+
   setupCar() {
-    this.createPresetObject('cars', 'mercedes-190-sl-retro', null, (obj) => {
-      /*
-      this.generateChildObject(obj, 'Z3_tyre1', (childObj) => {
-        tire2 = childObj;
-        // console.log(childObj);
-      });
-      */
+    this.createPresetObject('cars', 'delorean', null, (obj) => {
+      this.delorean = obj;
+      this.delorean.setRotation({x: -(Math.PI / 2), y: 0, z: -(Math.PI / 2)});
+      this.delorean.setPosition({x: 0, y: 12, z: 0});
+      this.delorean.setScale({x: 2, y: 2, z: 2});
+      let particlesFrontL;
+      let particlesFrontR;
+      let particlesBackL;
+      let particlesBackR;
+      if (this.animationSettings.particles) {
+        this.createObject('particles', {
+          particles: {
+            count: 300,
+            startRange: .5,
+            endRange: 20,
+            emitDelay: 250,
+            size: 10,
+            sprite: 'assets/images/sprites/cloud_2.png',
+            gravity: {
+              x: .1,
+              y: .075,
+              z: -.05
+            },
+            velocity: {
+              x: .05,
+              y: .05,
+              z: .05
+            }
+          },
+          position: {
+            x: 5, // left right
+            y: -15, // front rare
+            z: -3 // top bottom
+          }
+        }, this.delorean.object, (pObj) => {
+          particlesFrontL = pObj;
+        });
+        this.createObject('particles', {
+          particles: {
+            count: 300,
+            startRange: .5,
+            endRange: 20,
+            emitDelay: 250,
+            size: 10,
+            sprite: 'assets/images/sprites/cloud_2.png',
+            gravity: {
+              x: -.1,
+              y: .075,
+              z: -.05
+            },
+            velocity: {
+              x: -.05,
+              y: .05,
+              z: .05
+            }
+          },
+          position: {
+            x: -5, // left right
+            y: -15, // front rare
+            z: -3 // top bottom
+          }
+        }, this.delorean.object, (pObj) => {
+          particlesFrontR = pObj;
+        });
+
+        this.createObject('particles', {
+          particles: {
+            count: 300,
+            startRange: .5,
+            endRange: 20,
+            emitDelay: 250,
+            size: 10,
+            sprite: 'assets/images/sprites/cloud_2.png',
+            gravity: {
+              x: .1,
+              y: .075,
+              z: -.05
+            },
+            velocity: {
+              x: .05,
+              y: .05,
+              z: .05
+            }
+          },
+          position: {
+            x: 5, // left right
+            y: 3, // front rare
+            z: -3 // top bottom
+          }
+        }, this.delorean.object, (pObj) => {
+          particlesBackL = pObj;
+        });
+        this.createObject('particles', {
+          particles: {
+            count: 300,
+            startRange: .5,
+            endRange: 20,
+            emitDelay: 250,
+            size: 10,
+            sprite: 'assets/images/sprites/cloud_2.png',
+            gravity: {
+              x: -.1,
+              y: .075,
+              z: -.05
+            },
+            velocity: {
+              x: -.05,
+              y: .05,
+              z: .05
+            }
+          },
+          position: {
+            x: -5, // left right
+            y: 3, // front rare
+            z: -3 // top bottom
+          }
+        }, this.delorean.object, (pObj) => {
+          particlesBackR = pObj;
+        });
+      }
+
+    });
+
+    /*
+     this.createPresetObject('cars', 'mercedes-190-sl', null, (obj) => {
       let tire1;
       let tire2;
       let tire3;
@@ -345,25 +522,23 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       }, 500);
 
     });
+
+     */
+
+
   }
 
   setupRandomObjects() {
     for (let i = 0; i < this.randomObjectSettings.count; i++) {
-
       this.addRandomObject();
-
-
     }
   }
 
-  addRandomObject() {
-    const radomInt = Math.trunc(Math.random() * (RandomObjectsPreset.length));
-    const rObject = RandomObjectsPreset[radomInt];
-    const aniObject = this.createPresetObject('random-objects', rObject.name);
+  randomObjectPosition(aniObject, options) {
     const x = (Math.random() * this.randomObjectSettings.size.x) - (this.randomObjectSettings.size.x / 2);
     let y = 0;
-    if (rObject.options && (rObject.options as any).position) {
-      y = (rObject.options as any).position.y;
+    if (options && (options as any).position) {
+      y = (options as any).position.y;
     }
     const offsetSize = (this.randomObjectSettings.size.y - this.randomObjectSettings.offsetZ * 2);
     let z = (Math.random() * offsetSize) - (offsetSize / 2);
@@ -378,11 +553,30 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         aniObject.mesh.rotation.set(0, Math.PI, 0);
       }
     }
-    aniObject.setPosition({x, y, z});
+    return {x, y, z};
+  }
+
+  addRandomObject() {
+    const radomInt = Math.trunc(Math.random() * (RandomObjectsPreset.length));
+    const rObject = RandomObjectsPreset[radomInt];
+    const aniObject = this.createPresetObject('random-objects', rObject.name);
+    const pos = this.randomObjectPosition(aniObject, rObject.options);
+    aniObject.setPosition({x: pos.x, y: pos.y, z: pos.z});
     if (aniObject) {
       this.randomObjects.push(aniObject);
     }
+  }
 
+  makeRandomObjectsFrom(aniObject: AnimationObject, count = 1, randomRotation = true) {
+    for (let i = 0; i < count; i++) {
+      const newAniObject = aniObject.clone(this.scene);
+      const pos = this.randomObjectPosition(aniObject, aniObject.options);
+      newAniObject.setPosition({x: pos.x, y: pos.y, z: pos.z});
+      if (randomRotation) {
+        aniObject.object.rotation.set(0, (Math.PI * (Math.random() * 2)), 0);
+      }
+      this.randomObjects.push(newAniObject);
+    }
   }
 
   cameraSwitch() {
@@ -390,10 +584,15 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     const maxTime = this.animationSettings.autoCameraSwitch.max;
     const nextSwitchIn = minTime + Math.trunc((Math.random() * (maxTime - minTime)));
     if (this.animationSettings.autoCameraSwitch && this.cameraCanSwitch) {
+      this.cameraCanSwitch = false;
       this.randomCamera();
       if (this.cameraSwitchTimeout) {
         clearTimeout(this.cameraSwitchTimeout);
       }
+      this.cameraSwitch();
+      setTimeout(() => {
+        this.cameraCanSwitch = true;
+      }, this.animationSettings.timeBetweenCameraSwitch);
     }
     this.cameraSwitchTimeout = setTimeout(() => {
       this.cameraSwitch();
@@ -560,7 +759,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     return aniObject;
   }
 
-
   getAudioFrequencyData(step = 0) {
     if (this.audioAnalyzer && this.audioAnalyzer.frequency && this.audioAnalyzer.frequency.values[step]) {
       return this.audioAnalyzer.frequency.values[step];
@@ -593,7 +791,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
 
     if (analyzerData && analyzerData.frequency) {
       const offsetY = ctx.canvas.height / analyzerData.frequency.values.length;
-      const lineSize = .2;
+      const lineSize = .5;
       for (let i = 0; i < analyzerData.frequency.values.length; i += 2) {
         const value = analyzerData.frequency.values[i];
         const lineHeight = Math.trunc(Math.abs(value * lineSize));
@@ -647,14 +845,9 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
 
   cameraSwitchOnFrequency() {
     const step = 0;
-    const value = 190;
-    const nextSwitchIn = 750;
-    if (this.cameraCanSwitch && this.getAudioFrequencyData(step) > value / this.animationSettings.gain) {
-      this.cameraCanSwitch = false;
+    const value = 220;
+    if (this.getAudioFrequencyData(step) > value / this.animationSettings.gain) {
       this.cameraSwitch();
-      setTimeout(() => {
-        this.cameraCanSwitch = true;
-      }, nextSwitchIn);
     }
 
   }
@@ -719,8 +912,8 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   animateRenderPasses() {
     const glitchStepA = 1;
     const glitchStepB = 19;
-    const glitchValueA = 150;
-    const glitchValueB = 135;
+    const glitchValueA = 140;
+    const glitchValueB = 120;
     if (this.cameraCanSwitch &&
       (this.getAudioFrequencyData(glitchStepA) > glitchValueA / this.animationSettings.gain ||
         this.getAudioFrequencyData(glitchStepB) > glitchValueB / this.animationSettings.gain)) {
@@ -729,27 +922,12 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       this.hideRenderPass('GlitchPass');
     }
     const afterImageStep = 9;
-    const afterImageValue = 150;
+    const afterImageValue = 50;
     if (this.cameraCanSwitch && this.getAudioFrequencyData(afterImageStep) > afterImageValue / this.animationSettings.gain) {
       this.showRenderPass('AfterimagePass');
     } else {
       this.hideRenderPass('AfterimagePass');
     }
-  }
-
-  showRenderPass(name) {
-    const pass = this.getRenderPass(name);
-    if (pass) {
-      pass.enabled = true;
-    }
-  }
-
-  hideRenderPass(name) {
-    const pass = this.getRenderPass(name);
-    if (pass) {
-      pass.enabled = false;
-    }
-
   }
 
   animateFrame() {

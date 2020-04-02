@@ -163,9 +163,12 @@ export class AnimationObject {
       ) {
         mesh = this.createLight(type, options);
       }
-      this.initMesh(options);
-      this.initObject(options, mesh);
-      this.appendTo(parentObject);
+      if (type !== 'clone') {
+        this.initMesh(options);
+        this.initObject(options, mesh);
+        this.appendTo(parentObject);
+      }
+
     }
   }
 
@@ -281,7 +284,7 @@ export class AnimationObject {
           clearTimeout(timeout);
         }
         timeout = setTimeout(() => {
-          // console.log(names); // show object names in js console
+          console.log(names); // show object names in js console
         }, 500);
       });
       if (options.obj) {
@@ -455,12 +458,12 @@ export class AnimationObject {
         sizeAttenuation: false,
         map: sprite,
         transparent: true,
-        alphaTest: .5
+        alphaTest: .5,
       });
       this.material.color.setHSL(1.0, 0.3, 0.7);
     } else {
       this.material = new THREE.PointsMaterial({
-        color: 0xffffcc,
+        color: 0xffffff,
         size: options.particles.size || 1,
       });
     }
@@ -958,7 +961,7 @@ export class AnimationObject {
     }
   }
 
-  moveTo(position, duration, easingType = 'Linear.None', onEnd: any = null) {
+  moveTo(position, duration, onEnd: any = null, easingType = 'Linear.None') {
     if (this.tween.position) {
       this.tween.position.stop();
       this.tween.position = null;
@@ -982,7 +985,7 @@ export class AnimationObject {
     this.tween.position.start();
   }
 
-  scaleTo(scale, duration, easingType = 'Linear.None', onEnd: any = null) {
+  scaleTo(scale, duration, onEnd: any = null, easingType = 'Linear.None') {
     if (this.tween.scale) {
       this.tween.scale.stop();
       this.tween.scale = null;
@@ -1005,7 +1008,7 @@ export class AnimationObject {
     this.tween.scale.start();
   }
 
-  rotateTo(rotation, duration, easingType = 'Linear.None', onEnd: any = null) {
+  rotateTo(rotation, duration, onEnd: any = null, easingType = 'Linear.None') {
     if (this.tween.rotation) {
       this.tween.rotation.stop();
       this.tween.rotation = null;
@@ -1042,7 +1045,7 @@ export class AnimationObject {
     }
   }
 
-  materialOffsetTo(offset, duration, easingType = 'Linear.None', onEnd: any = null) {
+  materialOffsetTo(offset, duration, onEnd: any = null, easingType = 'Linear.None') {
     if (this.tween.materialOffset) {
       this.tween.materialOffset.stop();
       this.tween.materialOffset = null;
@@ -1218,6 +1221,23 @@ export class AnimationObject {
         }
       });
     }
+  }
+
+  clone(parentObject = null) {
+    const clone = new AnimationObject('clone', this.options, parentObject, this.objects);
+    if (this.mesh) {
+      clone.mesh = this.mesh.clone();
+      clone.object.add(clone.mesh);
+      clone.initMesh(clone.options);
+      clone.initObject(clone.options, clone.mesh);
+    } else {
+      clone.object = this.object.clone();
+      clone.initObject(clone.options, clone.mesh);
+    }
+    if (parentObject) {
+      clone.appendTo(parentObject);
+    }
+    return clone;
   }
 
   remove() {

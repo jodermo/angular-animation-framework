@@ -16,12 +16,13 @@ Demo (Retro Audio Visualisation):
 |    ---:| :---          | :---         |
 | <img src="https://angular.io/assets/images/logos/angular/angular.svg" height="64"  alt="Angular Logo" /><br>Angular CLI | Client Side TypeScript App | [WEBSITE](https://angular.io)<br> [README](https://github.com/angular/angular-cli/blob/master/README.md)|
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/WebGL_Logo.svg/1199px-WebGL_Logo.svg.png" height="64"  alt="WebGL Logo" /><br>Three-js | 3D Graphic API | [WEBSITE](https://threejs.org/)<br> [README](https://github.com/mrdoob/three.js/blob/dev/README.md)|
-| <img src="https://www.createjs.com/assets/images/svg/tweenjs-logo-horizontal-gray-darker.svg" height="64"  alt="TWEEN.js Logo" /><br>TWEEN.js | Tweening library | [WEBSITE](https://www.createjs.com/tweenjs)<br> [README](https://github.com/tweenjs/tween.js/blob/master/README.md)|
+| TWEEN.js (github.com) | Tweening library | [WEBSITE](https://github.com/tweenjs/tween.js)<br> [README](https://github.com/tweenjs/tween.js/blob/master/README.md)|
 
 
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
 ###### *© 2020 - Moritz Petzka - [petzka.com](https://petzka.com/)*
+For commercial use, contact: <a href="mailto:info@petzka.com" />info@petzka.com</a>
 
 ## Main Component:
  * [/src/](./src)
@@ -31,7 +32,7 @@ Demo (Retro Audio Visualisation):
  
 For implementation in existing Projects, follow the steps in: [.../three-animation/README.md](./src/app/three-animation/README.md)
 
-# Example 
+# AnimationObject Example 
 
 ```javascript
 
@@ -83,6 +84,91 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
     }
 }
 ```
+
+#### more available functions for AnimationObjects
+
+```javascript
+
+/* set attributes directly */
+
+box.setPosition({x:0, y:0, z:50});
+
+box.setRotation({x:0, y:(Math.PI / 2), z:0});
+
+box.setScale({x:1, y:1, z:1});
+
+box.lookAt({x:0, y:0, z:0});
+
+
+/* tween attributes */
+
+box.moveTo({x:0, y:0, z:50}, 5000, ()=>{
+    // stuff after tween ended
+}, 'Linear.None');
+
+box.rotateTo({x:0, y:(Math.PI / 2), z:0}, 5000, ()=>{
+    // stuff after tween ended
+}, 'Linear.None');
+
+box.scaleTo({x:0, y:(Math.PI / 2), z:0}, 5000, ()=>{
+    // stuff after tween ended
+}, 'Linear.None');
+
+
+/* more stuff */
+
+box.appendTo(<THREE.js Object>);
+
+
+/* mouse events */
+
+box.on('mousemove', (event)=>{});
+box.on('mouseover', (event)=>{});
+box.on('mouseout', (event)=>{});
+box.on('mousedown', (event)=>{});
+box.on('mouseup', (event)=>{});
+
+
+/* collision detection */
+
+box.on('collide', (collisionObject)=>{});
+
+box.on('leave', (collisionObject)=>{});
+
+```
+
+#### Available easing types for tween functions:<br>
+
+<ul>
+  <li>Linear.None (default)</li>
+  <li>Quadratic.In</li>
+  <li>Quadratic.Out</li>
+  <li>Quadratic.InOut</li>
+  <li>Cubic.In</li>
+  <li>Cubic.Out</li>
+  <li>Cubic.InOut</li>
+  <li>Quartic.In</li>
+  <li>Quartic.Out</li>
+  <li>Quartic.InOut</li>
+  <li>Quintic.In</li>
+  <li>Quintic.Out</li>
+  <li>Quintic.InOut</li>
+  <li>Sinusoidal.In</li>
+  <li>Sinusoidal.Out</li>
+  <li>Sinusoidal.InOut</li>
+  <li>Exponential.In</li>
+  <li>Exponential.Out</li>
+  <li>Exponential.InOut</li>
+  <li>Back.In</li>
+  <li>Back.Out</li>
+  <li>Back.InOut</li>
+  <li>Bounce.In</li>
+  <li>Bounce.Out</li>
+  <li>Bounce.InOut</li>
+</ul> 
+more infos: <a href="https://sole.github.io/tween.js/examples/03_graphs.html" target="_blank">https://sole.github.io/tween.js/examples/03_graphs.html</a>
+  <br><br>
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 

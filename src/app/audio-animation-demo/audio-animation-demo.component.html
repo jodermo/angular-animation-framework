@@ -1,0 +1,88 @@
+<div class="animation-display"
+     (mousedown)="containerMouseEvent($event, 'mousedown');"
+     (mouseup)="containerMouseEvent($event, 'mouseup');"
+     (mousemove)="containerMouseEvent($event, 'mousemove');"
+     #animationContainer></div>
+<div class="animation-controls" *ngIf="!controlPanel && !infoPanel && !loading">
+  <div class="control-nav">
+    <button (click)="controlPanel = true;">
+      Show controls
+    </button>
+    <button (click)="infoPanel = true;">
+      Show credits
+    </button>
+  </div>
+</div>
+<div class="animation-controls" *ngIf="controlPanel && !loading">
+  <button class="close-animation-controls" (click)="controlPanel = false;">X</button>
+  <button (click)="toggleStats()">
+    <span *ngIf="statsVisible">Hide stats</span>
+    <span *ngIf="!statsVisible">Show stats</span>
+  </button>
+  <br>
+  <button *ngIf="vrService" (click)="vrMode()">
+    <span *ngIf="!vrService.vrMode">VR mode (experimental)</span>
+    <span *ngIf="vrService.vrMode">Exit VR mode</span>
+  </button>
+  <div *ngIf="postProcessing && postProcessing.renderPasses">
+    <label *ngFor="let renderPass of postProcessing.renderPasses" (click)="toggleRenderPassActive(renderPass.name)">
+      <input type="checkbox" [checked]="renderPassActive(renderPass.name)" />
+      <span>{{renderPass.name}}</span>
+    </label>
+  </div>
+  <div class="animation-audio-controls" *ngIf="audio('demo')">
+    <b>Audio track</b><br>
+    <button (click)="audio('demo').play()" *ngIf="audio('demo').paused">Play</button>
+    <button (click)="audio('demo').pause()" *ngIf="!audio('demo').paused">Pause</button>
+    <button (click)="audio('demo').muted = !audio('demo').muted">
+      <span *ngIf="audio('demo').muted">Unmute</span>
+      <span *ngIf="!audio('demo').muted">Mute</span>
+    </button>
+  </div>
+</div>
+<div class="animation-info" *ngIf="infoPanel && !loading">
+  <button class="close-animation-info" (click)="infoPanel = false;">X</button>
+  <div>
+    <b>Retro Animation Visualisation</b><br>
+    <span>Angular & Three.js</span>
+  </div>
+  <ul>
+    <li>
+      <h3>Creator</h3><br>
+      <span>  <a href="https://petzka.com" target="_blank">Moritz Petzka</a></span>
+    </li>
+    <li>
+      <h3>Frameworks</h3><br>
+      <span>  <a href="https://angular.io/" target="_blank">Angular</a></span><br>
+      <span>  <a href="https://threejs.org/" target="_blank">Three.js</a></span><br>
+      <span>  <a href="https://github.com/tweenjs/tween.js/" target="_blank">Tween.js</a></span><br>
+    </li>
+    <li>
+      <h3>Sources:</h3><br>
+      <div class="info-source" *ngFor="let source of this.sourceInfos">
+        <b *ngIf="source.name">
+          {{source.name}}<br>
+        </b><br>
+        <div class="thumb-box" *ngIf="source.image">
+          <div class="thumbnail"
+               [ngStyle]="{backgroundImage: 'url(' + source.image + ')'}">
+          </div>
+          <p>
+            <span *ngIf="source.description">
+              {{source.description}}
+            </span><br>
+            <span *ngIf="source.website">
+              Website: <a href="{{source.website.url}}" target="_blank">{{source.website.title}}</a>
+            </span><br>
+            <span *ngIf="source.link">
+              Source: <a href="{{source.link.url}}" target="_blank">{{source.link.title}}</a>
+            </span>
+          </p>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<app-three-animation-preloader class="animation-preloader" *ngIf="loading"
+                               [loader]="loader"></app-three-animation-preloader>
+

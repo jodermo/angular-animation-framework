@@ -51,7 +51,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() frame = 0;
   @Input() speed = 1;
   @Input() duration = 0;
-  @Input() controls = 'default';
+  @Input() controls = 'orbit'; // 'orbit' , 'default'
   @Input() statsVisible = false;
   @Input() showHelper = false;
   // tslint:disable-next-line:no-output-on-prefix
@@ -62,8 +62,6 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   @Output() onEnd = new EventEmitter<number>();
   container: HTMLElement;
   mouse: any = new THREE.Vector2();
-  controlPanel = true;
-  infoPanel = false;
 
   scene;
   sceneCSS;
@@ -99,6 +97,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     UnrealBloomPass,
     AfterimagePass
   };
+  inactiveRenderPasses = [];
   grid;
   raycaster;
   loadingManager: THREE.LoadingManager = new THREE.LoadingManager();
@@ -285,6 +284,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
       this.cameraControls = new OrbitControls(this.camera, this.container);
     }
 
+    console.log('cameraControls', this.controls, this.cameraControls);
 
     this.rendererCSS = new CSS3DRenderer();
 
@@ -330,7 +330,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   initPostProcessing() {
     if (this.postProcessing && this.postProcessing.renderPasses) {
       for (const renderPass of this.postProcessing.renderPasses) {
-        this.addRenderPass(renderPass.type, renderPass.attributes, renderPass.options || null, renderPass.uniforms || null);
+        this.addRenderPass(renderPass.name || renderPass.type, renderPass.attributes, renderPass.options || null, renderPass.uniforms || null);
       }
     }
   }
@@ -359,6 +359,43 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     return this.renderPasses[name] || null;
   }
 
+  activateRenderPass(name) {
+    this.inactiveRenderPasses[name] = false;
+  }
+
+  deactivateRenderPass(name) {
+    this.inactiveRenderPasses[name] = true;
+    this.hideRenderPass(name);
+  }
+
+  toggleRenderPassActive(name) {
+    if (!this.renderPassActive(name)) {
+      this.activateRenderPass(name);
+    } else {
+      this.deactivateRenderPass(name);
+    }
+  }
+
+  renderPassActive(name) {
+    return !this.inactiveRenderPasses[name];
+  }
+
+  showRenderPass(name) {
+    if (this.renderPassActive(name)) {
+      const pass = this.getRenderPass(name);
+      if (pass) {
+        pass.enabled = true;
+      }
+    }
+  }
+
+  hideRenderPass(name) {
+    const pass = this.getRenderPass(name);
+    if (pass) {
+      pass.enabled = false;
+    }
+  }
+
   font(name: string, type: string) {
     return this.fonts[name][type] || this.fonts[name] || null;
   }
@@ -377,11 +414,17 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.renderPasses) {
       this.renderPass.camera = this.camera;
     }
-    if (this.controls === 'default') {
-      this.cameraControls = new CameraControls(this.camera, this.container);
-    } else if (this.controls === 'orbit') {
-      this.cameraControls = new OrbitControls(this.camera, this.container);
+
+    if (this.cameraControls) {
+      this.cameraControls.camera = this.camera;
+    } else {
+      if (this.controls === 'default') {
+        this.cameraControls = new CameraControls(this.camera, this.container);
+      } else if (this.controls === 'orbit') {
+        this.cameraControls = new OrbitControls(this.camera, this.container);
+      }
     }
+
     this.updateView();
   }
 
@@ -477,7 +520,6 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
-
   createObject(type, options: any, parentObject = null, onSuccess = null) {
     this.loading = true;
     this.objectLoading();
@@ -534,7 +576,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
-  generateChildObjectGroup(aniObject: AnimationObject, childNames, onSuccess = null) {
+  generateChildObjectGroup(aniObject: AnimationObject, childNames, onSuccess = null, parentObject: any = null, centerObjects = true) {
     const groupAniObject = new AnimationObject('group', null, aniObject, this.objects);
     const children = [];
     const grabChild = (i) => {
@@ -545,11 +587,15 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
         grabChild(i + 1);
       } else {
         if (groupAniObject && onSuccess) {
-          if (aniObject.object) {
+          if (parentObject) {
+            parentObject.add(groupAniObject.object);
+          } else if (aniObject.object) {
             aniObject.object.add(groupAniObject.object);
           }
           for (const child of children) {
-            child.geometry.center();
+            if (centerObjects) {
+              child.geometry.center();
+            }
             groupAniObject.object.add(child);
           }
           onSuccess(groupAniObject);
