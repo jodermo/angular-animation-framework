@@ -139,6 +139,36 @@ box.on('collide', (collisionObject)=>{});
 box.on('leave', (collisionObject)=>{});
 
 ```
+<details><summary>Create THREE.js mesh object</summary>
+
+Example:
+```javascript
+const box = this.createObject('mesh', {
+    material: {
+       // properties for THREE.js material (more infos below)
+       type: 'MeshBasicMaterial',
+       color: '#ff00ec',
+       transparent: true,
+       opacity: .25
+    },
+    geometry: {
+       // properties for THREE.js geometry (examples below)
+       type: 'BoxGeometry',
+       width: 5,
+       height: 5,
+       depth: 5,
+    },
+    mesh: {
+       // properties for THREE.js mesh object
+       receiveShadow: true,
+       castShadow: true,
+    }
+});
+ ``` 
+More infos about THREE.js mesh: <a href="https://threejs.org/docs/#api/en/objects/Mesh" target="_blank">https://threejs.org/docs/#api/en/objects/Mesh</a>
+
+</details>
+
 </details>
 
 <details><summary>Easing Types ('Linear.None' is default)</summary>
@@ -172,37 +202,8 @@ box.on('leave', (collisionObject)=>{});
 more infos: <a href="https://sole.github.io/tween.js/examples/03_graphs.html" target="_blank">https://sole.github.io/tween.js/examples/03_graphs.html</a>
 </details>
 
-<details><summary>Create THREE.js mesh object</summary>
 
-Example:
-```javascript
-this.createObject('mesh', {
-            material: {
-                // properties for THREE.js material (more infos below)
-                type: 'MeshBasicMaterial',
-                color: '#ff00ec',
-                transparent: true,
-                opacity: .25
-            },
-            geometry: {
-                // properties for THREE.js geometry (examples below)
-                type: 'BoxGeometry',
-                width: 5,
-                height: 5,
-                depth: 5,
-            },
-            mesh: {
-                // properties for THREE.js mesh object
-                receiveShadow: true,
-                castShadow: true,
-            }
-        } 
- ``` 
-More infos about THREE.js mesh: <a href="https://threejs.org/docs/#api/en/objects/Mesh" target="_blank">https://threejs.org/docs/#api/en/objects/Mesh</a>
-
-</details>
-
-<details><summary>Mesh material</summary>
+<details><summary>Available materials</summary>
 
 Example:
 ```javascript
@@ -235,7 +236,7 @@ For more information about material properties, visit:
 
 </details>
 
-<details><summary>Mesh geometry</summary>
+<details><summary>Available geometries</summary>
 
 More infos: <a href="https://threejs.org/docs/#api/en/core/Geometry" target="_blank">https://threejs.org/docs/#api/en/core/Geometry</a>
 
