@@ -6,31 +6,38 @@
 <div class="animation-controls" *ngIf="!controlPanel && !infoPanel && !loading">
   <div class="control-nav">
     <button (click)="controlPanel = true;">
-      Show controls
+      Controls
     </button>
     <button (click)="infoPanel = true;">
-      Show credits
+      About
     </button>
   </div>
 </div>
 <div class="animation-controls" *ngIf="controlPanel && !loading">
   <button class="close-animation-controls" (click)="controlPanel = false;">X</button>
-  <button (click)="toggleStats()">
+  <button (click)="toggleStats()" [ngClass]="{active: statsVisible}">
     <span *ngIf="statsVisible">Hide stats</span>
     <span *ngIf="!statsVisible">Show stats</span>
   </button>
   <br>
-  <button *ngIf="vrService" (click)="vrMode()">
-    <span *ngIf="!vrService.vrMode">VR mode (experimental)</span>
+  <button *ngIf="vrService" (click)="vrMode()" [ngClass]="{active: vrService.vrMode}">
+    <span *ngIf="!vrService.vrMode">Enter VR mode (experimental)</span>
     <span *ngIf="vrService.vrMode">Exit VR mode</span>
   </button>
-  <div *ngIf="postProcessing && postProcessing.renderPasses">
-    <label *ngFor="let renderPass of postProcessing.renderPasses" (click)="toggleRenderPassActive(renderPass.name)">
-      <input type="checkbox" [checked]="renderPassActive(renderPass.name)" />
+  <div>
+    <button *ngIf="!isControlCamera()" (click)="selectControlCamera()">Camera controls on</button>
+    <button *ngIf="isControlCamera()" class="active" (click)="selectCamera(cameras[0])">Camera controls off</button>
+  </div>
+  <div *ngIf="postProcessing && postProcessing.renderPasses" class="animation-audio-controls">
+    <b>Post processing</b><br>
+    <label *ngFor="let renderPass of postProcessing.renderPasses">
+      <input type="checkbox" [checked]="renderPassActive(renderPass.name)"
+             (change)="toggleRenderPassActive(renderPass.name)"/>
       <span>{{renderPass.name}}</span>
+      <br>
     </label>
   </div>
-  <div class="animation-audio-controls" *ngIf="audio('demo')">
+  <div *ngIf="audio('demo')" class="animation-audio-controls">
     <b>Audio track</b><br>
     <button (click)="audio('demo').play()" *ngIf="audio('demo').paused">Play</button>
     <button (click)="audio('demo').pause()" *ngIf="!audio('demo').paused">Pause</button>

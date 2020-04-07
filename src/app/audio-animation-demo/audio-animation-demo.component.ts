@@ -20,6 +20,11 @@ import { AudioAnalyzer } from '../three-animation/services/audio.service';
 import * as THREE from 'three';
 import { TreesPresets } from './presets/trees-presets';
 import { SourceInfos } from './presets/source-infos';
+import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
+import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass';
+import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 
 // @ts-ignore
 @Component({
@@ -41,6 +46,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   sun: AnimationObject;
   directionalLightWhite: AnimationObject;
   directionalLightOrange: AnimationObject;
+  pointLight: AnimationObject;
   audioAnalyzer: AudioAnalyzer;
   mainCamera: AnimationObject;
   sideCameraRight: AnimationObject;
@@ -52,15 +58,18 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   sunCanvas = document.createElement('canvas');
   sunCanvasAlpha = document.createElement('canvas');
   cameras = [];
+
+  carPosition = 0;
   animationSettings = {
     particles: true,
     gain: 1.25,
     speedReaction: 1,
     speed: {
-      ground: .075,
       tireRotation: 1.5,
-      objects: 3,
-      total: 1
+      ground: .01,
+      street: .004,
+      objects: 1,
+      total: 2
     },
     autoCameraSwitch: {min: 1000, max: 16000},
     timeBetweenCameraSwitch: 1250
@@ -105,11 +114,23 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.bindPresets('cars', CarsPresets);
     this.bindPresets('random-objects', RandomObjectsPreset);
     this.postProcessing.renderPasses = [
-      {name: 'AfterimagePass', type: 'AfterimagePass', attributes: [.75]},
-      {name: 'RGBShiftShader',type: 'ShaderPass', attributes: [RGBShiftShader], uniforms: [['amount', 'value', 0.1]]},
-      {name: 'UnrealBloomPass',type: 'UnrealBloomPass', attributes: [10, .5, .025, 0.5, 0.2]},
-      {name: 'FilmPass',type: 'FilmPass', attributes: [10, .5, 1200, false], options: {renderToScreen: true}},
-      {name: 'GlitchPass',type: 'GlitchPass', attributes: [], options: {goWild: true},},
+      {name: 'AfterimagePass', pass: AfterimagePass, type: 'AfterimagePass', attributes: [.75]},
+      {
+        name: 'RGBShiftShader',
+        pass: ShaderPass,
+        type: 'ShaderPass',
+        attributes: [RGBShiftShader],
+        uniforms: [['amount', 'value', 0.1]]
+      },
+      {name: 'UnrealBloomPass', pass: UnrealBloomPass, type: 'UnrealBloomPass', attributes: [10, .5, .025, 0.5, 0.2]},
+      {
+        name: 'FilmPass',
+        pass: FilmPass,
+        type: 'FilmPass',
+        attributes: [10, .5, 1200, false],
+        options: {renderToScreen: true}
+      },
+      {name: 'GlitchPass', pass: GlitchPass, type: 'GlitchPass', attributes: [], options: {goWild: true},},
     ];
   }
 
@@ -172,6 +193,8 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   setupLights() {
     this.directionalLightWhite = this.createPresetObject('audio-animation', 'directional-light');
     this.directionalLightOrange = this.createPresetObject('audio-animation', 'directional-light-orange');
+    this.pointLight = this.createPresetObject('audio-animation', 'point-light');
+
   }
 
   setupCameras() {
@@ -262,15 +285,14 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
 
   setupTrees() {
     this.createPresetObject('trees', 'palms', null, (obj) => {
-
-
-      const palms = [];
-
       this.generateChildObjectGroup(obj, ['polySurface262 polySurface141', 'polySurface336'], (childObj) => {
         childObj.setPosition({x: -150, y: 0, z: 200});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 10);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
       }, this.scene, false);
       this.generateChildObjectGroup(obj, ['polySurface229 polySurface36', 'polySurface335'], (childObj) => {
         this.scene.add(childObj.object);
@@ -278,28 +300,43 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 10);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
       }, this.scene, false);
       this.generateChildObjectGroup(obj, ['polySurface290 polySurface62', 'polySurface342'], (childObj) => {
         childObj.setPosition({x: -2000, y: 0, z: 250});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 10);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
       }, this.scene, false);
       this.generateChildObjectGroup(obj, ['polySurface234 polySurface63', 'polySurface343'], (childObj) => {
         childObj.setPosition({x: -800, y: 0, z: 600});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 10);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
       }, this.scene, false);
       this.generateChildObjectGroup(obj, ['polySurface333 polySurface173', 'polySurface339'], (childObj) => {
         childObj.setPosition({x: -1500, y: 0, z: 500});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 10);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
       }, this.scene, false);
       this.generateChildObjectGroup(obj, ['polySurface328 polySurface200', 'polySurface338'], (childObj) => {
         childObj.setPosition({x: -5000, y: 0, z: -500});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 10);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
       }, this.scene, false);
     })
   }
@@ -534,6 +571,10 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     }
   }
 
+  randomObjectClick(aniObject) {
+    aniObject.hide();
+  }
+
   randomObjectPosition(aniObject, options) {
     const x = (Math.random() * this.randomObjectSettings.size.x) - (this.randomObjectSettings.size.x / 2);
     let y = 0;
@@ -562,6 +603,9 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     const aniObject = this.createPresetObject('random-objects', rObject.name);
     const pos = this.randomObjectPosition(aniObject, rObject.options);
     aniObject.setPosition({x: pos.x, y: pos.y, z: pos.z});
+    aniObject.on('mousedown', () => {
+      this.randomObjectClick(aniObject);
+    });
     if (aniObject) {
       this.randomObjects.push(aniObject);
     }
@@ -580,29 +624,33 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   }
 
   cameraSwitch() {
-    const minTime = this.animationSettings.autoCameraSwitch.min;
-    const maxTime = this.animationSettings.autoCameraSwitch.max;
-    const nextSwitchIn = minTime + Math.trunc((Math.random() * (maxTime - minTime)));
-    if (this.animationSettings.autoCameraSwitch && this.cameraCanSwitch) {
-      this.cameraCanSwitch = false;
-      this.randomCamera();
-      if (this.cameraSwitchTimeout) {
-        clearTimeout(this.cameraSwitchTimeout);
+    if (!this.isControlCamera()) {
+      const minTime = this.animationSettings.autoCameraSwitch.min;
+      const maxTime = this.animationSettings.autoCameraSwitch.max;
+      const nextSwitchIn = minTime + Math.trunc((Math.random() * (maxTime - minTime)));
+      if (this.animationSettings.autoCameraSwitch && this.cameraCanSwitch) {
+        this.cameraCanSwitch = false;
+        this.randomCamera();
+        if (this.cameraSwitchTimeout) {
+          clearTimeout(this.cameraSwitchTimeout);
+        }
+        this.cameraSwitch();
+        setTimeout(() => {
+          this.cameraCanSwitch = true;
+        }, this.animationSettings.timeBetweenCameraSwitch);
       }
-      this.cameraSwitch();
-      setTimeout(() => {
-        this.cameraCanSwitch = true;
-      }, this.animationSettings.timeBetweenCameraSwitch);
+      this.cameraSwitchTimeout = setTimeout(() => {
+        this.cameraSwitch();
+      }, nextSwitchIn);
     }
-    this.cameraSwitchTimeout = setTimeout(() => {
-      this.cameraSwitch();
-    }, nextSwitchIn);
   }
 
   randomCamera() {
-    const randomInt = Math.trunc(Math.random() * (this.cameras.length));
-    if (this.cameras && this.cameras.length) {
-      this.selectCamera(this.cameras[randomInt]);
+    if (!this.isControlCamera()) {
+      const randomInt = Math.trunc(Math.random() * (this.cameras.length));
+      if (this.cameras && this.cameras.length) {
+        this.selectCamera(this.cameras[randomInt]);
+      }
     }
   }
 
@@ -618,15 +666,15 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         x: this.mainCamera.object.position.x,
         y: this.mainCamera.object.position.y,
         z: this.randomInt(maxOffset, minOffset)
-      }, randomDuration, 'Quadratic.InOut', () => {
+      }, randomDuration, () => {
         this.mainCamera.moveTo({
           x: this.mainCamera.object.position.x,
           y: this.mainCamera.object.position.y,
           z: -this.randomInt(maxOffset, minOffset)
-        }, randomDuration, 'Quadratic.InOut', () => {
+        }, randomDuration, () => {
           this.moveMainCamera();
-        });
-      });
+        }, 'Quadratic.InOut');
+      }, 'Quadratic.InOut');
     }
 
   }
@@ -862,8 +910,9 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   }
 
   animateCar() {
+    this.carPosition += this.animationSettings.speed.total;
     if (this.car) {
-      const rotation = (Math.PI * (this.animationSettings.speed.tireRotation * this.animationSettings.speed.total * this.frame));
+      const rotation = (Math.PI * (this.animationSettings.speed.tireRotation * this.carPosition));
       this.car.tire1.rotateTo({X: 0, y: 0, z: rotation}, 0);
       this.car.tire2.rotateTo({X: 0, y: 0, z: rotation}, 0);
       this.car.tire3.rotateTo({X: 0, y: 0, z: rotation}, 0);
@@ -874,21 +923,22 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   animateGround() {
     if (this.street) {
       this.ground.materialOffsetTo({
-        x: -(this.animationSettings.speed.ground * this.frame) * 3,
+        x: -(this.carPosition * this.animationSettings.speed.ground),
         y: 0
       }, 0);
-      this.street.materialOffsetTo({x: -(this.animationSettings.speed.ground * this.frame), y: 0}, 0);
+      this.street.materialOffsetTo({x: -(this.carPosition * this.animationSettings.speed.street), y: 0}, 0);
     }
   }
 
   animateRandomObjects() {
     if (this.randomObjects) {
       for (const aniObject of this.randomObjects) {
-        let x = aniObject.object.position.x + (this.animationSettings.speed.objects * this.animationSettings.speed.total) / this.animationSettings.gain;
+        let x = aniObject.object.position.x + (this.animationSettings.speed.objects * this.animationSettings.speed.total);
         const y = aniObject.object.position.y;
         let z = aniObject.object.position.z;
         if (x > this.randomObjectSettings.size.x / 2) {
           x = -this.randomObjectSettings.size.x / 2;
+          aniObject.show();
           const offsetSize = (this.randomObjectSettings.size.y - this.randomObjectSettings.offsetZ * 2);
           z = (Math.random() * offsetSize) - (offsetSize / 2);
           if (z <= 0) {
@@ -912,21 +962,18 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   animateRenderPasses() {
     const glitchStepA = 1;
     const glitchStepB = 19;
-    const glitchValueA = 140;
-    const glitchValueB = 120;
-    if (this.cameraCanSwitch &&
-      (this.getAudioFrequencyData(glitchStepA) > glitchValueA / this.animationSettings.gain ||
-        this.getAudioFrequencyData(glitchStepB) > glitchValueB / this.animationSettings.gain)) {
+    const glitchValueA = 280; // 270
+    const glitchValueB = 215;
+    this.hideRenderPass('GlitchPass');
+    if ((this.getAudioFrequencyData(glitchStepA) > glitchValueA / this.animationSettings.gain ||
+      this.getAudioFrequencyData(glitchStepB) > glitchValueB / this.animationSettings.gain)) {
       this.showRenderPass('GlitchPass');
-    } else {
-      this.hideRenderPass('GlitchPass');
     }
     const afterImageStep = 9;
-    const afterImageValue = 50;
-    if (this.cameraCanSwitch && this.getAudioFrequencyData(afterImageStep) > afterImageValue / this.animationSettings.gain) {
+    const afterImageValue = 180;
+    this.hideRenderPass('AfterimagePass');
+    if (this.getAudioFrequencyData(afterImageStep) > afterImageValue / this.animationSettings.gain) {
       this.showRenderPass('AfterimagePass');
-    } else {
-      this.hideRenderPass('AfterimagePass');
     }
   }
 

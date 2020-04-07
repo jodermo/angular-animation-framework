@@ -188,7 +188,7 @@ export const AudioAnimationPresets: AnimationPreset[] = [
         castShadow: true,
         intensity: .5,
         shadow: {
-          radius: 8
+          radius: 1
         }
       },
       position: {
@@ -207,12 +207,31 @@ export const AudioAnimationPresets: AnimationPreset[] = [
         castShadow: true,
         intensity: .5,
         shadow: {
-          radius: 8
+          radius: 1
         }
       },
       position: {
         x: -10000,
         y: 1000,
+        z: 0
+      }
+    }
+  },
+  {
+    name: 'point-light',
+    type: 'PointLight',
+    options: {
+      light: {
+        color: '#00eaff',
+        castShadow: true,
+        intensity: 2,
+        shadow: {
+          radius: 2
+        }
+      },
+      position: {
+        x: 0,
+        y: 150,
         z: 0
       }
     }

@@ -20,9 +20,9 @@ Demo (Retro Audio Visualisation):
 
 
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"  target="_blank"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
 ###### *© 2020 - Moritz Petzka - [petzka.com](https://petzka.com/)*
-For commercial use, contact: <a href="mailto:info@petzka.com" />info@petzka.com</a>
+For commercial use, contact: <a href="mailto:info@petzka.com"  target="_blank"/>info@petzka.com</a>
 
 ## Main Component:
  * [/src/](./src)
@@ -152,7 +152,16 @@ box.scaleTo({x:0, y:(Math.PI / 2), z:0}, 5000, ()=>{
 
 /* more stuff */
 
-box.appendTo(<THREE.js Object>);
+box.show(); 
+box.hide();
+box.remove();
+
+// clone box
+const boxClone = box.clone();
+
+// append clone to scene
+boxClone.appendTo(this.scene);
+ 
 
 
 /* mouse events */

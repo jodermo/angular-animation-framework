@@ -54,6 +54,8 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   @Input() controls = 'orbit'; // 'orbit' , 'default'
   @Input() statsVisible = false;
   @Input() showHelper = false;
+  @Input() useHtml = false;
+  @Input() useComposer = true;
   // tslint:disable-next-line:no-output-on-prefix
   @Output() onUpdate = new EventEmitter<number>();
   // tslint:disable-next-line:no-output-on-prefix
@@ -69,6 +71,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   rendererCSS;
   camera;
   cameraControls;
+  controlCamera;
   stats;
   clock = new THREE.Clock();
 
@@ -97,7 +100,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     UnrealBloomPass,
     AfterimagePass
   };
-  inactiveRenderPasses = [];
+  activeRenderPasses = [];
   grid;
   raycaster;
   loadingManager: THREE.LoadingManager = new THREE.LoadingManager();
@@ -255,8 +258,9 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
       this.gravity.y || 0,
       this.gravity.z || 0,
     ));
-    this.camera = new THREE.PerspectiveCamera(45, this.viewSize().width / this.viewSize().height, 1, 100000);
-    this.camera.position.set(0, 0, 100);
+    this.controlCamera = new THREE.PerspectiveCamera(45, this.viewSize().width / this.viewSize().height, 1, 100000);
+    this.camera = this.controlCamera;
+    this.camera.position.set(250, 100, 0);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 
@@ -284,15 +288,15 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
       this.cameraControls = new OrbitControls(this.camera, this.container);
     }
 
-    console.log('cameraControls', this.controls, this.cameraControls);
+    if (this.useHtml) {
+      this.rendererCSS = new CSS3DRenderer();
+      this.rendererCSS.setSize(this.viewSize().width, this.viewSize().height);
+      this.rendererCSS.domElement.style.position = 'absolute';
+      this.rendererCSS.domElement.style.zIndex = 2;
+      this.rendererCSS.domElement.style.top = 0;
+      this.rendererCSS.domElement.style.left = 0;
+    }
 
-    this.rendererCSS = new CSS3DRenderer();
-
-    this.rendererCSS.setSize(this.viewSize().width, this.viewSize().height);
-    this.rendererCSS.domElement.style.position = 'absolute';
-    this.rendererCSS.domElement.style.zIndex = 2;
-    this.rendererCSS.domElement.style.top = 0;
-    this.rendererCSS.domElement.style.left = 0;
 
     this.container.innerHTML = null;
     this._renderer.appendChild(this.container, this.renderer.domElement);
@@ -302,9 +306,12 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     if (!this.raycaster) {
       this.raycaster = new THREE.Raycaster();
     }
-    this.composer = new EffectComposer(this.renderer);
-    this.renderPass = new RenderPass(this.scene, this.camera);
-    this.composer.addPass(this.renderPass);
+    if (this.useComposer) {
+      this.composer = new EffectComposer(this.renderer);
+      this.renderPass = new RenderPass(this.scene, this.camera);
+      this.composer.addPass(this.renderPass);
+    }
+
     this.loadingManager = new THREE.LoadingManager();
     this.loadingManager.onError = (url) => console.error('there was an error loading: ' + url);
     this.preloadFonts()
@@ -330,28 +337,32 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   initPostProcessing() {
     if (this.postProcessing && this.postProcessing.renderPasses) {
       for (const renderPass of this.postProcessing.renderPasses) {
-        this.addRenderPass(renderPass.name || renderPass.type, renderPass.attributes, renderPass.options || null, renderPass.uniforms || null);
+        this.addRenderPass(renderPass.name || renderPass.type, renderPass.pass, renderPass.attributes, renderPass.options || null, renderPass.uniforms || null);
       }
     }
   }
 
-  addRenderPass(name, attributes, options = null, uniforms = null) {
-
-    if (this.composer && this.renderPassTypes[name]) {
-      this.renderPasses[name] = new this.renderPassTypes[name](...attributes);
-      if (options) {
-        // tslint:disable-next-line:forin
-        for (const key in options) {
-          this.renderPasses[name] [key] = options[key];
+  addRenderPass(name, pass, attributes, options = null, uniforms = null) {
+    if (this.useComposer) {
+      if (this.composer && pass) {
+        this.renderPasses[name] = new pass(...attributes);
+        if (options) {
+          // tslint:disable-next-line:forin
+          for (const key in options) {
+            this.renderPasses[name] [key] = options[key];
+          }
         }
-      }
-      if (uniforms) {
-        // tslint:disable-next-line:forin
-        for (const uniform of uniforms) {
-          this.renderPasses[name].uniforms[uniform[0]][uniform[1]] = uniforms[uniform[2]];
+        if (uniforms) {
+          // tslint:disable-next-line:forin
+          for (const uniform of uniforms) {
+            this.renderPasses[name].uniforms[uniform[0]][uniform[1]] = uniforms[uniform[2]];
+          }
         }
+        this.composer.addPass(this.renderPasses[name]);
+        this.activateRenderPass(name);
       }
-      this.composer.addPass(this.renderPasses[name]);
+    } else {
+      console.log('can´t add render pass "' + name + '", composer not activated');
     }
   }
 
@@ -360,11 +371,12 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   activateRenderPass(name) {
-    this.inactiveRenderPasses[name] = false;
+    this.activeRenderPasses[name] = true;
+    this.showRenderPass(name);
   }
 
   deactivateRenderPass(name) {
-    this.inactiveRenderPasses[name] = true;
+    this.activeRenderPasses[name] = false;
     this.hideRenderPass(name);
   }
 
@@ -377,13 +389,14 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   renderPassActive(name) {
-    return !this.inactiveRenderPasses[name];
+    return this.activeRenderPasses[name] || false;
   }
 
   showRenderPass(name) {
     if (this.renderPassActive(name)) {
       const pass = this.getRenderPass(name);
       if (pass) {
+        pass.camera = this.camera;
         pass.enabled = true;
       }
     }
@@ -411,10 +424,26 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
 
   selectCamera(cameraObject: AnimationObject) {
     this.camera = cameraObject.camera;
-    if (this.renderPasses) {
-      this.renderPass.camera = this.camera;
-    }
+    this.setRenderPassCamera();
+    this.updateView();
+  }
 
+  setRenderPassCamera(camera = this.camera) {
+    if (this.renderPass && this.composer) {
+      this.renderPass.camera = camera;
+    }
+    if (this.renderPasses && this.composer) {
+      for (const key in this.renderPasses) {
+        this.renderPasses[key].camera = camera;
+      }
+    }
+  }
+
+
+  selectControlCamera(camera = this.controlCamera) {
+    this.camera = camera;
+    this.controlCamera = camera;
+    this.setRenderPassCamera();
     if (this.cameraControls) {
       this.cameraControls.camera = this.camera;
     } else {
@@ -426,6 +455,10 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     this.updateView();
+  }
+
+  isControlCamera() {
+    return (this.cameraControls && this.cameraControls.camera === this.camera);
   }
 
   randomInt(maximal, minimal = 0) {
@@ -538,7 +571,6 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
         onSuccess(e);
       }
     }, (source, total, loaded) => {
-      console.log(source, total, loaded);
       this.updateLoading(source, total, loaded)
     });
     if (newObject.mesh) {
@@ -734,7 +766,6 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   renderScene() {
-
     if (this.stats) {
       this.stats.begin();
     }
@@ -758,13 +789,9 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   animateScene(force: any = false, forceTime: boolean = false, preventUpdate: boolean = false) {
     const delta = this.clock.getDelta();
     if (this.scene) {
-      if (!force) {
-        this.updateFrame(true);
-      } else {
-        this.updateFrame(false);
-      }
+      this.updateFrame(!force);
     }
-    if (this.cameraControls) {
+    if (this.cameraControls && this.cameraControls.camera == this.camera) {
       this.cameraControls.update(delta);
     }
 

@@ -27,7 +27,7 @@ export const CarsPresets: AnimationPreset[] = [
             objectNames: ['CPDeLorean_RoofTopDevice', 'CPDeLorean_EngineFrontL_pipes', 'CPDeLorean_EngineFrontR_pipes', 'CPDeLorean_EngineRearL_pipes', 'CPDeLorean_EngineRearR_pipes'],
             material: {
               type: 'MeshToonMaterial',
-              color: '#ff00ec'
+              color: '#006e7a'
             }
           },
           {

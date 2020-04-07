@@ -1199,7 +1199,6 @@ export class AnimationObject {
   }
 
   hide() {
-    console.log('hide', this.id, this.type);
     if (this.mesh) {
       this.mesh.visible = false;
       this.mesh.traverse((child) => {
@@ -1212,7 +1211,6 @@ export class AnimationObject {
   }
 
   show() {
-    console.log('show', this.id, this.type);
     if (this.mesh) {
       this.mesh.visible = true;
       this.mesh.traverse((child) => {
