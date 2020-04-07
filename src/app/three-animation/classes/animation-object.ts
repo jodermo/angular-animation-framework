@@ -1223,15 +1223,20 @@ export class AnimationObject {
 
   clone(parentObject = null) {
     const clone = new AnimationObject('clone', this.options, parentObject, this.objects);
+
     if (this.mesh) {
-      clone.mesh = this.mesh.clone();
-      clone.object.add(clone.mesh);
-      clone.initMesh(clone.options);
-      clone.initObject(clone.options, clone.mesh);
+      if (this.mesh instanceof THREE.Mesh) {
+        clone.mesh = this.mesh.clone(true);
+        clone.object.add(clone.mesh);
+        clone.initMesh(this.options);
+      }
+      clone.initObject(this.options, clone.mesh);
     } else {
       clone.object = this.object.clone();
-      clone.initObject(clone.options, clone.mesh);
     }
+
+    clone.initObject(clone.options, clone.mesh);
+
     if (parentObject) {
       clone.appendTo(parentObject);
     }

@@ -2,6 +2,266 @@ import { AnimationPreset } from '../../three-animation/classes/animation-object'
 
 export const AudioAnimationPresets: AnimationPreset[] = [
   {
+    name: 'water_tower',
+    type: 'obj',
+    options: {
+      material: {
+        type: 'MeshToonMaterial',
+        color: 0xffffff,
+        receiveShadow: true,
+        shininess: 100
+      },
+      obj: {
+        source: 'assets/obj/Water Tower Corona.obj',
+        materials: [
+          {
+            name: 'tower',
+            objectNames: ['Water_Tower'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#00eaff',
+            }
+          },
+          {
+            name: 'legs',
+            objectNames: ['Legs', 'Base'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#510084',
+            }
+          },
+          {
+            name: 'tank',
+            objectNames: ['Tank'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#03009b',
+            }
+          },
+        ]
+      },
+      mesh: {
+        receiveShadow: true,
+        castShadow: true
+      },
+      position: {
+        x: 0,
+        y: 0,
+        z: 0
+      },
+      scale: {
+        x: 2,
+        y: 2,
+        z: 2
+      }
+    }
+  },
+  {
+    name: 'deer',
+    type: 'obj',
+    options: {
+      material: {
+        type: 'MeshToonMaterial',
+        color: 0xffffff,
+        receiveShadow: true,
+        shininess: 100
+      },
+      obj: {
+        source: 'assets/obj/Deer_type_03_A_OBJ.obj',
+        materials: [
+          {
+            name: 'body',
+            objectNames: ['Deer_type_03_A_body'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#ff00ec',
+            }
+          },
+          {
+            name: 'legs',
+            objectNames: ['Deer_type_03_A_horns'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#00eaff',
+            }
+          },
+        ]
+      },
+      mesh: {
+        receiveShadow: true,
+        castShadow: true
+      },
+      position: {
+        x: 0,
+        y: 0,
+        z: 0
+      },
+      scale: {
+        x: .25,
+        y: .25,
+        z: .25,
+      }
+    }
+  },
+  {
+    name: 'chicken',
+    type: 'obj',
+    options: {
+      material: {
+        type: 'MeshToonMaterial',
+        color: 0xffffff,
+        receiveShadow: true,
+        shininess: 100
+      },
+      obj: {
+        source: 'assets/obj/chicken_01.obj',
+        materials: [
+          {
+            name: 'body',
+            objectNames: ['chicken_lp'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#010040',
+            }
+          },
+          {
+            name: 'legs',
+            objectNames: ['Deer_type_03_A_horns'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#00eaff',
+            }
+          },
+        ]
+      },
+      mesh: {
+        receiveShadow: true,
+        castShadow: true
+      },
+      position: {
+        x: 0,
+        y: 0,
+        z: 0
+      },
+      scale: {
+        x: .3,
+        y: .3,
+        z: .3,
+      }
+    }
+  },
+  {
+    name: 'helicopter',
+    type: 'obj',
+    options: {
+      speed: 3,
+      material: {
+        type: 'MeshToonMaterial',
+        color: 0xffffff,
+        receiveShadow: true,
+        shininess: 100
+      },
+      obj: {
+        source: 'assets/obj/Lowpoly_Helicopter.obj',
+        materials: [
+          {
+            name: 'body',
+            objectNames: ['Copter'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#84007a',
+            }
+          },
+          {
+            name: 'legs',
+            objectNames: ['Propeller', 'Propeller_1'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#00eaff',
+            }
+          },
+        ]
+      },
+      mesh: {
+        receiveShadow: true,
+        castShadow: true
+      },
+      position: {
+        x: 0,
+        y: 1000,
+        z: 0
+      },
+      scale: {
+        x: .1,
+        y: .1,
+        z: .1,
+      }
+    }
+  },
+  {
+    name: 'silo',
+    type: 'obj',
+    options: {
+      material: {
+        type: 'MeshToonMaterial',
+        color: 0xffffff,
+        receiveShadow: true,
+        shininess: 100
+      },
+      obj: {
+        source: 'assets/obj/Industrial Silo_6_obj.obj',
+        materials: [
+          {
+            name: 'ground',
+            objectNames: ["IS06_OBJ_05"],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#510084',
+            }
+          },
+          {
+            name: 'metal1',
+            objectNames: ["IS06_OBJ_01", "IS06_OBJ_02", "IS06_OBJ_03"],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#00eaff',
+            }
+          },
+          {
+            name: 'pipes',
+            objectNames: ['IS06_OBJ_04'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#ff00ec',
+            }
+          },
+          {
+            name: 'tanks',
+            objectNames: ['IS06_OBJ_06'],
+            material: {
+              type: 'MeshToonMaterial',
+              color: '#510084',
+            }
+          },
+        ]
+      },
+      mesh: {
+        receiveShadow: true,
+        castShadow: true
+      },
+      position: {
+        x: 0,
+        y: -2,
+        z: 0
+      },
+      scale: {
+        x: .33,
+        y: .33,
+        z: .33,
+      }
+    }
+  },
+  {
     name: 'box',
     type: 'mesh',
     options: {

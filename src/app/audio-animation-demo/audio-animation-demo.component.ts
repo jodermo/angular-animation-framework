@@ -142,12 +142,13 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.setupLights();
     this.setupCameras();
     this.setupTrees();
+    this.setupMisc();
     this.setupCar();
     this.setupRandomObjects();
   }
 
   setupAudio() {
-    if(this.musicTrack){
+    if (this.musicTrack) {
       this.musicTrack.pause();
     }
 
@@ -302,7 +303,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.setPosition({x: -150, y: 0, z: 200});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
-        this.makeRandomObjectsFrom(childObj, 10);
+        this.makeRandomObjectsFrom(childObj, 10, true, obj.options);
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
@@ -312,7 +313,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.setPosition({x: -1000, y: 0, z: -300});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
-        this.makeRandomObjectsFrom(childObj, 10);
+        this.makeRandomObjectsFrom(childObj, 10, true, obj.options);
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
@@ -321,7 +322,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.setPosition({x: -2000, y: 0, z: 250});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
-        this.makeRandomObjectsFrom(childObj, 10);
+        this.makeRandomObjectsFrom(childObj, 10, true, obj.options);
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
@@ -330,7 +331,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.setPosition({x: -800, y: 0, z: 600});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
-        this.makeRandomObjectsFrom(childObj, 10);
+        this.makeRandomObjectsFrom(childObj, 10, true, obj.options);
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
@@ -338,7 +339,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       this.generateChildObjectGroup(obj, ['polySurface333 polySurface173', 'polySurface339'], (childObj) => {
         childObj.setPosition({x: -1500, y: 0, z: 500});
         this.randomObjects.push(childObj);
-        this.makeRandomObjectsFrom(childObj, 10);
+        this.makeRandomObjectsFrom(childObj, 10, true, obj.options);
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
@@ -346,12 +347,102 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       this.generateChildObjectGroup(obj, ['polySurface328 polySurface200', 'polySurface338'], (childObj) => {
         childObj.setPosition({x: -5000, y: 0, z: -500});
         this.randomObjects.push(childObj);
-        this.makeRandomObjectsFrom(childObj, 10);
+        this.makeRandomObjectsFrom(childObj, 10, true, obj.options);
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
       }, this.scene, false);
     })
+  }
+
+  setupMisc() {
+    const waterTower = this.createPresetObject('audio-animation', 'water_tower', null, (obj) => {
+      this.generateChildObjectGroup(obj, ['Water_Tower', 'Legs', 'Tank', 'Base'], (childObj) => {
+        childObj.setPosition({x: -1000, y: 0, z: 500});
+        childObj.setScale(waterTower.options.scale || {x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        console.log('waterTower', waterTower.options);
+        this.makeRandomObjectsFrom(childObj, 4, true, waterTower.options);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
+      }, this.scene, false);
+    });
+
+    const deer = this.createPresetObject('audio-animation', 'deer', null, (obj) => {
+      this.generateChildObjectGroup(obj, ['Deer_type_03_A_body', 'Deer_type_03_A_horns'], (childObj) => {
+        childObj.setPosition({x: -1000, y: 0, z: -500});
+        childObj.setScale(deer.options.scale || {x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        console.log('deer', deer.options);
+        this.makeRandomObjectsFrom(childObj, 3, true, deer.options);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
+      }, this.scene, false);
+
+    });
+
+    const chicken = this.createPresetObject('audio-animation', 'chicken', null, (obj) => {
+      this.generateChildObjectGroup(obj, ['chicken_lp'], (childObj) => {
+        childObj.setPosition({x: 1000, y: 0, z: -500});
+        childObj.setScale(chicken.options.scale || {x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        console.log('deer', deer.options);
+        this.makeRandomObjectsFrom(childObj, 20, true, chicken.options);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
+      }, this.scene, false);
+
+    });
+
+    const rotorRotation = (aniObject, duration = 500) => {
+      aniObject.rotateTo({
+        x: aniObject.object.rotation.x,
+        y: Math.PI * 2,
+        z: aniObject.object.rotation.z
+      }, duration, () => {
+        aniObject.setRotation({
+          x: aniObject.object.rotation.x,
+          y: 0,
+          z: aniObject.object.rotation.z
+        });
+        rotorRotation(aniObject, duration);
+      })
+    }
+
+    const helicopter = this.createPresetObject('audio-animation', 'helicopter', null, (obj) => {
+
+
+      this.generateChildObjectGroup(obj, ['Copter', 'Propeller'], (childObj) => {
+        const rotor = this.generateChildObjectGroup(obj, ['Propeller_1'], (chilChildObj) => {
+          rotorRotation(chilChildObj);
+        }, childObj.object, false);
+        childObj.options = helicopter.options;
+        childObj.setPosition({x: -3200, y: 1000, z: -1500});
+        childObj.setRotation({x: 0, y: Math.PI, z: 0});
+        childObj.setScale(helicopter.options.scale || {x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        childObj.on('mousedown', () => {
+          this.randomObjectClick(obj);
+        });
+      }, this.scene, false);
+
+    });
+
+
+    const train = this.createPresetObject('audio-animation', 'silo', null, (obj) => {
+      this.generateChildObjectGroup(obj, ["IS06_OBJ_01", "IS06_OBJ_02", "IS06_OBJ_03", "IS06_OBJ_04", "IS06_OBJ_05", "IS06_OBJ_06"], (childObj) => {
+        childObj.options = train.options;
+        childObj.setPosition({x: -500, y: -1, z: -500});
+        childObj.setRotation({x: 0, y: Math.PI / 2, z: 0});
+        childObj.setScale(train.options.scale || {x: 4, y: 4, z: 4});
+        this.randomObjects.push(childObj);
+        this.makeRandomObjectsFrom(childObj, 3, true, train.options);
+      }, this.scene, false);
+
+    });
   }
 
   setupCar() {
@@ -624,15 +715,29 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     }
   }
 
-  makeRandomObjectsFrom(aniObject: AnimationObject, count = 1, randomRotation = true) {
+  makeRandomObjectsFrom(aniObject: AnimationObject, count = 1, randomRotation = true, options = null) {
+
+
     for (let i = 0; i < count; i++) {
-      const newAniObject = aniObject.clone(this.scene);
-      const pos = this.randomObjectPosition(aniObject, aniObject.options);
-      newAniObject.setPosition({x: pos.x, y: pos.y, z: pos.z});
-      if (randomRotation) {
-        aniObject.object.rotation.set(0, (Math.PI * (Math.random() * 2)), 0);
-      }
-      this.randomObjects.push(newAniObject);
+      setTimeout(() => {
+        const newAniObject = aniObject.clone(this.scene);
+        const pos = this.randomObjectPosition(aniObject, options || aniObject.options);
+        newAniObject.setPosition({x: pos.x, y: pos.y, z: pos.z});
+        if (randomRotation) {
+          newAniObject.object.rotation.set(0, (Math.PI * (Math.random() * 2)), 0);
+        }
+        if (options && options.scale) {
+
+          if (newAniObject.mesh) {
+            newAniObject.mesh.scale.set(options.scale.x, options.scale.y, options.scale.z);
+          } else {
+            newAniObject.object.scale.set(options.scale.x, options.scale.y, options.scale.z);
+          }
+          console.log('makeRandomObjectsFrom', options.scale, newAniObject);
+        }
+        this.randomObjects.push(newAniObject);
+      }, i * 10);
+
     }
   }
 
@@ -946,7 +1051,12 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   animateRandomObjects() {
     if (this.randomObjects) {
       for (const aniObject of this.randomObjects) {
-        let x = aniObject.object.position.x + (this.animationSettings.speed.objects * this.animationSettings.speed.total);
+        let speed = 1;
+        if (aniObject.options && aniObject.options.speed) {
+          speed = aniObject.options.speed;
+        }
+        let x = aniObject.object.position.x + (this.animationSettings.speed.objects * this.animationSettings.speed.total * speed);
+
         const y = aniObject.object.position.y;
         let z = aniObject.object.position.z;
         if (x > this.randomObjectSettings.size.x / 2) {
