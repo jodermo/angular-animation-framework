@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RadioPreviewComponent } from '../radio-preview/radio-preview.component';
 import { WebRadioComponent } from '../web-radio.component';
 
@@ -8,6 +8,8 @@ import { WebRadioComponent } from '../web-radio.component';
   styleUrls: ['./radio-preview-small.component.scss'],
 })
 export class RadioPreviewSmallComponent extends RadioPreviewComponent {
+  @Output()  onClose = new EventEmitter();
+
 
   constructor(public webRadio: WebRadioComponent) {
     super(webRadio);
@@ -50,9 +52,12 @@ export class RadioPreviewSmallComponent extends RadioPreviewComponent {
   }
 
   close() {
+    this.pause();
     if (this.webRadio) {
       this.webRadio.removeStream();
     }
+
+    this.onClose.emit();
   }
 
 }

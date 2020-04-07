@@ -34,7 +34,7 @@ export class WebRadioComponent implements OnInit {
     {
       name: 'stations',
       filterBy: ['name', 'codec', 'country', 'state', 'language', 'tag', 'id', 'uuid'],
-      options:null
+      options: null
     },
   ];
   oderTypes = ['name', 'url', 'homepage', 'favicon', 'tags', 'country', 'state', 'language', 'votes', 'negativevotes', 'codec', 'bitrate', 'lastcheckok', 'lastchecktime', 'clicktimestamp', 'clickcount', 'clicktrend'];
@@ -52,11 +52,22 @@ export class WebRadioComponent implements OnInit {
   audioState = 'none';
 
   constructor(private http: HttpClient) {
-
+    //localStorage.clear();
 
   }
 
   ngOnInit() {
+    const radioSearch = localStorage.getItem('radio-search');
+    const radioName = localStorage.getItem('radio-name');
+    if (radioSearch && radioName) {
+
+      console.log(radioSearch, radioName);
+
+      this.selectFilterByType(this.filter.type || this.filterTypes[0].name);
+      this.filter.value = radioName;
+      localStorage.removeItem('radio-search');
+      this.searchRadios(null);
+    }
 
     if (window && window['radio'] && window['radio'].audio) {
 
@@ -73,7 +84,7 @@ export class WebRadioComponent implements OnInit {
       this.filter.by = localStorage.getItem('radio-filter-by') || null;
       if (localStorage.getItem('radio-filter-value')) {
         this.filter.value = localStorage.getItem('radio-filter-value');
-        this.searchRadios(localStorage.getItem('radio-name') || null);
+        this.searchRadios(radioName || null);
       } else {
         this.selectFilterByType(this.filter.type || this.filterTypes[0].name);
       }
@@ -217,7 +228,6 @@ export class WebRadioComponent implements OnInit {
       this.audioFile.src = this.streamUrl;
       window['radio'].audio = this.audioFile;
       window['radio'].station = this.currentRadio;
-      this.onPlay.emit(this.audioFile);
       this.playbackEvents();
     }
   }

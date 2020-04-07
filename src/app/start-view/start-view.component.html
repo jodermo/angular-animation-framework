@@ -1,18 +1,24 @@
 <div class="start-view">
   <div class="start-view-content">
     <h1>Retro Audio Visualisation</h1>
-    <h2>by: <a href="https://petzka.com" target="_blank">Moritz Petzka</a></h2><br><br>
     <div class="description">
       <p>
-        Angular & Three.js
+        <b>Angular & Three.js</b><br>
+        Demo project
       </p>
       <ul>
-        <li>OBJ import</li>
         <li>dynamic audio analysis</li>
         <li>visual effects on specific frequency peaks</li>
         <li>camera changes on beat</li>
-      </ul>
-    </div>
+        <li>integrated search API for web radio stations</li>
+        <li>OBJ import</li>
+      </ul><br><br>
+      <label >
+        <input [(ngModel)]="radioSearchQuery" (keydown.enter)="searchRadio()"  />
+        <input type="submit" value="Search radio station" (click)="searchRadio()" />
+      </label><br>
+
+    </div><br>
     <button (click)="clickStart()">
       <span><small>click here</small></span><br>
       <span><small>to</small></span><br>

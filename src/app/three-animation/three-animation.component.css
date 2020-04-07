@@ -44,6 +44,10 @@
 
 }
 
+label  input[type='checkbox'] {
+  pointer-events: none;
+}
+
 .animation-audio-controls {
   border-top: 1px solid #fff;
   margin-top: 1.25rem;

@@ -13,6 +13,7 @@ export class AppComponent {
   started = false;
 
   constructor() {
+
   }
 
   windowRadio() {
@@ -38,5 +39,14 @@ export class AppComponent {
     }
     localStorage.clear();
 
+  }
+
+  searchRadio(radioQuery = '') {
+    this.radioView = false;
+    localStorage.setItem('radio-name', radioQuery);
+    localStorage.setItem('radio-search', 'true');
+    setTimeout(() => {
+      this.radioView = true;
+    }, 100);
   }
 }

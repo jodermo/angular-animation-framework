@@ -382,6 +382,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   toggleRenderPassActive(name) {
+    console.log(name);
     if (!this.renderPassActive(name)) {
       this.activateRenderPass(name);
     } else {

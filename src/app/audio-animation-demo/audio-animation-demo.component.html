@@ -2,7 +2,9 @@
      (mousedown)="containerMouseEvent($event, 'mousedown');"
      (mouseup)="containerMouseEvent($event, 'mouseup');"
      (mousemove)="containerMouseEvent($event, 'mousemove');"
-     #animationContainer></div>
+     (click)="controlPanel = false"
+     #animationContainer>
+</div>
 <div class="animation-controls" *ngIf="!controlPanel && !infoPanel && !loading">
   <div class="control-nav">
     <button (click)="controlPanel = true;">
@@ -29,10 +31,9 @@
     <button *ngIf="isControlCamera()" class="active" (click)="selectCamera(cameras[0])">Camera controls off</button>
   </div>
   <div *ngIf="postProcessing && postProcessing.renderPasses" class="animation-audio-controls">
-    <b>Post processing</b><br>
-    <label *ngFor="let renderPass of postProcessing.renderPasses">
-      <input type="checkbox" [checked]="renderPassActive(renderPass.name)"
-             (change)="toggleRenderPassActive(renderPass.name)"/>
+    <b>Post processing effects</b><br>
+    <label *ngFor="let renderPass of postProcessing.renderPasses" (click)="toggleRenderPassActive(renderPass.name)"  >
+      <input type="checkbox" [checked]="renderPassActive(renderPass.name)" />
       <span>{{renderPass.name}}</span>
       <br>
     </label>

@@ -11,4 +11,5 @@
   </div>
   <button (click)="play()" *ngIf="radio.audio && radio.audio.paused">play</button>
   <button (click)="pause()" *ngIf="radio.audio && !radio.audio.paused">pause</button>
+  <button (click)="close()">close</button>
 </div>

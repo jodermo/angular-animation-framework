@@ -10,7 +10,7 @@ import {
 
 
 import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader';
-import { DotScreenShader } from 'three/examples/jsm/shaders/DotScreenShader';
+import { GammaCorrectionShader  } from 'three/examples/jsm/shaders/GammaCorrectionShader';
 
 import { DemoPresets } from '../three-animation/presets/demo-presets';
 import { AudioAnimationPresets } from './presets/audio-animation-presets';
@@ -122,9 +122,15 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         pass: ShaderPass,
         type: 'ShaderPass',
         attributes: [RGBShiftShader],
-        uniforms: [['amount', 'value', 0.1]]
+        uniforms: [['amount', 'value', 0.5]]
       },
       {name: 'UnrealBloomPass', pass: UnrealBloomPass, type: 'UnrealBloomPass', attributes: [10, .5, .025, 0.5, 0.2]},
+      {
+        name: 'GammaCorrectionShader',
+        pass: ShaderPass,
+        type: 'ShaderPass',
+        attributes: [GammaCorrectionShader]
+      },
       {
         name: 'FilmPass',
         pass: FilmPass,
@@ -133,6 +139,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         options: {renderToScreen: true}
       },
       {name: 'GlitchPass', pass: GlitchPass, type: 'GlitchPass', attributes: [], options: {goWild: true},},
+
     ];
   }
 
@@ -1097,6 +1104,17 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.hideRenderPass('AfterimagePass');
     if (this.getAudioFrequencyData(afterImageStep) > afterImageValue / this.animationSettings.gain) {
       this.showRenderPass('AfterimagePass');
+    }
+
+    const GammaCorrectionStep = 19;
+    const GammaCorrectionValue = 180;
+    this.hideRenderPass('GammaCorrectionShader');
+    if (this.getAudioFrequencyData(GammaCorrectionStep) > GammaCorrectionValue / this.animationSettings.gain) {
+      const shaderOn = Math.floor(Math.random() * 1.9);
+      console.log(shaderOn);
+      if (shaderOn) {
+        this.showRenderPass('GammaCorrectionShader');
+      }
     }
   }
 

@@ -7,6 +7,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class StartViewComponent implements OnInit {
   @Output() onStart = new EventEmitter<boolean>();
+  @Output() onSearchRadio = new EventEmitter<string>();
+  radioSearchQuery = 'electro';
 
 
   constructor() {
@@ -17,6 +19,12 @@ export class StartViewComponent implements OnInit {
 
   clickStart() {
     this.onStart.emit(true);
+  }
+
+  searchRadio() {
+    if (this.radioSearchQuery && this.radioSearchQuery.length >= 2) {
+      this.onSearchRadio.emit(this.radioSearchQuery);
+    }
   }
 
 }
