@@ -4,4 +4,21 @@
   <canvas id="audioCanvas" width="480" height="320"
           style="position: absolute; bottom: 0; left: 0; z-index: 9999;"></canvas>
 </div>
+<div class="web-radio-container" [hidden]="!radioView">
+  <div class="inside">
+    <button class="close-web-radio" (click)="radioView = false">X</button>
+    <app-web-radio (onPlay)="changeMusicTrack($event)"></app-web-radio>
+  </div>
+</div>
+<div class="web-radio-container" *ngIf="!radioView">
+  <div class="inside" *ngIf="windowRadio()">
+    <app-radio-preview-small [radio]="windowRadio()"></app-radio-preview-small>
+    <button  (click)="killRadioStation()">close</button>
+  </div>
+  <button  (click)="radioView = true">Search Radio Station</button>
+
+</div>
+
+
+
 

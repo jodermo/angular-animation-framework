@@ -37,6 +37,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   infoPanel = false;
   sourceInfos = SourceInfos;
   demoVideo: AnimationObject;
+  musicTrack;
   car: any;
   delorean: any;
   street: AnimationObject;
@@ -48,6 +49,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   directionalLightOrange: AnimationObject;
   pointLight: AnimationObject;
   audioAnalyzer: AudioAnalyzer;
+  audioAni;
   mainCamera: AnimationObject;
   sideCameraRight: AnimationObject;
   sideCameraLeft: AnimationObject;
@@ -145,13 +147,24 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   }
 
   setupAudio() {
-    this.loadAudio('demo', 'assets/audios/No Generation - Give Me Your Soul.mp3', {loop: true});
-    const audioCanvas: HTMLElement = document.getElementById('audioCanvas');
-    this.audioAnalyzer = this.audioService.analyzer(this.audio('demo'));
-    const audioAni = this.audioAnimation(this.audioAnalyzer);
+    if(this.musicTrack){
+      this.musicTrack.pause();
+    }
+
+    if (window['radio'] && window['radio'].audio) {
+      this.musicTrack = window['radio'].audio;
+    } else {
+      this.loadAudio('demo', 'assets/audios/No Generation - Give Me Your Soul.mp3', {loop: true});
+      this.musicTrack = this.audio('demo');
+      this.musicTrack.play();
+    }
+    console.log(this.musicTrack);
+    this.audioAnalyzer = this.audioService.analyzer(this.musicTrack);
+    this.audioAni = this.audioAnimation(this.audioAnalyzer);
+
+    // const audioCanvas: HTMLElement = document.getElementById('audioCanvas');
     // this.audioAnalyzer.setCanvas(audioCanvas as HTMLCanvasElement);
 
-    this.playAudio('demo');
 
   }
 

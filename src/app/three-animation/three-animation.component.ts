@@ -288,6 +288,7 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
       this.cameraControls = new OrbitControls(this.camera, this.container);
     }
 
+
     if (this.useHtml) {
       this.rendererCSS = new CSS3DRenderer();
       this.rendererCSS.setSize(this.viewSize().width, this.viewSize().height);

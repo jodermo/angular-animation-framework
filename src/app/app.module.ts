@@ -6,6 +6,11 @@ import { ThreeAnimationComponent } from './three-animation/three-animation.compo
 import { AudioAnimationDemoComponent } from './audio-animation-demo/audio-animation-demo.component';
 import { ThreeAnimationPreloaderComponent } from './three-animation/three-animation-preloader/three-animation-preloader.component';
 import { StartViewComponent } from './start-view/start-view.component';
+import { WebRadioComponent } from './web-radio/web-radio.component';
+import { RadioPreviewComponent } from './web-radio/radio-preview/radio-preview.component';
+import { RadioPreviewSmallComponent } from './web-radio/radio-preview-small/radio-preview-small.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -13,12 +18,17 @@ import { StartViewComponent } from './start-view/start-view.component';
     ThreeAnimationComponent,
     AudioAnimationDemoComponent,
     ThreeAnimationPreloaderComponent,
-    StartViewComponent
+    StartViewComponent,
+    WebRadioComponent,
+    RadioPreviewComponent,
+    RadioPreviewSmallComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [HttpClient, WebRadioComponent, AudioAnimationDemoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

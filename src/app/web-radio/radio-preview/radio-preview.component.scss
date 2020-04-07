@@ -1,0 +1,44 @@
+
+.radio-header {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  padding: .25rem;
+
+}
+
+.radio-body {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+
+  .radio-thumbnail {
+    position: relative;
+    width: 120px;
+    height: auto;
+    background: #000;
+
+    &.small {
+      width: 64px;
+    }
+
+    .radio-favicon {
+      display: inline-block;
+      width: 100%;
+      height: auto;
+    }
+
+  }
+
+  .radio-info {
+    position: relative;
+    padding: 0 .5rem;
+    flex: 1;
+    .radio-name{
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}

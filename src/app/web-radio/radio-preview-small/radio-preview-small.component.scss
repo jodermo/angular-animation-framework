@@ -1,0 +1,14 @@
+.radio-preview-small{
+  display: flex;
+  padding: .5rem;
+  .radio-favicon{
+    width: 64px;
+    height: auto;
+  }
+  div{
+    flex: 1;
+  }
+  button{
+    width: 25%;
+  }
+}

@@ -96,16 +96,21 @@ export class AudioAnalyzer {
   };
 
   constructor(public audio: HTMLAudioElement) {
-    if (!this.audioCtx) {
-      this.audioCtx = new AudioContext();
-      this.analyser = this.audioCtx.createAnalyser();
-      this.audioSrc = this.audioCtx.createMediaElementSource(audio);
-      this.audioSrc.connect(this.analyser);
-      this.audioSrc.connect(this.audioCtx.destination);
-      this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
-    }
+    this.setAudio(audio);
     this.loop();
+  }
 
+  setAudio(audio: HTMLAudioElement) {
+    this.audio = audio;
+    if (this.audioCtx) {
+      this.audioCtx.close();
+    }
+    this.audioCtx = new AudioContext();
+    this.analyser = this.audioCtx.createAnalyser();
+    this.audioSrc = this.audioCtx.createMediaElementSource(audio);
+    this.audioSrc.connect(this.analyser);
+    this.audioSrc.connect(this.audioCtx.destination);
+    this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
   }
 
   update() {
@@ -114,6 +119,39 @@ export class AudioAnalyzer {
     this.do('update', {
       frequency: this.frequency
     });
+  }
+
+  toggle() {
+    if (this.audio.paused) {
+      this.play()
+    } else {
+      this.pause()
+    }
+  }
+
+  play() {
+    if (this.audio.paused) {
+      this.audio.play();
+    }
+  }
+
+  pause() {
+    if (!this.audio.paused) {
+      this.audio.pause();
+    }
+
+  }
+
+  mute() {
+    this.audio.muted = true;
+  }
+
+  unmute() {
+    this.audio.muted = false;
+  }
+
+  toggleMute() {
+    this.audio.muted = !this.audio.muted;
   }
 
   frequencyDataUpdate() {
@@ -192,6 +230,9 @@ export class AudioAnalyzer {
       clearTimeout(audioTimeUpdate)
     }
     this.update();
+    if(window['radio'] && window['radio'].audio && window['radio'].audio !== this.audio){
+      this.setAudio(window['radio'].audio);
+    }
     audioTimeUpdate = setTimeout(() => {
       this.loop(fps);
     }, 1000 / fps);

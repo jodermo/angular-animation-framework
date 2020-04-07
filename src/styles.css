@@ -42,6 +42,49 @@ app-start-animation .animation-display {
   margin-right: 1rem;
 }
 
+.web-radio-container {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  max-height: 100vh;
+  top: 0;
+  right: 0;
+  max-width: 600px;
+  z-index: 999;
+  padding: .5rem;
+}
+
+.web-radio-container > .inside {
+  background: rgba(0, 0, 0, 0.5);
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+
+
+.web-radio-container > button {
+  float: right;
+}
+
+
+
+.open-web-radio {
+  position: absolute;
+  right: 0.5rem;
+  top: .5rem;
+  z-index: 999;
+}
+
+.close-web-radio {
+  position: absolute;
+  right: 0.5rem;
+  top: .5rem;
+  z-index: 999;
+}
+
 label {
   position: relative;
   line-height: 1rem;
