@@ -1,62 +1,62 @@
-<div class="web-radio">
+<div class="web-radio" >
   <div class="inside">
-    <div class="audio-player" *ngIf="audioFile">
-      <div *ngIf="currentRadio">
-        <app-radio-preview [radio]="currentRadio" [details]="true"></app-radio-preview>
+    <div class="audio-player" *ngIf="radio.audio">
+      <div *ngIf="radio.station">
+        <app-radio-preview [radio]="radio.station" [details]="true"></app-radio-preview>
       </div>
       <div class="progressbar">
         <div class="progressbar-fill"
-             [ngStyle]="{'width': ((playbackTime / playbackDuration) * 100) + '%'}"></div>
+             [ngStyle]="{'width': ((radio.time / radio.duration) * 100) + '%'}"></div>
       </div>
       <div class="audio-player-controls horizontal-flex">
-        <button class="prev-button" (click)="selectPrevRadio()">
+        <button class="prev-button" (click)="radio.selectPrevRadio()">
           <
         </button>
-        <button class="play-button" (click)="togglePause()"
-                [ngClass]="{inactive:(!audioFile || !audioFile.paused)}">
+        <button class="play-button" (click)="radio.togglePause()"
+                [ngClass]="{inactive:(!radio.audio || !radio.audio.paused)}">
           play
         </button>
-        <button class="pause-button" (click)="togglePause()"
-                [ngClass]="{inactive:(!audioFile || audioFile.paused)}">
+        <button class="pause-button" (click)="radio.togglePause()"
+                [ngClass]="{inactive:(!radio.audio || radio.audio.paused)}">
           pause
         </button>
-        <button class="mute-button" (click)="toggleMute()"
-                [ngClass]="{inactive:(!audioFile), active: (audioFile.volume <= 0)}">
+        <button class="mute-button" (click)="radio.toggleMute()"
+                [ngClass]="{inactive:(!radio.audio), active: (radio.audio.volume <= 0)}">
           mute
         </button>
-        <button class="prev-button" (click)="selectNextRadio()">
+        <button class="prev-button" (click)="radio.selectNextRadio()">
           >
         </button>
         <div class="progress-info">
-          <span *ngIf="playbackTimeString">{{playbackTimeString}}</span>
-          <span *ngIf="playbackDurationString">/ {{playbackDurationString}}</span>
+          <span *ngIf="radio.checkTimeString(radio.timeString)">{{radio.timeString}}</span>
+          <span *ngIf="radio.checkTimeString(radio.durationString)">/ {{radio.durationString}}</span>
         </div>
       </div>
     </div>
     <div class="audio-player-filter">
-        <label *ngIf="currentFilterType && currentFilterType.filterBy">
+        <label *ngIf="radio.currentFilterType && radio.currentFilterType.filterBy">
           <span>Search for radio station: </span>
-          <input *ngIf="!currentFilterType || !currentFilterType.options" type="text"
-                 [(ngModel)]="filter.value"
-                 placeholder="search" (change)="searchRadios()" (keyup)="searchRadios()" required/>
-          <select [(ngModel)]="filter.by" (change)="searchRadios()">
-            <option *ngFor="let by of currentFilterType.filterBy" [value]="by">{{by}}</option>
+          <input *ngIf="!radio.currentFilterType || !radio.currentFilterType.options" type="text"
+                 [(ngModel)]="radio.filter.value"
+                 placeholder="search" (change)="radio.searchStations()" (keyup)="radio.searchStations()" required/>
+          <select [(ngModel)]="radio.filter.by" (change)="radio.searchStations()">
+            <option *ngFor="let by of radio.currentFilterType.filterBy" [value]="by">{{by}}</option>
           </select>
         </label>
-        <label>
+        <label class="extended-filter">
           <span>Order by</span>
-          <select [(ngModel)]="filter.order" (change)="searchRadios()">
-            <option *ngFor="let orderType of oderTypes" [value]="orderType">{{orderType}}</option>
+          <select [(ngModel)]="radio.filter.order" (change)="radio.searchStations()">
+            <option *ngFor="let orderType of radio.oderTypes" [value]="orderType">{{orderType}}</option>
           </select>
           <span>Limit</span>
-          <input type="number" [(ngModel)]="filter.limit" (change)="searchRadios()" (keyup)="searchRadios()"/>
+          <input type="number" [(ngModel)]="radio.filter.limit" (change)="radio.searchStations()" (keyup)="radio.searchStations()"/>
         </label>
     </div>
     <div class="radio-search-results">
-      <ul class="radio-search-results-list" *ngIf="searchResult">
-        <li class="radio-search-results-item" *ngFor="let radio of searchResult" (click)="selectRadio(radio)"
-            [ngClass]="{active: (currentRadio === radio)}">
-          <app-radio-preview [radio]="radio"></app-radio-preview>
+      <ul class="radio-search-results-list" *ngIf="radio.searchResult">
+        <li class="radio-search-results-item" *ngFor="let result of radio.searchResult" (click)="radio.selectStation(result)"
+            [ngClass]="{active: (radio.station === result)}">
+          <app-radio-preview [radio]="result"></app-radio-preview>
         </li>
         <li>
           Searching Data from "radio-browser.info": <a href="http://www.radio-browser.info" target="_blank">www.radio-browser.info</a><br>

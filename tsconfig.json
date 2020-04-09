@@ -19,5 +19,11 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
+  },
+  "node": {
+    "dns": "empty",
+    "dgram": "empty",
+    "fs": "empty",
+    "net": "empty"
   }
 }

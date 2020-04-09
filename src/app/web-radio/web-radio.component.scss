@@ -17,10 +17,11 @@
         position: relative;
         width: 100%;
         height: .5rem;
-        background: #000;
+        background: rgba(0, 0, 0, 0.5);
 
         .progressbar-fill {
-          background: #fff;
+          height: 100%;
+          background: rgba(255, 255, 255, 0.5);
         }
       }
 
@@ -40,13 +41,13 @@
         }
 
 
-
       }
 
 
     }
 
     .audio-player-filter {
+      padding: .25rem;
       label {
         width: 100%;
         display: flex;

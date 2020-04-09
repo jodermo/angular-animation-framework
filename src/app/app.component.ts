@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { ThreeAnimationComponent } from './three-animation/three-animation.component';
 import { AudioAnimationDemoComponent } from './audio-animation-demo/audio-animation-demo.component';
 import { AudioService } from './three-animation/services/audio.service';
+import { WebRadioService } from './web-radio/services/web-radio.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,12 @@ export class AppComponent {
   radioView = false;
   started = false;
 
-  constructor() {
+  constructor(public radio: WebRadioService) {
 
+  }
+
+  ngAfterViewInit() {
+    this.radio.init();
   }
 
   windowRadio() {
@@ -37,16 +42,12 @@ export class AppComponent {
       }
       window['radio'].station = null;
     }
-    localStorage.clear();
+    this.radio.clearStorage();
 
   }
 
-  searchRadio(radioQuery = '') {
-    this.radioView = false;
-    localStorage.setItem('radio-name', radioQuery);
-    localStorage.setItem('radio-search', 'true');
-    setTimeout(() => {
-      this.radioView = true;
-    }, 100);
+  searchRadio() {
+    this.radioView = true;
+    this.radio.searchStations();
   }
 }

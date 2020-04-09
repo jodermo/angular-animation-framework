@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WebRadioComponent } from '../web-radio.component';
+import { WebRadioService } from '../services/web-radio.service';
 
 @Component({
   selector: 'app-radio-preview',
@@ -11,7 +11,7 @@ export class RadioPreviewComponent implements OnInit {
   @Input() details = false;
   lastVolume = 1;
 
-  constructor(public webRadio: WebRadioComponent) {
+  constructor(public webRadio: WebRadioService) {
   }
 
   ngOnInit() {

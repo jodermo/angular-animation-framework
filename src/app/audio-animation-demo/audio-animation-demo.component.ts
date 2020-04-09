@@ -166,13 +166,11 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       this.musicTrack = this.audio('demo');
       this.musicTrack.play();
     }
-    console.log(this.musicTrack);
     this.audioAnalyzer = this.audioService.analyzer(this.musicTrack);
     this.audioAni = this.audioAnimation(this.audioAnalyzer);
 
     // const audioCanvas: HTMLElement = document.getElementById('audioCanvas');
     // this.audioAnalyzer.setCanvas(audioCanvas as HTMLCanvasElement);
-
 
   }
 
@@ -368,11 +366,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.setPosition({x: -1000, y: 0, z: 500});
         childObj.setScale(waterTower.options.scale || {x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
-        console.log('waterTower', waterTower.options);
         this.makeRandomObjectsFrom(childObj, 4, true, waterTower.options);
-        childObj.on('mousedown', () => {
-          this.randomObjectClick(obj);
-        });
       }, this.scene, false);
     });
 
@@ -381,11 +375,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.setPosition({x: -1000, y: 0, z: -500});
         childObj.setScale(deer.options.scale || {x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
-        console.log('deer', deer.options);
         this.makeRandomObjectsFrom(childObj, 3, true, deer.options);
-        childObj.on('mousedown', () => {
-          this.randomObjectClick(obj);
-        });
       }, this.scene, false);
 
     });
@@ -395,11 +385,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.setPosition({x: 1000, y: 0, z: -500});
         childObj.setScale(chicken.options.scale || {x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
-        console.log('deer', deer.options);
         this.makeRandomObjectsFrom(childObj, 20, true, chicken.options);
-        childObj.on('mousedown', () => {
-          this.randomObjectClick(obj);
-        });
       }, this.scene, false);
 
     });
@@ -417,11 +403,9 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         });
         rotorRotation(aniObject, duration);
       })
-    }
+    };
 
     const helicopter = this.createPresetObject('audio-animation', 'helicopter', null, (obj) => {
-
-
       this.generateChildObjectGroup(obj, ['Copter', 'Propeller'], (childObj) => {
         const rotor = this.generateChildObjectGroup(obj, ['Propeller_1'], (chilChildObj) => {
           rotorRotation(chilChildObj);
@@ -740,7 +724,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
           } else {
             newAniObject.object.scale.set(options.scale.x, options.scale.y, options.scale.z);
           }
-          console.log('makeRandomObjectsFrom', options.scale, newAniObject);
         }
         this.randomObjects.push(newAniObject);
       }, i * 10);
@@ -836,7 +819,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     const totalWidth = boxSize * animation.meterNum + gap * (animation.meterNum - 1);
     const aniObject = this.createObject('Group', {});
     aniObject.setPosition({x: -1000, y: 0, z: 0});
-    const initAnimation = (data) => {
+    const initAudioAnimation = (data) => {
       if (data.frequency && data.frequency.values) {
         /* left audio spectrum*/
         for (let i = 0; i < animation.meterNum; i++) {
@@ -867,14 +850,13 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       }
       started = true;
     };
-    const drawAnimation = (data) => {
+    const drawAudioAnimation = (data) => {
       if (!started) {
-        initAnimation(data);
+        initAudioAnimation(data);
       } else {
         const array = new Uint8Array(this.audioAnalyzer.analyser.frequencyBinCount);
         this.audioAnalyzer.analyser.getByteFrequencyData(array);
         const step = Math.round(array.length / animation.meterNum);
-
         for (let i = 0; i < animation.meterNum; i++) {
           const value = array[i * step] / 10;
           const posX = (i * boxSize) + (gap * i) - (totalWidth / 2);
@@ -926,8 +908,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       }
     };
     analyzer.on('update', (data) => {
-      // console.log('Audio Data', data);
-      drawAnimation(data);
+      drawAudioAnimation(data);
     });
     return aniObject;
   }
@@ -1111,7 +1092,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.hideRenderPass('GammaCorrectionShader');
     if (this.getAudioFrequencyData(GammaCorrectionStep) > GammaCorrectionValue / this.animationSettings.gain) {
       const shaderOn = Math.floor(Math.random() * 1.9);
-      console.log(shaderOn);
       if (shaderOn) {
         this.showRenderPass('GammaCorrectionShader');
       }

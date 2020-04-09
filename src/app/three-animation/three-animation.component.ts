@@ -65,6 +65,8 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   container: HTMLElement;
   mouse: any = new THREE.Vector2();
 
+  requestAnimationFrame = false;
+
   scene;
   sceneCSS;
   renderer;
@@ -762,8 +764,20 @@ export class ThreeAnimationComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   startRendering() {
-    this.renderer.setAnimationLoop(() => {
-      this.renderScene();
+    if (this.requestAnimationFrame) {
+      this.requestAnimationFrameLoop();
+    } else {
+      this.renderer.setAnimationLoop(() => {
+        this.renderScene();
+      });
+    }
+
+  }
+
+  requestAnimationFrameLoop() {
+    this.renderScene();
+    requestAnimationFrame(()=>{
+      this.requestAnimationFrameLoop();
     });
   }
 

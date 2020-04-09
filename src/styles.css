@@ -1,13 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
-body {
+html, body {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   margin: 0;
   padding: 0;
   overflow: hidden;
+}
+
+body {
   background: #333;
   color: #fff;
   font-size: 13px;
@@ -20,7 +25,7 @@ body {
 
 }
 
-#audioCanvas{
+#audioCanvas {
   pointer-events: none;
 }
 
@@ -42,8 +47,8 @@ body {
   background: rgba(255, 255, 255, .1);
   box-shadow: 0 0 10vw rgba(0, 0, 0, 0.5) inset;
 
-  mix-blend-mode:  overlay;
-  mix-blend-mode:  soft-light;
+  mix-blend-mode: overlay;
+  mix-blend-mode: soft-light;
 }
 
 .flicker {
@@ -156,24 +161,29 @@ label {
 
 input {
   margin: 0;
+  padding: .5rem 1rem;
+  border: none;
 }
 
 label input {
   margin-right: .5rem;
 }
 
-button {
+button, input[type='submit'] {
   background: #000;
   border: none;
   color: #ccc;
   padding: .5rem 1rem;
   cursor: pointer;
   font-weight: bold;
+  transition: all .25s ease;
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5);
 }
 
-button:hover {
+button:hover, input[type='submit']:hover {
   background: #333;
   color: #fff;
+  box-shadow: 0 0 .5rem 0 rgba(0, 0, 0, 1);
 }
 
 button.active {
@@ -181,8 +191,36 @@ button.active {
   color: #ccc;
 }
 
+@media screen {
+  html, body {
+    height: 100vh;
+  }
+}
+
 @media (max-width: 1024px) {
   body {
     font-size: 10px;
+    -webkit-overflow-scrolling: touch;
   }
+
+
+  .audio-player .radio-info {
+    line-height: .6rem;
+    font-size: .5rem;
+
+  }
+
+  .audio-player .progress-info {
+    display: none;
+  }
+
+  .audio-player-filter span {
+    display: none;
+  }
+
+  .web-radio .audio-player-filter .extended-filter {
+    display: none !important;
+  }
+
 }
+

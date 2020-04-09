@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RadioPreviewComponent } from '../radio-preview/radio-preview.component';
-import { WebRadioComponent } from '../web-radio.component';
+import { WebRadioService } from '../services/web-radio.service';
 
 @Component({
   selector: 'app-radio-preview-small',
@@ -11,7 +11,7 @@ export class RadioPreviewSmallComponent extends RadioPreviewComponent {
   @Output()  onClose = new EventEmitter();
 
 
-  constructor(public webRadio: WebRadioComponent) {
+  constructor(public webRadio: WebRadioService) {
     super(webRadio);
 
   }

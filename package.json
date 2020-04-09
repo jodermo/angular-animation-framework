@@ -23,6 +23,7 @@
     "@tweenjs/tween.js": "^18.5.0",
     "camera-controls": "^1.19.1",
     "physijs-webpack": "^0.1.4",
+    "radio-browser": "^1.5.3",
     "rxjs": "~6.5.4",
     "stats-js": "^1.0.1",
     "three": "^0.114.0",

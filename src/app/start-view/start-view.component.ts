@@ -1,30 +1,27 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { WebRadioService } from '../web-radio/services/web-radio.service';
 
 @Component({
   selector: 'app-start-view',
   templateUrl: './start-view.component.html',
   styleUrls: ['./start-view.component.css']
 })
-export class StartViewComponent implements OnInit {
-  @Output() onStart = new EventEmitter<boolean>();
-  @Output() onSearchRadio = new EventEmitter<string>();
+export class StartViewComponent {
+  @Input() radio: WebRadioService;
+  @Output() onStart = new EventEmitter();
+  @Output() onSearchRadio = new EventEmitter();
   radioSearchQuery = 'electro';
 
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
-
   clickStart() {
-    this.onStart.emit(true);
+    this.onStart.emit();
   }
 
   searchRadio() {
-    if (this.radioSearchQuery && this.radioSearchQuery.length >= 2) {
-      this.onSearchRadio.emit(this.radioSearchQuery);
+    if(this.radioSearchQuery){
+      this.radio.filter.value = this.radioSearchQuery;
     }
+    this.onSearchRadio.emit();
   }
 
 }

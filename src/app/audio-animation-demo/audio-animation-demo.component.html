@@ -8,7 +8,7 @@
 <div class="animation-controls" *ngIf="!controlPanel && !infoPanel && !loading">
   <div class="control-nav">
     <button (click)="controlPanel = true;">
-      Controls
+      Settings
     </button>
     <button (click)="infoPanel = true;">
       About
@@ -51,8 +51,8 @@
 <div class="animation-info" *ngIf="infoPanel && !loading">
   <button class="close-animation-info" (click)="infoPanel = false;">X</button>
   <div>
-    <b>Retro Animation Visualisation</b><br>
-    <span>Angular & Three.js</span>
+    <br>
+    <app-app-description></app-app-description>
   </div>
   <ul>
     <li>

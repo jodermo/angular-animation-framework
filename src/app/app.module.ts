@@ -11,6 +11,8 @@ import { RadioPreviewComponent } from './web-radio/radio-preview/radio-preview.c
 import { RadioPreviewSmallComponent } from './web-radio/radio-preview-small/radio-preview-small.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AppDescriptionComponent } from './app-description/app-description.component';
+import { WebRadioService } from './web-radio/services/web-radio.service';
 
 @NgModule({
   declarations: [
@@ -21,14 +23,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     StartViewComponent,
     WebRadioComponent,
     RadioPreviewComponent,
-    RadioPreviewSmallComponent
+    RadioPreviewSmallComponent,
+    AppDescriptionComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
   ],
-  providers: [HttpClient, WebRadioComponent, AudioAnimationDemoComponent],
+  providers: [HttpClient, WebRadioService, AudioAnimationDemoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
