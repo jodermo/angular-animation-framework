@@ -3,6 +3,7 @@ import { ThreeAnimationComponent } from './three-animation/three-animation.compo
 import { AudioAnimationDemoComponent } from './audio-animation-demo/audio-animation-demo.component';
 import { AudioService } from './three-animation/services/audio.service';
 import { WebRadioService } from './web-radio/services/web-radio.service';
+import { AnimationService } from './three-animation/services/animation.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
   radioView = false;
   started = false;
 
-  constructor(public radio: WebRadioService) {
+  constructor(public animation: AnimationService, public radio: WebRadioService) {
 
   }
 

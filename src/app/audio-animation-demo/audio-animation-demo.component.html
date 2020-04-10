@@ -1,11 +1,11 @@
 <div class="animation-display"
-     (mousedown)="containerMouseEvent($event, 'mousedown');"
-     (mouseup)="containerMouseEvent($event, 'mouseup');"
-     (mousemove)="containerMouseEvent($event, 'mousemove');"
+     (mousedown)="animation.containerMouseEvent($event, 'mousedown');"
+     (mouseup)="animation.containerMouseEvent($event, 'mouseup');"
+     (mousemove)="animation.containerMouseEvent($event, 'mousemove');"
      (click)="controlPanel = false"
      #animationContainer>
 </div>
-<div class="animation-controls" *ngIf="!controlPanel && !infoPanel && !loading">
+<div class="animation-controls" *ngIf="!controlPanel && !infoPanel && !animation.loading">
   <div class="control-nav">
     <button (click)="controlPanel = true;">
       Settings
@@ -15,40 +15,40 @@
     </button>
   </div>
 </div>
-<div class="animation-controls" *ngIf="controlPanel && !loading">
+<div class="animation-controls" *ngIf="controlPanel && !animation.loading">
   <button class="close-animation-controls" (click)="controlPanel = false;">X</button>
-  <button (click)="toggleStats()" [ngClass]="{active: statsVisible}">
-    <span *ngIf="statsVisible">Hide stats</span>
-    <span *ngIf="!statsVisible">Show stats</span>
+  <button (click)="animation.toggleStats()" [ngClass]="{active: animation.settings.stats}">
+    <span *ngIf="animation.settings.stats">Hide stats</span>
+    <span *ngIf="!animation.settings.stats">Show stats</span>
   </button>
   <br>
-  <button *ngIf="vrService" (click)="vrMode()" [ngClass]="{active: vrService.vrMode}">
-    <span *ngIf="!vrService.vrMode">Enter VR mode (experimental)</span>
-    <span *ngIf="vrService.vrMode">Exit VR mode</span>
+  <button *ngIf="animation.vrService" (click)="animation.vrMode()" [ngClass]="{active: animation.vrService.vrMode}">
+    <span *ngIf="!animation.vrService.vrMode">Enter VR mode (experimental)</span>
+    <span *ngIf="animation.vrService.vrMode">Exit VR mode</span>
   </button>
   <div>
-    <button *ngIf="!isControlCamera()" (click)="selectControlCamera()">Camera controls on</button>
-    <button *ngIf="isControlCamera()" class="active" (click)="selectCamera(cameras[0])">Camera controls off</button>
+    <button *ngIf="!animation.isControlCamera()" (click)="animation.selectControlCamera()">Camera controls on</button>
+    <button *ngIf="animation.isControlCamera()" class="active" (click)="animation.selectCamera(cameras[0])">Camera controls off</button>
   </div>
-  <div *ngIf="postProcessing && postProcessing.renderPasses" class="animation-audio-controls">
+  <div *ngIf="animation.postProcessing && animation.postProcessing.renderPasses" class="animation-audio-controls">
     <b>Post processing effects</b><br>
-    <label *ngFor="let renderPass of postProcessing.renderPasses" (click)="toggleRenderPassActive(renderPass.name)"  >
-      <input type="checkbox" [checked]="renderPassActive(renderPass.name)" />
+    <label *ngFor="let renderPass of animation.postProcessing.renderPasses" (click)="animation.toggleRenderPassActive(renderPass.name)"  >
+      <input type="checkbox" [checked]="animation.renderPassActive(renderPass.name)" />
       <span>{{renderPass.name}}</span>
       <br>
     </label>
   </div>
-  <div *ngIf="audio('demo')" class="animation-audio-controls">
+  <div *ngIf="animation.audio('demo')" class="animation-audio-controls">
     <b>Audio track</b><br>
-    <button (click)="audio('demo').play()" *ngIf="audio('demo').paused">Play</button>
-    <button (click)="audio('demo').pause()" *ngIf="!audio('demo').paused">Pause</button>
-    <button (click)="audio('demo').muted = !audio('demo').muted">
-      <span *ngIf="audio('demo').muted">Unmute</span>
-      <span *ngIf="!audio('demo').muted">Mute</span>
+    <button (click)="animation.audio('demo').play()" *ngIf="animation.audio('demo').paused">Play</button>
+    <button (click)="animation.audio('demo').pause()" *ngIf="!animation.audio('demo').paused">Pause</button>
+    <button (click)="animation.audio('demo').muted = !animation.audio('demo').muted">
+      <span *ngIf="animation.audio('demo').muted">Unmute</span>
+      <span *ngIf="!animation.audio('demo').muted">Mute</span>
     </button>
   </div>
 </div>
-<div class="animation-info" *ngIf="infoPanel && !loading">
+<div class="animation-info" *ngIf="infoPanel && !animation.loading">
   <button class="close-animation-info" (click)="infoPanel = false;">X</button>
   <div>
     <br>
@@ -91,6 +91,6 @@
     </li>
   </ul>
 </div>
-<app-three-animation-preloader class="animation-preloader" *ngIf="loading"
-                               [loader]="loader"></app-three-animation-preloader>
+<app-three-animation-preloader class="animation-preloader" *ngIf="animation.loading"
+                               [loader]="animation.loader"></app-three-animation-preloader>
 

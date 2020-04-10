@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppDescriptionComponent } from './app-description/app-description.component';
 import { WebRadioService } from './web-radio/services/web-radio.service';
+import { AnimationService } from './three-animation/services/animation.service';
+import { CopyrightComponent } from './copyright/copyright.component';
 
 @NgModule({
   declarations: [
@@ -24,14 +26,16 @@ import { WebRadioService } from './web-radio/services/web-radio.service';
     WebRadioComponent,
     RadioPreviewComponent,
     RadioPreviewSmallComponent,
-    AppDescriptionComponent
+    AppDescriptionComponent,
+    CopyrightComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
   ],
-  providers: [HttpClient, WebRadioService, AudioAnimationDemoComponent],
+  providers: [HttpClient, AnimationService, WebRadioService, AudioAnimationDemoComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

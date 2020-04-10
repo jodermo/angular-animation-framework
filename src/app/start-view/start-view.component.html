@@ -5,7 +5,7 @@
       <app-app-description></app-app-description>
       <br><br>
       <label *ngIf="radio && radio.ready">
-        <input [(ngModel)]="radioSearchQuery" (keydown.enter)="searchRadio()"/>
+        <input [(ngModel)]="radioSearchQuery" (keydown.enter)="searchRadio()" placeholder="Station Name"  />
         <input type="submit" value="Search Radio Station" (click)="searchRadio()"/>
       </label>
       <small style="float: right;"><i>(<a href="http://www.radio-browser.info"

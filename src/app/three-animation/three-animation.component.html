@@ -1,7 +1,7 @@
 <div class="animation-display"
-     (mousedown)="containerMouseEvent($event, 'mousedown');"
-     (mouseup)="containerMouseEvent($event, 'mouseup');"
-     (mousemove)="containerMouseEvent($event, 'mousemove');"
+     (mousedown)="animation.containerMouseEvent($event, 'mousedown');"
+     (mouseup)="animation.containerMouseEvent($event, 'mouseup');"
+     (mousemove)="animation.containerMouseEvent($event, 'mousemove');"
      #animationContainer></div>
-<app-three-animation-preloader class="animation-preloader" *ngIf="loading"
-                               [loader]="loader"></app-three-animation-preloader>
+<app-three-animation-preloader class="animation-preloader" *ngIf="animation.loading"
+                               [loader]="animation.loader"></app-three-animation-preloader>

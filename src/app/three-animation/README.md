@@ -135,7 +135,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 create mesh object (THREE.js <a hraf="https://threejs.org/docs/index.html#api/en/geometries/BoxGeometry">BoxGeometry</a> &
 <a hraf="https://threejs.org/docs/index.html#api/en/materials/MeshBasicMaterial">MeshBasicMaterial</a>):
 ```javascript
-        const box: AnimationObject = this.createObject('mesh', {
+        const box: AnimationObject = this.animation.createObject('mesh', {
             material: {
                 type: 'MeshBasicMaterial',
                 color: '#ff00ec',
@@ -190,7 +190,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
     
     start(){
 
-        const box: AnimationObject = this.createObject('mesh', {
+        const box: AnimationObject = this.animation.createObject('mesh', {
             material: {
                 type: 'MeshBasicMaterial',
                 color: '#ff00ec',

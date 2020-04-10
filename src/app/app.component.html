@@ -1,6 +1,6 @@
 <app-start-view *ngIf="!started" [radio]="radio"  (onStart)="started = true" (onSearchRadio)="searchRadio()" (mouseup)="radioView = false;"></app-start-view>
-<div class="animation" *ngIf="started" (click)="radioView = false; radioView = false;">
-  <app-audio-animation-demo></app-audio-animation-demo>
+<div class="animation" *ngIf="animation && started" (click)="radioView = false; radioView = false;">
+  <app-audio-animation-demo [animation]="animation"></app-audio-animation-demo>
   <canvas id="audioCanvas" width="480" height="320"
           style="position: absolute; bottom: 0; left: 0; z-index: 9999;"></canvas>
 </div>
@@ -17,7 +17,6 @@
   <button  (click)="radioView = true">Search Radio Station</button>
 
 </div>
-
 <div class="animation-overlay vignette flicker"></div>
-
+<app-copyright></app-copyright>
 

@@ -55,7 +55,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
     
     start(){
 
-        const box: AnimationObject = this.createObject('mesh', {
+        const box: AnimationObject = this.animation.createObject('mesh', {
             material: {
                 type: 'MeshBasicMaterial',
                 color: '#ff00ec',
@@ -93,7 +93,7 @@ export class MyAnimationComponent extends ThreeAnimationComponent {
 
 Example:
 ```javascript
-const box = this.createObject('mesh', {
+const box = this.animation.createObject('mesh', {
     material: {
        // properties for THREE.js material (more infos below)
        type: 'MeshBasicMaterial',
@@ -221,7 +221,7 @@ more infos: <a href="https://sole.github.io/tween.js/examples/03_graphs.html" ta
 
 Example:
 ```javascript
-this.createObject('mesh', {
+this.animation.createObject('mesh', {
     ...
     material: {
         // properties for THREE.js material (more infos below)
@@ -256,7 +256,7 @@ More infos: <a href="https://threejs.org/docs/#api/en/core/Geometry" target="_bl
 
 Example:
 ```javascript
-this.createObject('mesh', { 
+this.animation.createObject('mesh', { 
     ...,
     geometry: {
         type: 'BoxGeometry',

@@ -5,13 +5,9 @@ import {
 import {
   AnimationObject,
   AnimationObjectOptions,
-  EasingTypes,
 } from '../three-animation/classes/animation-object';
-
-
 import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader';
-import { GammaCorrectionShader  } from 'three/examples/jsm/shaders/GammaCorrectionShader';
-
+import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader';
 import { DemoPresets } from '../three-animation/presets/demo-presets';
 import { AudioAnimationPresets } from './presets/audio-animation-presets';
 import { CarsPresets } from './presets/cars-presets';
@@ -26,7 +22,6 @@ import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 
-// @ts-ignore
 @Component({
   selector: 'app-audio-animation-demo',
   templateUrl: './audio-animation-demo.component.html',
@@ -60,7 +55,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   sunCanvas = document.createElement('canvas');
   sunCanvasAlpha = document.createElement('canvas');
   cameras = [];
-
   carPosition = 0;
   animationSettings = {
     particles: true,
@@ -90,10 +84,8 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     size: {x: 10000, y: 5000, z: 5000},
     position: {x: 0, y: 0, z: 0}
   };
-
   cameraSwitchTimeout;
   cameraCanSwitch = true;
-
   customEvents = {
     pause_video: () => {
       if (this.demoVideo && this.demoVideo.video) {
@@ -106,16 +98,17 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     }
   };
 
+  constructor(public elementRef: ElementRef, public renderer2: Renderer2) {
+    super(elementRef, renderer2);
+  }
 
-  // tslint:disable-next-line:variable-name
-  constructor(public elementRef: ElementRef, public _renderer: Renderer2) {
-    super(elementRef, _renderer);
-    this.bindPresets('demo', DemoPresets);
-    this.bindPresets('audio-animation', AudioAnimationPresets);
-    this.bindPresets('trees', TreesPresets);
-    this.bindPresets('cars', CarsPresets);
-    this.bindPresets('random-objects', RandomObjectsPreset);
-    this.postProcessing.renderPasses = [
+  init() {
+    this.animation.bindPresets('demo', DemoPresets);
+    this.animation.bindPresets('audio-animation', AudioAnimationPresets);
+    this.animation.bindPresets('trees', TreesPresets);
+    this.animation.bindPresets('cars', CarsPresets);
+    this.animation.bindPresets('random-objects', RandomObjectsPreset);
+    this.animation.postProcessing.renderPasses = [
       {name: 'AfterimagePass', pass: AfterimagePass, type: 'AfterimagePass', attributes: [.75]},
       {
         name: 'RGBShiftShader',
@@ -154,6 +147,16 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.setupRandomObjects();
   }
 
+  frameChange() {
+    this.animation.frame += this.animationSettings.speed.total - 1;
+    this.updateAnimationSpeed();
+    this.animateGround();
+    this.animateCar();
+    this.animateRandomObjects();
+    this.cameraSwitchOnFrequency();
+    this.animateRenderPasses();
+  }
+
   setupAudio() {
     if (this.musicTrack) {
       this.musicTrack.pause();
@@ -162,24 +165,23 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     if (window['radio'] && window['radio'].audio) {
       this.musicTrack = window['radio'].audio;
     } else {
-      this.loadAudio('demo', 'assets/audios/No Generation - Give Me Your Soul.mp3', {loop: true});
-      this.musicTrack = this.audio('demo');
+      this.animation.loadAudio('demo', 'assets/audios/No Generation - Give Me Your Soul.mp3', {loop: true});
+      this.musicTrack = this.animation.audio('demo');
       this.musicTrack.play();
     }
-    this.audioAnalyzer = this.audioService.analyzer(this.musicTrack);
+    this.audioAnalyzer = this.animation.audioService.analyzer(this.musicTrack);
     this.audioAni = this.audioAnimation(this.audioAnalyzer);
-
     // const audioCanvas: HTMLElement = document.getElementById('audioCanvas');
     // this.audioAnalyzer.setCanvas(audioCanvas as HTMLCanvasElement);
 
   }
 
   setupWorld() {
-    this.sky = this.createPresetObject('audio-animation', 'sky');
-    this.ground = this.createPresetObject('audio-animation', 'ground');
-    this.street = this.createPresetObject('audio-animation', 'street');
-    this.skyline = this.createPresetObject('audio-animation', 'skyline');
-    this.sun = this.createObject('canvas', {
+    this.sky = this.animation.createPresetObject('audio-animation', 'sky');
+    this.ground = this.animation.createPresetObject('audio-animation', 'ground');
+    this.street = this.animation.createPresetObject('audio-animation', 'street');
+    this.skyline = this.animation.createPresetObject('audio-animation', 'skyline');
+    this.sun = this.animation.createObject('canvas', {
       canvas: this.sunCanvas,
       alphaCanvas: this.sunCanvasAlpha,
       material: {
@@ -210,15 +212,14 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   }
 
   setupLights() {
-    this.directionalLightWhite = this.createPresetObject('audio-animation', 'directional-light');
-    this.directionalLightOrange = this.createPresetObject('audio-animation', 'directional-light-orange');
-    this.pointLight = this.createPresetObject('audio-animation', 'point-light');
+    this.directionalLightWhite = this.animation.createPresetObject('audio-animation', 'directional-light');
+    this.directionalLightOrange = this.animation.createPresetObject('audio-animation', 'directional-light-orange');
+    this.pointLight = this.animation.createPresetObject('audio-animation', 'point-light');
 
   }
 
   setupCameras() {
-
-    this.mainCamera = this.createObject('camera', {
+    this.mainCamera = this.animation.createObject('camera', {
       camera: this.cameraSettings,
       position: {
         x: 150,
@@ -230,7 +231,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.cameras.push(this.mainCamera);
     this.moveMainCamera();
 
-    this.sideCameraRight = this.createObject('camera', {
+    this.sideCameraRight = this.animation.createObject('camera', {
       camera: this.cameraSettings,
       position: {
         x: 10,
@@ -241,7 +242,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.sideCameraRight.lookAt({x: 0, y: 0, z: 0});
     this.cameras.push(this.sideCameraRight);
 
-    this.sideCameraLeft = this.createObject('camera', {
+    this.sideCameraLeft = this.animation.createObject('camera', {
       camera: this.cameraSettings,
       position: {
         x: 10,
@@ -252,7 +253,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.sideCameraLeft.lookAt({x: 0, y: 0, z: 0});
     this.cameras.push(this.sideCameraLeft);
 
-    this.driverCamera = this.createObject('camera', {
+    this.driverCamera = this.animation.createObject('camera', {
       camera: this.cameraSettings,
       position: {
         x: 8,
@@ -264,7 +265,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.driverCamera.object.lookAt(1000, 0, 0);
 
 
-    this.roofCamera = this.createObject('camera', {
+    this.roofCamera = this.animation.createObject('camera', {
       camera: this.cameraSettings,
       position: {
         x: 5,
@@ -275,7 +276,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.cameras.push(this.roofCamera);
     this.roofCamera.object.lookAt(1000, 0, 0);
 
-    this.topCamera1 = this.createObject('camera', {
+    this.topCamera1 = this.animation.createObject('camera', {
       camera: this.cameraSettings,
       position: {
         x: 50,
@@ -286,9 +287,9 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     this.cameras.push(this.topCamera1);
     this.topCamera1.lookAt(new THREE.Vector3(0, 0, 0));
 
-    this.selectCamera(this.topCamera1);
+    this.animation.selectCamera(this.topCamera1);
 
-    this.topCamera2 = this.createObject('camera', {
+    this.topCamera2 = this.animation.createObject('camera', {
       camera: this.cameraSettings,
       position: {
         x: 0,
@@ -303,8 +304,8 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   }
 
   setupTrees() {
-    this.createPresetObject('trees', 'palms', null, (obj) => {
-      this.generateChildObjectGroup(obj, ['polySurface262 polySurface141', 'polySurface336'], (childObj) => {
+    this.animation.createPresetObject('trees', 'palms', null, (obj) => {
+      this.animation.generateChildObjectGroup(obj, ['polySurface262 polySurface141', 'polySurface336'], (childObj) => {
         childObj.setPosition({x: -150, y: 0, z: 200});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
@@ -312,9 +313,9 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
-      }, this.scene, false);
-      this.generateChildObjectGroup(obj, ['polySurface229 polySurface36', 'polySurface335'], (childObj) => {
-        this.scene.add(childObj.object);
+      }, this.animation.scene, false);
+      this.animation.generateChildObjectGroup(obj, ['polySurface229 polySurface36', 'polySurface335'], (childObj) => {
+        this.animation.scene.add(childObj.object);
         childObj.setPosition({x: -1000, y: 0, z: -300});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
@@ -322,8 +323,8 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
-      }, this.scene, false);
-      this.generateChildObjectGroup(obj, ['polySurface290 polySurface62', 'polySurface342'], (childObj) => {
+      }, this.animation.scene, false);
+      this.animation.generateChildObjectGroup(obj, ['polySurface290 polySurface62', 'polySurface342'], (childObj) => {
         childObj.setPosition({x: -2000, y: 0, z: 250});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
@@ -331,8 +332,8 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
-      }, this.scene, false);
-      this.generateChildObjectGroup(obj, ['polySurface234 polySurface63', 'polySurface343'], (childObj) => {
+      }, this.animation.scene, false);
+      this.animation.generateChildObjectGroup(obj, ['polySurface234 polySurface63', 'polySurface343'], (childObj) => {
         childObj.setPosition({x: -800, y: 0, z: 600});
         childObj.setScale({x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
@@ -340,53 +341,53 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
-      }, this.scene, false);
-      this.generateChildObjectGroup(obj, ['polySurface333 polySurface173', 'polySurface339'], (childObj) => {
+      }, this.animation.scene, false);
+      this.animation.generateChildObjectGroup(obj, ['polySurface333 polySurface173', 'polySurface339'], (childObj) => {
         childObj.setPosition({x: -1500, y: 0, z: 500});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 10, true, obj.options);
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
-      }, this.scene, false);
-      this.generateChildObjectGroup(obj, ['polySurface328 polySurface200', 'polySurface338'], (childObj) => {
+      }, this.animation.scene, false);
+      this.animation.generateChildObjectGroup(obj, ['polySurface328 polySurface200', 'polySurface338'], (childObj) => {
         childObj.setPosition({x: -5000, y: 0, z: -500});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 10, true, obj.options);
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
-      }, this.scene, false);
+      }, this.animation.scene, false);
     })
   }
 
   setupMisc() {
-    const waterTower = this.createPresetObject('audio-animation', 'water_tower', null, (obj) => {
-      this.generateChildObjectGroup(obj, ['Water_Tower', 'Legs', 'Tank', 'Base'], (childObj) => {
+    const waterTower = this.animation.createPresetObject('audio-animation', 'water_tower', null, (obj) => {
+      this.animation.generateChildObjectGroup(obj, ['Water_Tower', 'Legs', 'Tank', 'Base'], (childObj) => {
         childObj.setPosition({x: -1000, y: 0, z: 500});
         childObj.setScale(waterTower.options.scale || {x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 4, true, waterTower.options);
-      }, this.scene, false);
+      }, this.animation.scene, false);
     });
 
-    const deer = this.createPresetObject('audio-animation', 'deer', null, (obj) => {
-      this.generateChildObjectGroup(obj, ['Deer_type_03_A_body', 'Deer_type_03_A_horns'], (childObj) => {
+    const deer = this.animation.createPresetObject('audio-animation', 'deer', null, (obj) => {
+      this.animation.generateChildObjectGroup(obj, ['Deer_type_03_A_body', 'Deer_type_03_A_horns'], (childObj) => {
         childObj.setPosition({x: -1000, y: 0, z: -500});
         childObj.setScale(deer.options.scale || {x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 3, true, deer.options);
-      }, this.scene, false);
+      }, this.animation.scene, false);
 
     });
 
-    const chicken = this.createPresetObject('audio-animation', 'chicken', null, (obj) => {
-      this.generateChildObjectGroup(obj, ['chicken_lp'], (childObj) => {
+    const chicken = this.animation.createPresetObject('audio-animation', 'chicken', null, (obj) => {
+      this.animation.generateChildObjectGroup(obj, ['chicken_lp'], (childObj) => {
         childObj.setPosition({x: 1000, y: 0, z: -500});
         childObj.setScale(chicken.options.scale || {x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 20, true, chicken.options);
-      }, this.scene, false);
+      }, this.animation.scene, false);
 
     });
 
@@ -405,9 +406,9 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       })
     };
 
-    const helicopter = this.createPresetObject('audio-animation', 'helicopter', null, (obj) => {
-      this.generateChildObjectGroup(obj, ['Copter', 'Propeller'], (childObj) => {
-        const rotor = this.generateChildObjectGroup(obj, ['Propeller_1'], (chilChildObj) => {
+    const helicopter = this.animation.createPresetObject('audio-animation', 'helicopter', null, (obj) => {
+      this.animation.generateChildObjectGroup(obj, ['Copter', 'Propeller'], (childObj) => {
+        const rotor = this.animation.generateChildObjectGroup(obj, ['Propeller_1'], (chilChildObj) => {
           rotorRotation(chilChildObj);
         }, childObj.object, false);
         childObj.options = helicopter.options;
@@ -418,26 +419,26 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         childObj.on('mousedown', () => {
           this.randomObjectClick(obj);
         });
-      }, this.scene, false);
+      }, this.animation.scene, false);
 
     });
 
 
-    const train = this.createPresetObject('audio-animation', 'silo', null, (obj) => {
-      this.generateChildObjectGroup(obj, ["IS06_OBJ_01", "IS06_OBJ_02", "IS06_OBJ_03", "IS06_OBJ_04", "IS06_OBJ_05", "IS06_OBJ_06"], (childObj) => {
+    const train = this.animation.createPresetObject('audio-animation', 'silo', null, (obj) => {
+      this.animation.generateChildObjectGroup(obj, ["IS06_OBJ_01", "IS06_OBJ_02", "IS06_OBJ_03", "IS06_OBJ_04", "IS06_OBJ_05", "IS06_OBJ_06"], (childObj) => {
         childObj.options = train.options;
         childObj.setPosition({x: -500, y: -1, z: -500});
         childObj.setRotation({x: 0, y: Math.PI / 2, z: 0});
         childObj.setScale(train.options.scale || {x: 4, y: 4, z: 4});
         this.randomObjects.push(childObj);
         this.makeRandomObjectsFrom(childObj, 3, true, train.options);
-      }, this.scene, false);
+      }, this.animation.scene, false);
 
     });
   }
 
   setupCar() {
-    this.createPresetObject('cars', 'delorean', null, (obj) => {
+    this.animation.createPresetObject('cars', 'delorean', null, (obj) => {
       this.delorean = obj;
       this.delorean.setRotation({x: -(Math.PI / 2), y: 0, z: -(Math.PI / 2)});
       this.delorean.setPosition({x: 0, y: 12, z: 0});
@@ -447,7 +448,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       let particlesBackL;
       let particlesBackR;
       if (this.animationSettings.particles) {
-        this.createObject('particles', {
+        this.animation.createObject('particles', {
           particles: {
             count: 300,
             startRange: .5,
@@ -474,7 +475,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         }, this.delorean.object, (pObj) => {
           particlesFrontL = pObj;
         });
-        this.createObject('particles', {
+        this.animation.createObject('particles', {
           particles: {
             count: 300,
             startRange: .5,
@@ -502,7 +503,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
           particlesFrontR = pObj;
         });
 
-        this.createObject('particles', {
+        this.animation.createObject('particles', {
           particles: {
             count: 300,
             startRange: .5,
@@ -529,7 +530,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         }, this.delorean.object, (pObj) => {
           particlesBackL = pObj;
         });
-        this.createObject('particles', {
+        this.animation.createObject('particles', {
           particles: {
             count: 300,
             startRange: .5,
@@ -695,7 +696,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   addRandomObject() {
     const radomInt = Math.trunc(Math.random() * (RandomObjectsPreset.length));
     const rObject = RandomObjectsPreset[radomInt];
-    const aniObject = this.createPresetObject('random-objects', rObject.name);
+    const aniObject = this.animation.createPresetObject('random-objects', rObject.name);
     const pos = this.randomObjectPosition(aniObject, rObject.options);
     aniObject.setPosition({x: pos.x, y: pos.y, z: pos.z});
     aniObject.on('mousedown', () => {
@@ -707,11 +708,9 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   }
 
   makeRandomObjectsFrom(aniObject: AnimationObject, count = 1, randomRotation = true, options = null) {
-
-
     for (let i = 0; i < count; i++) {
       setTimeout(() => {
-        const newAniObject = aniObject.clone(this.scene);
+        const newAniObject = aniObject.clone(this.animation.scene);
         const pos = this.randomObjectPosition(aniObject, options || aniObject.options);
         newAniObject.setPosition({x: pos.x, y: pos.y, z: pos.z});
         if (randomRotation) {
@@ -727,12 +726,11 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         }
         this.randomObjects.push(newAniObject);
       }, i * 10);
-
     }
   }
 
   cameraSwitch() {
-    if (!this.isControlCamera()) {
+    if (!this.animation.isControlCamera()) {
       const minTime = this.animationSettings.autoCameraSwitch.min;
       const maxTime = this.animationSettings.autoCameraSwitch.max;
       const nextSwitchIn = minTime + Math.trunc((Math.random() * (maxTime - minTime)));
@@ -754,10 +752,10 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   }
 
   randomCamera() {
-    if (!this.isControlCamera()) {
+    if (!this.animation.isControlCamera()) {
       const randomInt = Math.trunc(Math.random() * (this.cameras.length));
       if (this.cameras && this.cameras.length) {
-        this.selectCamera(this.cameras[randomInt]);
+        this.animation.selectCamera(this.cameras[randomInt]);
       }
     }
   }
@@ -767,24 +765,23 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     const maxOffset = 150;
     const minDuration = 4000;
     const maxDuration = 16000;
-    const randomDuration = this.randomInt(maxDuration, minDuration);
+    const randomDuration = this.animation.randomInt(maxDuration, minDuration);
     if (this.mainCamera) {
       this.mainCamera.lookAt({x: 0, y: 0, z: 0});
       this.mainCamera.moveTo({
         x: this.mainCamera.object.position.x,
         y: this.mainCamera.object.position.y,
-        z: this.randomInt(maxOffset, minOffset)
+        z: this.animation.randomInt(maxOffset, minOffset)
       }, randomDuration, () => {
         this.mainCamera.moveTo({
           x: this.mainCamera.object.position.x,
           y: this.mainCamera.object.position.y,
-          z: -this.randomInt(maxOffset, minOffset)
+          z: -this.animation.randomInt(maxOffset, minOffset)
         }, randomDuration, () => {
           this.moveMainCamera();
         }, 'Quadratic.InOut');
       }, 'Quadratic.InOut');
     }
-
   }
 
   audioAnimation(analyzer) {
@@ -792,7 +789,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     const gap = 2;
     const offsetZ = 5000;
     const multiply = 40;
-
     const animation = {
       width: 20,
       height: 10,
@@ -813,37 +809,36 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
       boxes: [],
       capsTop: [],
       capsBottom: []
-
     };
     const boxSize = 200;
     const totalWidth = boxSize * animation.meterNum + gap * (animation.meterNum - 1);
-    const aniObject = this.createObject('Group', {});
+    const aniObject = this.animation.createObject('Group', {});
     aniObject.setPosition({x: -1000, y: 0, z: 0});
     const initAudioAnimation = (data) => {
       if (data.frequency && data.frequency.values) {
         /* left audio spectrum*/
         for (let i = 0; i < animation.meterNum; i++) {
           const posX = (i * boxSize) + (gap * i) - (totalWidth / 2);
-          const boxObject = this.createPresetObject('audio-animation', 'box', aniObject.object);
+          const boxObject = this.animation.createPresetObject('audio-animation', 'box', aniObject.object);
           boxObject.setPosition({x: posX, y: 0, z: -offsetZ});
           leftItems.boxes.push(boxObject);
-          const capTopObject = this.createPresetObject('audio-animation', 'ball', aniObject.object);
+          const capTopObject = this.animation.createPresetObject('audio-animation', 'ball', aniObject.object);
           capTopObject.setPosition({x: posX, y: boxSize, z: -offsetZ});
           leftItems.capsTop.push(capTopObject);
-          const capBottomObject = this.createPresetObject('audio-animation', 'ball', aniObject.object);
+          const capBottomObject = this.animation.createPresetObject('audio-animation', 'ball', aniObject.object);
           capBottomObject.setPosition({x: posX, y: -boxSize, z: -offsetZ});
           leftItems.capsBottom.push(capBottomObject);
         }
         /* right audio spectrum*/
         for (let i = 0; i < animation.meterNum; i++) {
           const posX = (i * boxSize) + (gap * i) - (totalWidth / 2);
-          const boxObject = this.createPresetObject('audio-animation', 'box', aniObject.object);
+          const boxObject = this.animation.createPresetObject('audio-animation', 'box', aniObject.object);
           boxObject.setPosition({x: posX, y: 0, z: offsetZ});
           rightItems.boxes.push(boxObject);
-          const capTopObject = this.createPresetObject('audio-animation', 'ball', aniObject.object);
+          const capTopObject = this.animation.createPresetObject('audio-animation', 'ball', aniObject.object);
           capTopObject.setPosition({x: posX, y: boxSize, z: offsetZ});
           rightItems.capsTop.push(capTopObject);
-          const capBottomObject = this.createPresetObject('audio-animation', 'ball', aniObject.object);
+          const capBottomObject = this.animation.createPresetObject('audio-animation', 'ball', aniObject.object);
           capBottomObject.setPosition({x: posX, y: -boxSize, z: offsetZ});
           rightItems.capsBottom.push(capBottomObject);
         }
@@ -914,6 +909,7 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   }
 
   getAudioFrequencyData(step = 0) {
+
     if (this.audioAnalyzer && this.audioAnalyzer.frequency && this.audioAnalyzer.frequency.values[step]) {
       return this.audioAnalyzer.frequency.values[step];
     }
@@ -922,17 +918,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
 
   drawSunCanvas(analyzerData = null) {
     const size = 1024;
-
-    function randInt(min, max = null) {
-      if (max === undefined) {
-        max = min;
-        min = 0;
-      }
-      // tslint:disable-next-line:no-bitwise
-      const result = Math.random() * (max - min) + min | 0;
-      return result;
-    }
-
     const ctx = this.sunCanvas.getContext('2d');
     ctx.canvas.width = size;
     ctx.canvas.height = size;
@@ -942,7 +927,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     gradient.addColorStop(1, '#ff0050');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
     if (analyzerData && analyzerData.frequency) {
       const offsetY = ctx.canvas.height / analyzerData.frequency.values.length;
       const lineSize = .5;
@@ -960,7 +944,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         }
       }
     }
-
     const ctxAlpha = this.sunCanvasAlpha.getContext('2d');
     ctxAlpha.canvas.width = size;
     ctxAlpha.canvas.height = size;
@@ -969,8 +952,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     ctxAlpha.fillStyle = '#fff';
     ctxAlpha.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, size / 2, 0, Math.PI * 2);
     ctxAlpha.fill();
-
-
     if (analyzerData && analyzerData.frequency) {
       const offsetY = ctxAlpha.canvas.height / analyzerData.frequency.values.length;
       const lineSize = .1;
@@ -988,7 +969,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         }
       }
     }
-
     if (this.sun && this.sun.mesh && this.sun.mesh.material && this.sun.mesh.material.map) {
       this.sun.mesh.material.map.needsUpdate = true;
       if (this.sun && this.sun.mesh && this.sun.mesh.material && this.sun.mesh.material.alphaMap) {
@@ -1003,7 +983,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     if (this.getAudioFrequencyData(step) > value / this.animationSettings.gain) {
       this.cameraSwitch();
     }
-
   }
 
   updateAnimationSpeed() {
@@ -1044,7 +1023,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
           speed = aniObject.options.speed;
         }
         let x = aniObject.object.position.x + (this.animationSettings.speed.objects * this.animationSettings.speed.total * speed);
-
         const y = aniObject.object.position.y;
         let z = aniObject.object.position.z;
         if (x > this.randomObjectSettings.size.x / 2) {
@@ -1067,7 +1045,6 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
         aniObject.setPosition({x, y, z});
       }
     }
-
   }
 
   animateRenderPasses() {
@@ -1075,38 +1052,27 @@ export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
     const glitchStepB = 19;
     const glitchValueA = 280; // 270
     const glitchValueB = 215;
-    this.hideRenderPass('GlitchPass');
+
+    this.animation.hideRenderPass('GlitchPass');
     if ((this.getAudioFrequencyData(glitchStepA) > glitchValueA / this.animationSettings.gain ||
       this.getAudioFrequencyData(glitchStepB) > glitchValueB / this.animationSettings.gain)) {
-      this.showRenderPass('GlitchPass');
+      this.animation.showRenderPass('GlitchPass');
+      console.log('showRenderPass', 'GlitchPass');
     }
     const afterImageStep = 9;
     const afterImageValue = 180;
-    this.hideRenderPass('AfterimagePass');
+    this.animation.hideRenderPass('AfterimagePass');
     if (this.getAudioFrequencyData(afterImageStep) > afterImageValue / this.animationSettings.gain) {
-      this.showRenderPass('AfterimagePass');
+      this.animation.showRenderPass('AfterimagePass');
     }
-
     const GammaCorrectionStep = 19;
     const GammaCorrectionValue = 180;
-    this.hideRenderPass('GammaCorrectionShader');
+    this.animation.hideRenderPass('GammaCorrectionShader');
     if (this.getAudioFrequencyData(GammaCorrectionStep) > GammaCorrectionValue / this.animationSettings.gain) {
       const shaderOn = Math.floor(Math.random() * 1.9);
       if (shaderOn) {
-        this.showRenderPass('GammaCorrectionShader');
+        this.animation.showRenderPass('GammaCorrectionShader');
       }
     }
   }
-
-  animateFrame() {
-    this.frame += this.animationSettings.speed.total - 1;
-    this.updateAnimationSpeed();
-    this.animateGround();
-    this.animateCar();
-    this.animateRandomObjects();
-    this.cameraSwitchOnFrequency();
-    this.animateRenderPasses();
-  }
-
-
 }
