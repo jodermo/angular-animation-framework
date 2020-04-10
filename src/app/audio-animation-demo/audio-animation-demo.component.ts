@@ -15,7 +15,6 @@ import { RandomObjectsPreset } from './presets/random-objects-presets';
 import { AudioAnalyzer } from '../three-animation/services/audio.service';
 import * as THREE from 'three';
 import { TreesPresets } from './presets/trees-presets';
-import { SourceInfos } from './presets/source-infos';
 import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
 import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass';
 import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass';
@@ -24,13 +23,12 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 
 @Component({
   selector: 'app-audio-animation-demo',
-  templateUrl: './audio-animation-demo.component.html',
+  templateUrl: '../three-animation/three-animation.component.html',
   styleUrls: ['../three-animation/three-animation.component.css']
 })
 export class AudioAnimationDemoComponent extends ThreeAnimationComponent {
   controlPanel = false;
   infoPanel = false;
-  sourceInfos = SourceInfos;
   demoVideo: AnimationObject;
   musicTrack;
   car: any;

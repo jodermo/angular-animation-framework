@@ -1,22 +1,42 @@
-<app-start-view *ngIf="!started" [radio]="radio"  (onStart)="started = true" (onSearchRadio)="searchRadio()" (mouseup)="radioView = false;"></app-start-view>
+<app-start-view *ngIf="!started" [radio]="radio" (onStart)="started = true" (onSearchRadio)="searchRadio()"
+                (mouseup)="radioView = false;"></app-start-view>
 <div class="animation" *ngIf="animation && started" (click)="radioView = false; radioView = false;">
   <app-audio-animation-demo [animation]="animation"></app-audio-animation-demo>
   <canvas id="audioCanvas" width="480" height="320"
           style="position: absolute; bottom: 0; left: 0; z-index: 9999;"></canvas>
 </div>
-<div class="web-radio-container" [hidden]="!radioView" *ngIf="radioView" >
+<div class="web-radio-container" [hidden]="!radioView" *ngIf="radioView">
   <div class="inside">
     <button class="close-web-radio" (click)="radioView = false">X</button>
     <app-web-radio (onPlay)="changeMusicTrack($event)" [radio]="radio"></app-web-radio>
   </div>
 </div>
 <div class="web-radio-container" *ngIf="!radioView">
-  <div class="inside" *ngIf="windowRadio()">
-    <app-radio-preview-small [radio]="windowRadio()" (onClose)="killRadioStation()"></app-radio-preview-small>
+  <div class="inside" *ngIf="animation && !animation.loading && radio">
+    <app-radio-preview-small [radio]="radio" (onClose)="killRadioStation()"></app-radio-preview-small>
   </div>
-  <button  (click)="radioView = true">Search Radio Station</button>
-
+  <button (click)="radioView = true">Search Radio Station</button>
 </div>
+
+<div class="animation-controls" *ngIf="!controlPanel && !infoPanel">
+  <div class="control-nav">
+    <button (click)="controlPanel = true;" *ngIf="animation && !animation.loading">
+      Settings
+    </button>
+    <button (click)="infoPanel = true;">
+      About
+    </button>
+  </div>
+</div>
+<div class="animation-controls" *ngIf="controlPanel && animation && !animation.loading">
+  <button class="close-animation-controls" (click)="controlPanel = false;">X</button>
+  <app-animation-controls [animation]="animation"></app-animation-controls>
+</div>
+<div class="animation-info" *ngIf="infoPanel">
+  <button class="close-animation-info" (click)="infoPanel = false;">X</button>
+  <app-about></app-about>
+</div>
+
 <div class="animation-overlay vignette flicker"></div>
 <app-copyright></app-copyright>
 

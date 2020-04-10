@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TextContent } from '../text-content';
 
 @Component({
   selector: 'app-app-description',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppDescriptionComponent implements OnInit {
 
-  constructor() { }
+  text = TextContent;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

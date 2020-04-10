@@ -1,9 +1,7 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { ThreeAnimationComponent } from './three-animation/three-animation.component';
-import { AudioAnimationDemoComponent } from './audio-animation-demo/audio-animation-demo.component';
-import { AudioService } from './three-animation/services/audio.service';
-import { WebRadioService } from './web-radio/services/web-radio.service';
+import { Component } from '@angular/core';
+import { WebRadioService } from './website/web-radio/services/web-radio.service';
 import { AnimationService } from './three-animation/services/animation.service';
+import { TextContent } from './website/text-content';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +9,11 @@ import { AnimationService } from './three-animation/services/animation.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  text = TextContent;
   radioView = false;
   started = false;
+  controlPanel = false;
+  infoPanel = false;
 
   constructor(public animation: AnimationService, public radio: WebRadioService) {
 

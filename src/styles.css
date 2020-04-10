@@ -191,6 +191,156 @@ button.active {
   color: #ccc;
 }
 
+
+.animation-controls, .animation-info {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1.25rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.radio-preview{
+  background: rgba(0, 0, 0, 0.5);
+  padding: .5rem;
+}
+
+.animation-info app-app-description ul {
+  list-style: disc;
+}
+
+.animation-controls > button {
+  margin-bottom: .25rem;
+
+}
+
+label input[type='checkbox'] {
+  pointer-events: none;
+}
+
+.animation-audio-controls {
+  border-top: 1px solid #fff;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+
+h3 {
+  margin: 1.25rem 0 0 0;
+  padding: 0;
+}
+
+button.close-animation-controls, button.close-animation-info {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+}
+
+button.show-animation-controls {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 999;
+}
+
+
+.info-source {
+  border-top: 1px solid #fff;
+  padding: .5rem 0;
+}
+
+.thumb-box {
+  display: flex;
+}
+
+.thumbnail {
+  flex: 25%;
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
+.thumb-box p {
+  padding-left: 1.25rem;
+}
+
+.info-source img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+
+}
+
+.start-view {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #3b005d;
+  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.start-view-content {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  padding: 1.25rem;
+  margin: 0 auto;
+}
+
+.start-view h1 {
+  font-weight: bold;
+  font-size: 3rem;
+  line-height: 4rem;
+  color: #00eaff;
+  font-family: Impact;
+  text-shadow: 0 0 5px #000;
+}
+
+#startButton {
+  display: inline-block;
+  font-size: 3rem;
+  margin: 0 auto;
+  font-family: Impact;
+  border-radius: 1rem;
+  animation: shakes 0.25s linear infinite;
+}
+
+.start-view label {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.start-view label > * {
+  flex: 1;
+}
+
+
+@keyframes shakes {
+  0% {
+    transform: translate(2px, 1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 1px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(0deg);
+  }
+}
+
+
 @media screen {
   html, body {
     height: 100vh;
@@ -222,5 +372,21 @@ button.active {
     display: none !important;
   }
 
-}
+  #startButton, .start-view h1 {
+    font-size: 2rem;
+    line-height: 2rem;
+  }
 
+  .start-view ul {
+    margin: 0 .5rem;
+  }
+
+  .start-view label {
+    flex-direction: column;
+  }
+
+  .start-view-content {
+    display: block;
+    top: 0;
+  }
+}

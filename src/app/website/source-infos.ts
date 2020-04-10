@@ -1,5 +1,3 @@
-import { AnimationPreset } from '../../three-animation/classes/animation-object';
-
 export const SourceInfos: any[] = [
   {
     name: 'No Generation - Give Me Your Soul',
@@ -38,6 +36,58 @@ export const SourceInfos: any[] = [
     link: {
       title: 'www.turbosquid.com/FullPreview/Index.cfm/ID/490485',
       url: 'https://www.turbosquid.com/FullPreview/Index.cfm/ID/490485'
+    },
+  },
+  {
+    name: '3D model Cartoon Low Poly Helicopter by Anton Moek',
+    description: 'free 3D model',
+    image: 'https://static.turbosquid.com/Preview/001317/556/VO/_Z.jpg',
+    website: {
+      title: 'turbosquid.com',
+      url: 'https://www.turbosquid.com'
+    },
+    link: {
+      title: 'www.turbosquid.com/FullPreview/Index.cfm/ID/1317556',
+      url: 'https://www.turbosquid.com/FullPreview/Index.cfm/ID/1317556'
+    },
+  },
+  {
+    name: 'Industrial Silo_6 3D by Max3dModel',
+    description: 'free 3D model',
+    image: 'https://static.turbosquid.com/Preview/2019/04/08__22_54_42/IndustrialSilo_63.jpgE993376D-F9BA-41E5-8597-9EFEECC15A65DefaultHQ.jpg',
+    website: {
+      title: 'turbosquid.com',
+      url: 'https://www.turbosquid.com'
+    },
+    link: {
+      title: 'www.turbosquid.com/FullPreview/Index.cfm/ID/1395686',
+      url: 'https://www.turbosquid.com/FullPreview/Index.cfm/ID/1395686'
+    },
+  },
+  {
+    name: '3D Deer type 03 A model by Elkhan Taghiyev',
+    description: 'free 3D model',
+    image: 'https://static.turbosquid.com/Preview/2019/11/10__03_22_34/preview.jpgE157D6E9-6E8B-448C-9D3F-320F88667550Zoom.jpg',
+    website: {
+      title: 'turbosquid.com',
+      url: 'https://www.turbosquid.com'
+    },
+    link: {
+      title: 'www.turbosquid.com/FullPreview/Index.cfm/ID/1469869',
+      url: 'https://www.turbosquid.com/FullPreview/Index.cfm/ID/1469869'
+    },
+  },
+  {
+    name: 'Water Tower 3D by sepandj',
+    description: 'free 3D model',
+    image: 'https://static.turbosquid.com/Preview/2019/02/15__12_58_00/10004.jpg54B4E5DC-3C7F-4071-BCB8-B0444338CEEFZoom.jpg',
+    website: {
+      title: 'turbosquid.com',
+      url: 'https://www.turbosquid.com'
+    },
+    link: {
+      title: 'www.turbosquid.com/FullPreview/Index.cfm/ID/1378551',
+      url: 'https://www.turbosquid.com/FullPreview/Index.cfm/ID/1378551'
     },
   },
   /*{

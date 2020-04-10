@@ -35,7 +35,6 @@ export class WebRadioService {
   filterTypes = [
     {
       name: 'stations',
-      // filterBy: ,
       filterBy: ['name', 'country', 'state', 'language', 'tag'], // old: ['name', 'codec', 'country', 'state', 'language', 'tag', 'id', 'uuid']
       options: null
     },
@@ -124,7 +123,6 @@ export class WebRadioService {
       this.filter.value = filterType.options[0];
     }
     window['radio'].filter = this.filter;
-    console.log(this.currentFilterType, this.filter);
     return this.filter;
   }
 
@@ -179,19 +177,6 @@ export class WebRadioService {
   }
 
   searchStationsNew(selectStationName: any = null) {
-    if (this.filter.value) {
-      localStorage.setItem('radio-filter-prefix', this.filter.prefix);
-      localStorage.setItem('radio-filter-type', this.filter.type);
-      localStorage.setItem('radio-filter-by', this.filter.by);
-      localStorage.setItem('radio-filter-value', this.filter.value);
-      this.searching = true;
-      this.searchResult = [];
-      window['radio'].searchResult = [];
-      const filter = {
-        limit: this.filter.limit,
-        by: this.filter.by,
-        searchterm: this.filter.value
-      };
       /*
       RadioBrowser.getStations(filter)
         .then((data) => {
@@ -209,10 +194,7 @@ export class WebRadioService {
         .catch((error) => {
           this.searching = false;
         });
-
        */
-    }
-
   }
 
   selectStation(station: any) {
@@ -405,8 +387,10 @@ export class WebRadioService {
   get(url) {
     return this.http.get(url)
       .pipe(
-        tap( // Log the result or error
-          data => console.log(url, data),
+        tap(
+          data => {
+            // console.log(url, data);
+          },
           this.handleError
         )
       );

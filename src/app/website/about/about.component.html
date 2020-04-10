@@ -1,0 +1,39 @@
+<div>
+  <h3>{{text.title}}</h3>
+  <br>
+  <app-app-description></app-app-description>
+</div>
+<div>
+  <h3>Creator</h3><br>
+  <span>  <a href="https://petzka.com" target="_blank">Moritz Petzka</a></span>
+</div>
+<div>
+  <h3>Frameworks</h3><br>
+  <span>  <a href="https://angular.io/" target="_blank">Angular</a></span><br>
+  <span>  <a href="https://threejs.org/" target="_blank">Three.js</a></span><br>
+  <span>  <a href="https://github.com/tweenjs/tween.js/" target="_blank">Tween.js</a></span><br>
+</div>
+<div class="animation-sources">
+  <h3>Sources:</h3><br>
+  <div class="info-source" *ngFor="let source of this.sourceInfos">
+    <b *ngIf="source.name">
+      {{source.name}}<br>
+    </b><br>
+    <div class="thumb-box" *ngIf="source.image">
+      <div class="thumbnail"
+           [ngStyle]="{backgroundImage: 'url(' + source.image + ')'}">
+      </div>
+      <p>
+            <span *ngIf="source.description">
+              {{source.description}}
+            </span><br>
+        <span *ngIf="source.website">
+              Website: <a href="{{source.website.url}}" target="_blank">{{source.website.title}}</a>
+            </span><br>
+        <span *ngIf="source.link">
+              Source: <a href="{{source.link.url}}" target="_blank">{{source.link.title}}</a>
+            </span>
+      </p>
+    </div>
+  </div>
+</div>

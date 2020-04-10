@@ -56,6 +56,7 @@ export class AnimationService {
 
   cameraControls;
   controlCamera;
+  lastCamera;
   stats;
   clock = new THREE.Clock();
 
@@ -326,7 +327,6 @@ export class AnimationService {
   }
 
   toggleRenderPassActive(name) {
-    console.log(name);
     if (!this.renderPassActive(name)) {
       this.activateRenderPass(name);
     } else {
@@ -387,6 +387,9 @@ export class AnimationService {
 
 
   selectControlCamera(camera = this.controlCamera) {
+    if (this.camera && this.camera !== camera) {
+      this.lastCamera = this.camera;
+    }
     this.camera = camera;
     this.controlCamera = camera;
     this.setRenderPassCamera();
@@ -401,6 +404,12 @@ export class AnimationService {
     }
 
     this.updateView();
+  }
+
+  unselectControlCamera() {
+    if (this.lastCamera) {
+      this.selectCamera(this.lastCamera);
+    }
   }
 
   isControlCamera() {

@@ -45,7 +45,6 @@ export class ThreeAnimationComponent implements OnDestroy, AfterViewInit {
     this.animation.onStart((e) => {
       this.triggerStart(e);
     });
-    console.log('onFrameChange');
     this.animation.onFrameChange((e) => {
       this.triggerFrameChange(e);
     });

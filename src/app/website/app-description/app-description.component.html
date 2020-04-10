@@ -1,0 +1,9 @@
+<p>
+  <b>{{text.subtitle}}</b><br>
+  <span>{{text.description}}</span><br>
+  <span>Repository: <a href="{{text.repositoryLink}}" target="_blank">{{text.repositoryName}}</a></span>
+</p>
+<h4>{{text.featuresTitle}}</h4>
+<ul>
+  <li *ngFor="let feature of text.features">{{feature}}</li>
+</ul>

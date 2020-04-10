@@ -1,0 +1,36 @@
+<div class="start-view">
+  <div class="start-view-content">
+    <h1>{{text.title}}</h1>
+    <h3>{{text.subtitle}}</h3>
+    <br><br>
+    <label *ngIf="radio && radio.ready">
+      <input [(ngModel)]="radioSearchQuery" (keydown.enter)="searchRadio()" placeholder="Station Name"/>
+      <input type="submit" value="Search Radio Station" (click)="searchRadio()"/>
+    </label>
+    <small style="float: right;"><i>(<a href="{{text.apiWebsite}}"
+                                        target="_blank">{{text.apiName}}</a>)</i></small>
+    <br>
+    <br>
+    <button id="startButton" (click)="clickStart()">
+      <span><small>click here</small></span><br>
+      <span><small>to</small></span><br>
+      Start Animation
+    </button>
+    <p><small><i>(ca. 100 Mb)</i></small></p><br><br>
+
+    <div *ngIf="radio && radio.ready">
+      <h3>You listening to:</h3>
+      <br>
+      <div class="radio-preview">
+        <app-radio-preview-small [radio]="radio"></app-radio-preview-small>
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <p>{{text.description}}</p>
+    <small><i>Repository: <a href="{{text.repositoryLink}}" target="_blank">{{text.repositoryName}}</a></i></small>
+
+
+  </div>
+</div>
