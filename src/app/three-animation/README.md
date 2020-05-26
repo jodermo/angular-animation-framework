@@ -27,13 +27,13 @@ Install dependencies:
 
 ### add to app.module.ts 
 ```javascript
-    import { ThreeAnimationComponent } from './three-animation/three-animation.component';
+    import { ThreeAnimationModule } from './three-animation/three-animation.component';
 ```
 
 ```javascript
    @NgModule({
-     declarations: [
-       ThreeAnimationComponent,
+     imports: [
+       ThreeAnimationModule,
      ],
     ...
 ```

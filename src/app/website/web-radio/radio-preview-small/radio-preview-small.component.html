@@ -10,10 +10,10 @@
     </div>
   </div>
   <div class="radio-preview-small-controls">
-    <button (click)="prev()" *ngIf="radio.audio"><</button>
+    <button (click)="prev()" *ngIf="showNavigation && radio.audio"><</button>
     <button (click)="play()" *ngIf="radio.audio && radio.audio.paused">play</button>
     <button (click)="pause()" *ngIf="radio.audio && !radio.audio.paused">pause</button>
     <button (click)="close()">close</button>
-    <button (click)="next()" *ngIf="radio.audio">></button>
+    <button (click)="next()" *ngIf="showNavigation && radio.audio">></button>
   </div>
 </div>

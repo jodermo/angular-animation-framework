@@ -33,6 +33,14 @@ body {
 
 }
 
+
+.control-nav {
+  position: absolute;
+  top: .5rem;
+  left: .5rem;
+  z-index: 999;
+}
+
 .animation-overlay {
   position: absolute;
   width: 100%;
@@ -43,50 +51,6 @@ body {
   pointer-events: none;
 }
 
-.vignette {
-  background: rgba(255, 255, 255, .1);
-  box-shadow: 0 0 10vw rgba(0, 0, 0, 0.5) inset;
-
-  mix-blend-mode: overlay;
-  mix-blend-mode: soft-light;
-}
-
-.flicker {
-  animation: flickerAnimation .5s infinite;
-}
-
-@keyframes flickerAnimation {
-  0% {
-    opacity: 1;
-  }
-  10% {
-    opacity: .5;
-  }
-  15% {
-    opacity: 1;
-  }
-  33% {
-    opacity: .3;
-  }
-  50% {
-    opacity: .8;
-  }
-  60% {
-    opacity: 1;
-  }
-  75% {
-    opacity: .2;
-  }
-  90% {
-    opacity: 1;
-  }
-  95% {
-    opacity: .5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 
 a {
   color: #fff;
@@ -96,7 +60,7 @@ app-start-animation .animation-display {
   background: #000;
 }
 
-.copyright {
+app-root > app-copyright .copyright {
   position: absolute;
   width: 100%;
   bottom: 0;
@@ -108,7 +72,7 @@ app-start-animation .animation-display {
 }
 
 .copyright span {
-  margin-right: 1rem;
+  margin-right: .5rem;
 }
 
 .web-radio-container {
@@ -206,7 +170,7 @@ button.active {
   overflow-y: auto;
 }
 
-.radio-preview{
+.radio-preview {
   background: rgba(0, 0, 0, 0.5);
   padding: .5rem;
 }
@@ -289,30 +253,33 @@ button.show-animation-controls {
   text-align: center;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+
 }
 
 .start-view-content {
   position: relative;
   width: 100%;
-  max-width: 600px;
-  padding: 1.25rem;
+  max-width: 800px;
+  padding: 3rem 1.25rem;
   margin: 0 auto;
 }
 
 .start-view h1 {
   font-weight: bold;
-  font-size: 3rem;
+  font-size: 4rem;
   line-height: 4rem;
   color: #00eaff;
-  font-family: Impact;
+  font-family: 'Anton', cursive;
   text-shadow: 0 0 5px #000;
 }
 
 #startButton {
   display: inline-block;
   font-size: 3rem;
-  margin: 0 auto;
-  font-family: Impact;
+  margin: 2rem auto;
+  font-family: 'Anton', cursive;
   border-radius: 1rem;
   animation: shakes 0.25s linear infinite;
 }
@@ -388,5 +355,65 @@ button.show-animation-controls {
   .start-view-content {
     display: block;
     top: 0;
+  }
+
+  .radio-preview-small {
+    flex-direction: column;
+  }
+
+  app-root > app-copyright {
+    display: none;
+  }
+
+  .control-nav {
+    bottom: .5rem;
+    right: .5rem;
+    top: inherit;
+    left: inherit;
+  }
+}
+
+
+.vignette {
+  background: rgba(255, 255, 255, .1);
+  box-shadow: 0 0 10vw rgba(0, 0, 0, 0.5) inset;
+  mix-blend-mode: overlay;
+  mix-blend-mode: soft-light;
+}
+
+.flicker {
+  animation: flickerAnimation .5s infinite;
+}
+
+@keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: .5;
+  }
+  15% {
+    opacity: 1;
+  }
+  33% {
+    opacity: .3;
+  }
+  50% {
+    opacity: .8;
+  }
+  60% {
+    opacity: 1;
+  }
+  75% {
+    opacity: .2;
+  }
+  90% {
+    opacity: 1;
+  }
+  95% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
   }
 }

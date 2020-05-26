@@ -2,10 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { AnimationService } from './three-animation/services/animation.service';
-import { ThreeAnimationComponent } from './three-animation/three-animation.component';
-import { AudioAnimationDemoComponent } from './audio-animation-demo/audio-animation-demo.component';
-import { ThreeAnimationPreloaderComponent } from './three-animation/three-animation-preloader/three-animation-preloader.component';
+import { AudioAnimationDemoComponent } from './demos/audio-animation-demo/audio-animation-demo.component';
 import { StartViewComponent } from './website/start-view/start-view.component';
 import { WebRadioService } from './website/web-radio/services/web-radio.service';
 import { WebRadioComponent } from './website/web-radio/web-radio.component';
@@ -16,14 +13,17 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppDescriptionComponent } from './website/app-description/app-description.component';
 import { CopyrightComponent } from './website/copyright/copyright.component';
 import { AboutComponent } from './website/about/about.component';
-import { AnimationControlsComponent } from './audio-animation-demo/animation-controls/animation-controls.component';
+import { AnimationControlsComponent } from './demos/audio-animation-demo/animation-controls/animation-controls.component';
+import { TileDemoComponent } from './demos/tile-demo/tile-demo.component';
+import { ThreeAnimationModule } from './three-animation/three-animation.module';
+import { AppRoutingModule } from './app-routing.module';
+import { DemosComponent } from './demos/demos.component';
+import { LandingPageComponent } from './demos/landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ThreeAnimationComponent,
     AudioAnimationDemoComponent,
-    ThreeAnimationPreloaderComponent,
     StartViewComponent,
     WebRadioComponent,
     RadioPreviewComponent,
@@ -31,14 +31,19 @@ import { AnimationControlsComponent } from './audio-animation-demo/animation-con
     AppDescriptionComponent,
     CopyrightComponent,
     AboutComponent,
-    AnimationControlsComponent
+    AnimationControlsComponent,
+    TileDemoComponent,
+    DemosComponent,
+    LandingPageComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    ThreeAnimationModule
   ],
-  providers: [HttpClient, AnimationService, WebRadioService, AudioAnimationDemoComponent],
+  providers: [HttpClient, WebRadioService, AudioAnimationDemoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

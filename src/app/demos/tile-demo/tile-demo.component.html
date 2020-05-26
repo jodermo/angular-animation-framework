@@ -1,0 +1,11 @@
+<div class="animation-display"
+     (mousedown)="animation.containerMouseEvent($event, 'mousedown');"
+     (mouseup)="animation.containerMouseEvent($event, 'mouseup');"
+     (mousemove)="animation.containerMouseEvent($event, 'mousemove');"
+     #animationContainer></div>
+<app-three-animation-preloader class="animation-preloader" *ngIf="animation.loading"
+                               [loader]="animation.loader"></app-three-animation-preloader>
+<div class="animation-overlay">
+  <button *ngIf="!car" (click)="switchEnvironment()">Random Environment</button>
+  <button *ngIf="!car" (click)="loadCar()">Load Car OBJ</button>
+</div>

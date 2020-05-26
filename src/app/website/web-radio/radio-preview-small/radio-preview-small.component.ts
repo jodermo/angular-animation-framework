@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RadioPreviewComponent } from '../radio-preview/radio-preview.component';
 import { WebRadioService } from '../services/web-radio.service';
 
@@ -8,6 +8,7 @@ import { WebRadioService } from '../services/web-radio.service';
   styleUrls: ['./radio-preview-small.component.scss'],
 })
 export class RadioPreviewSmallComponent extends RadioPreviewComponent {
+  @Input() showNavigation = false;
   @Output()  onClose = new EventEmitter();
 
 

@@ -4,7 +4,7 @@ Demo (Retro Audio Visualisation):
   3d.mucke.online
 </a>
 
-• implementation as Angular component<br>
+• implementation as Angular module<br>
 • easy create, animate and do interactions on 3D objects with TypeScript<br>
 • attributes based on THREE.js library (<a href="https://threejs.org/docs/" target="_blank">docs</a>)<br>
 • tweening methods based on TWEEN.js library (<a href="https://www.createjs.com/tweenjs" target="_blank">website</a>)<br>

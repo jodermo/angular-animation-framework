@@ -47,6 +47,7 @@ export class WebRadioService {
   audio: any;
   streamUrl = '';
   station = null;
+  stationReady = false;
   lastVolume = 1;
   duration = 0;
   durationString = null;
@@ -145,6 +146,7 @@ export class WebRadioService {
       if (this.filter.reverse) {
         searchUrl += '&reverse=true';
       }
+      searchUrl += '&callback=foo';
       if (searchUrl !== this.lastSearchQuery) {
         this.searching = true;
         this.searchResult = [];
@@ -177,24 +179,24 @@ export class WebRadioService {
   }
 
   searchStationsNew(selectStationName: any = null) {
-      /*
-      RadioBrowser.getStations(filter)
-        .then((data) => {
-          this.searchResult = data;
-          window['radio'].searchResult = this.searchResult;
-          this.searching = false;
-          if (selectStationName) {
-            this.searchResult.forEach(radio => {
-              if (radio.name && radio.name === selectStationName) {
-                return this.selectStation(radio);
-              }
-            });
-          }
-        })
-        .catch((error) => {
-          this.searching = false;
-        });
-       */
+    /*
+    RadioBrowser.getStations(filter)
+      .then((data) => {
+        this.searchResult = data;
+        window['radio'].searchResult = this.searchResult;
+        this.searching = false;
+        if (selectStationName) {
+          this.searchResult.forEach(radio => {
+            if (radio.name && radio.name === selectStationName) {
+              return this.selectStation(radio);
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        this.searching = false;
+      });
+     */
   }
 
   selectStation(station: any) {
@@ -253,6 +255,7 @@ export class WebRadioService {
         window['radio'].audio.removeAttribute('src');
         window['radio'].audio.load();
       }
+      this.stationReady = false;
       this.audioState = 'loading';
       if (!this.audio) {
         this.audio = new Audio();
@@ -265,6 +268,10 @@ export class WebRadioService {
         this.audio.addEventListener('timeupdate', (e) => {
           this.triggerOnTimeUpdate(e);
         });
+        this.audio.addEventListener('canplay', (e) => {
+          this.stationReady = true;
+          this.audioState = 'ready';
+        });
       }
       this.audio.autoplay = true;
       this.audio.crossOrigin = 'anonymous';
@@ -272,6 +279,7 @@ export class WebRadioService {
       window['radio'].audio = this.audio;
       window['radio'].station = this.station;
       this.playbackEvents();
+      this.ready = true;
     }
   }
 
@@ -313,6 +321,7 @@ export class WebRadioService {
       this.audio.removeAttribute('src');
       this.audio.load();
     }
+    this.ready = false;
   }
 
   playbackEvents() {

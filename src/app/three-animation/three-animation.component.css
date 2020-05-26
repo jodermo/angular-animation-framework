@@ -5,6 +5,7 @@
   top: 0;
   left: 0;
   overflow: hidden;
+
 }
 
 .animation-preloader {
@@ -19,3 +20,12 @@
   color: #fff;
 }
 
+.animation-overlay > * {
+  pointer-events: all;
+}
+
+canvas{
+  display: block;
+  width: 100%;
+  height: 100%;
+}

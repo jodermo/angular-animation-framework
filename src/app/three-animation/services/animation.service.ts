@@ -493,13 +493,16 @@ export class AnimationService {
     }
   }
 
-  createObject(type, options: any, parentObject = null, onSuccess = null) {
+  createObject(type, options: any = null, parentObject = null, onSuccess = null) {
     this.loading = true;
     this.objectLoading();
+    if (parentObject && parentObject.object) {
+      parentObject = parentObject.object;
+    }
     if (!parentObject) {
       parentObject = this.scene;
     }
-    if (options) {
+    if (options && !options.helper) {
       options.helper = this.settings.helper;
     }
     if (options && options.geometry && options.geometry.parameters && options.geometry.parameters.fontSet) {
@@ -773,9 +776,30 @@ export class AnimationService {
 
 
   frameChange(frame: number = this.frame) {
+    this.updateCamera();
     this.triggerOnFrameChange(frame);
     this.updateObjects();
+
     // this.calculateCollisions();
+  }
+
+  updateCamera() {
+    if (this.resizeRendererToDisplaySize()) {
+      const canvas = this.renderer.domElement;
+      this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      this.camera.updateProjectionMatrix();
+    }
+  }
+
+  resizeRendererToDisplaySize() {
+    const canvas = this.renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+      this.renderer.setSize(width, height, false);
+    }
+    return needResize;
   }
 
   updateObjects() {
@@ -880,10 +904,10 @@ export class AnimationService {
           }
           if (aniObj.object !== animationObject.object) {
             if (aniObj.mouseHover) {
-              aniObj.mouseHover = false;
               this.triggerObjectCallback(animationObject, 'mouseout', data);
             }
           }
+          aniObj.mouseHover = false;
         }
         if (!animationObject.mouseHover) {
           animationObject.mouseHover = true;

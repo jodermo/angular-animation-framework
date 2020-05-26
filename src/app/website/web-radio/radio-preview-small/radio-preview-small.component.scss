@@ -18,8 +18,12 @@
     flex: 1;
   }
 
+  .radio-preview-small-controls {
+    display: flex;
 
-  button {
-    width: 25%;
+    & > * {
+      flex: 1;
+    }
   }
+
 }

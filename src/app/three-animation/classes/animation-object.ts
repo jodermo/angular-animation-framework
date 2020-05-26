@@ -88,6 +88,7 @@ export class AnimationObject {
       this.initObject(options);
       this.appendTo(parentObject);
     } else if (type === 'obj') {
+
       this.loadObj(options, (objMesh) => {
         this.mesh = objMesh;
         this.initObj(options);
@@ -284,7 +285,7 @@ export class AnimationObject {
           clearTimeout(timeout);
         }
         timeout = setTimeout(() => {
-          console.log(names); // show object names in js console
+        //  console.log(names); // show object names in js console
         }, 500);
       });
       if (options.obj) {
@@ -371,11 +372,23 @@ export class AnimationObject {
         1,
       );
     } else if (type === 'PointLight') {
+
       this.light = new THREE.PointLight(
         0xffffff,
         1,
         1000,
       );
+      if (options.helper) {
+        const helper = new THREE.PointLightHelper(this.light);
+        if (options.parent) {
+          if (options.parent.parent) {
+            options.parent.parent.add(helper);
+          } else {
+            options.parent.add(helper);
+          }
+
+        }
+      }
     } else if (type === 'RectAreaLight') {
       const width = options.size.x || 10;
       const height = options.size.y || 10;
@@ -389,6 +402,12 @@ export class AnimationObject {
     } else if (type === 'SpotLight') {
       this.light = new THREE.SpotLight(0xffffff);
       this.light.position.set(100, 1000, 100);
+      const targetObject = new THREE.Object3D();
+      this.light.target = targetObject;
+      if (options.target) {
+        targetObject.position.set(options.target.x, options.target.y, options.target.z);
+      }
+
       if (options.helper) {
         const spotLightHelper = new THREE.SpotLightHelper(this.light);
         if (options.parent) {
@@ -406,7 +425,7 @@ export class AnimationObject {
 
     if (options.light) {
       for (const key in options.light) {
-        if (key !== 'type' && key !== 'color' && key !== 'shadow') {
+        if (key !== 'type' && key !== 'color' && key !== 'shadow' && key !== 'target') {
           this.light[key] = options.light[key];
         }
       }
@@ -424,8 +443,8 @@ export class AnimationObject {
   }
 
   loadObj(options, success: any = false) {
+
     if (options.obj && options.obj.source) {
-      const loadStart = false;
       this.objLoader.load(options.obj.source, (object) => {
         if (success) {
           success(object);
@@ -851,7 +870,6 @@ export class AnimationObject {
   createMirrorMaterial(options: any) {
     console.log('createMirrorMaterial', options);
     this.cubeCamera = new THREE.CubeCamera(0.1, 100000, 512);
-    // this.cubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
     const material = new THREE.MeshBasicMaterial({
       envMap: this.cubeCamera.renderTarget.texture
     });
@@ -859,13 +877,30 @@ export class AnimationObject {
     return material;
   }
 
-  createTextureMaterial(type, options: any, texture = null, alphaMap = null) {
+  createTextureMaterial(type, options: any, texture = null, alphaMap = null, bumpMap = null) {
     let threeMaterial;
     if (THREE[type]) {
-      if (!texture && options.texture && options.texture.image) {
-        texture = new THREE.TextureLoader().load(options.texture.image);
+      if (options.texture) {
+        if (!texture && options.texture.image) {
+          texture = new THREE.TextureLoader().load(options.texture.image);
+          texture.minFilter = THREE.LinearFilter;
+          texture.magFilter = THREE.LinearFilter;
+        }
+        if (!bumpMap && options.texture.bump) {
+          bumpMap = new THREE.TextureLoader().load(options.texture.bump);
+        }
+
       }
-      if (alphaMap) {
+
+      if (alphaMap && bumpMap) {
+        threeMaterial = new THREE[options.type]({map: texture, alphaMap, bumpMap});
+        if (alphaMap) {
+          threeMaterial.transparent = true;
+          threeMaterial.alphaTest = .5;
+        }
+      } else if (bumpMap) {
+        threeMaterial = new THREE[options.type]({map: texture, bumpMap});
+      } else if (alphaMap) {
         threeMaterial = new THREE[options.type]({map: texture, alphaMap});
         if (alphaMap) {
           threeMaterial.transparent = true;
@@ -873,6 +908,9 @@ export class AnimationObject {
         }
       } else {
         threeMaterial = new THREE[options.type]({map: texture});
+      }
+      if (options.texture && options.texture.bumpScale) {
+        threeMaterial.bumpScale = options.texture.bumpScale;
       }
 
       if (options.texture && options.texture.blendSrc && THREE[options.texture.blendSrc]) {
@@ -952,10 +990,15 @@ export class AnimationObject {
   }
 
   appendTo(parentObject) {
+
     if (parentObject && parentObject.add) {
       parentObject.add(this.object);
       this.parent = parentObject;
+      if (this.light && this.light.target) {
+        parentObject.add(this.light.target);
+      }
     }
+
     if (this.onCreated) {
       this.onCreated(this);
     }
@@ -1183,7 +1226,6 @@ export class AnimationObject {
           this.cubeCamera.position.set(this.mesh.position);
         }
         this.cubeCamera.update(renderer, scene);
-        this.cubeCamera.updateCubeMap(renderer, scene);
         if (this.mesh) {
           this.mesh.visible = true;
         }
@@ -1207,13 +1249,28 @@ export class AnimationObject {
         }
       });
     }
-
+    if (this.object) {
+      this.object.visible = false;
+      this.object.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.visible = false;
+        }
+      });
+    }
   }
 
   show() {
     if (this.mesh) {
       this.mesh.visible = true;
       this.mesh.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.visible = true;
+        }
+      });
+    }
+    if (this.object) {
+      this.object.visible = true;
+      this.object.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           child.visible = true;
         }

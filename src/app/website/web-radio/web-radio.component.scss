@@ -4,6 +4,10 @@
   height: 100%;
   overflow: hidden;
 
+  * {
+    box-sizing: border-box;
+  }
+
   .inside {
     position: relative;
     width: 100%;
@@ -41,20 +45,45 @@
         }
 
 
+        .button-placeholder {
+          flex: 3;
+          background: #000;
+          text-align: center;
+        }
+
+
       }
 
 
     }
 
     .audio-player-filter {
-      padding: .25rem;
-      label {
+      background: #000;
+
+      .filter-group {
+
+        position: relative;
         width: 100%;
         display: flex;
+      }
+
+      label {
+        position: relative;
+        width: 100%;
+        display: flex;
+        padding: .75rem .5rem .5rem .5rem;
 
         span {
-          padding: .25rem .5rem;
+          position: absolute;
+          padding: 0 .5rem;
           text-align: right;
+          transform: translateY(-90%);
+          font-size: .5rem;
+        }
+
+        input, select{
+          margin: 0;
+          padding: .25rem;
         }
 
         & > * {
