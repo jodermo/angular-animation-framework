@@ -1,7 +1,7 @@
 # Angular Animation Framework 
-Demo (Retro Audio Visualisation):
-<a rel="demo" href="http://3d.mucke.online" target="_blank">
-  3d.mucke.online
+Demo Animations:
+<a rel="demo" href="http://3d.html5-apps.com" target="_blank">
+  3d.html5-apps.com
 </a>
 
 • implementation as Angular module<br>
